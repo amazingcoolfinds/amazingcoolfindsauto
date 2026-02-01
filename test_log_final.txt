@@ -1,0 +1,39 @@
+/Users/zoomies/Desktop/liveitupdeals/pipeline_scraper.py:77: FutureWarning: 
+
+All support for the `google.generativeai` package has ended. It will no longer be receiving 
+updates or bug fixes. Please switch to the `google.genai` package as soon as possible.
+See README for more details:
+
+https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
+
+  import google.generativeai as gemini
+2026-01-31 19:10:57,579 [INFO] Fetching from RapidAPI for 'luxury skincare gift set'...
+2026-01-31 19:10:59,611 [INFO]   Fetching details for B0F4M9VFVD...
+2026-01-31 19:11:02,795 [INFO] ✓ RapidAPI returned 1 enriched products
+2026-01-31 19:11:02,797 [INFO] ✨ Products fetched via RapidAPI for 'luxury skincare gift set'
+2026-01-31 19:11:06,947 [INFO] ✓ Professional script generated: The Billionaire Secret Weapon for Flawless Skin 🤫 | Estée Lauder ANR
+2026-01-31 19:11:06,948 [INFO] Generating Gemini voiceover for B0F4M9VFVD...
+2026-01-31 19:11:14,496 [INFO] ✅ Gemini Voiceover created: temp/voice_B0F4M9VFVD.wav
+2026-01-31 19:11:14,992 [INFO] Generating carousel video for B0F4M9VFVD...
+2026-01-31 19:11:15,505 [ERROR] Failed to generate carousel video: Command 'ffmpeg -y -loop 1 -t 3 -i temp/img_B0F4M9VFVD_0.jpg -loop 1 -t 3 -i temp/img_B0F4M9VFVD_1.jpg -loop 1 -t 3 -i temp/img_B0F4M9VFVD_2.jpg -loop 1 -t 3 -i temp/img_B0F4M9VFVD_3.jpg -loop 1 -t 3 -i temp/img_B0F4M9VFVD_4.jpg  -i temp/voice_B0F4M9VFVD.wav  -filter_complex "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1[v0]; [1:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1[v1]; [2:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1[v2]; [3:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1[v3]; [4:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1[v4]; [v0][v1][v2][v3][v4]concat=n=5:v=1:a=0[v_carousel]; [v_carousel]drawtext=text='The Only Serum Worth $90.':fontcolor=white:fontsize=80:x=(W-tw)/2:y=300:box=1:boxcolor=black@0.6:boxborderw=20:enable='between(t,0,3)'[v_h]; [v_h]drawtext=text='Synchronized Multi-Recovery. Hyaluronic Acid & Peptides.':fontcolor=white:fontsize=65:x=(W-tw)/2:y=H-500:box=1:boxcolor=black@0.6:boxborderw=20:enable='between(t,3,12)'[v_b]; [v_b]drawtext=text='Unlock Your Multi-Recovery Glow.':fontcolor=gold:fontsize=90:x=(W-tw)/2:y=H-400:box=1:boxcolor=black@0.8:boxborderw=20:enable='between(t,12,15)'[vout]; [5:a]volume=1.5[aout]" -map "[vout]" -map "[aout]" -c:v libx264 -pix_fmt yuv420p -r 30 -t 15 output_videos/video_B0F4M9VFVD.mp4' returned non-zero exit status 187.
+🔍 Fetching high-end product with multi-images...
+✅ Found: Estée Lauder Advanced Night Repair Face Serum Synchronized Multi-Recovery Complex with Hyaluronic Acid & Peptides | Anti Aging & Hydrating
+✅ Images: 5
+🤖 Generating professional narration script...
+{
+  "title": "The Billionaire Secret Weapon for Flawless Skin \ud83e\udd2b | Est\u00e9e Lauder ANR",
+  "narration": "You cannot afford to spend your nights wasting time. Est\u00e9e Lauder Advanced Night Repair is the synchronized multi-recovery complex your skin demands. It\u2019s engineered with high-potency Hyaluronic Acid and Peptides. Don't just sleep; reverse the clock and wake up to the ultimate glow.",
+  "hook_overlay": "The Only Serum Worth $90.",
+  "body_overlay": "Synchronized Multi-Recovery. Hyaluronic Acid & Peptides.",
+  "cta_overlay": "Unlock Your Multi-Recovery Glow.",
+  "hashtags": [
+    "#AdvancedNightRepair",
+    "#LuxurySkincare",
+    "#AntiAgingRoutine",
+    "#EsteeLauder",
+    "#SkincareSecrets"
+  ]
+}
+🎙️ Generating Nova voiceover...
+🎬 Assembling Carousel Video (15s)...
+❌ Video assembly failed.

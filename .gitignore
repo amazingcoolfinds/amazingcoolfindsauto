@@ -1,0 +1,24 @@
+# Entornos Virtuales
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+
+# Secretos y Credenciales (¡MUY IMPORTANTE!)
+.env
+client_secret.json
+token.json
+credentials.json
+*.pem
+
+# Archivos Temporales y Logs
+logs/
+temp/
+output_videos/
+output_images/
+
+# Sistema
+.DS_Store
+.vscode/
+.idea/

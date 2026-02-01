@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live it Up Deals — Luxury at Your Price</title>
+  <style>
+    /* ─── RESET & VARS ─────────────────────────────────────── */
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Rajdhani:wght@300;400;500;600&display=swap');
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --gold: #c9a84c;
+      --gold-lt: #e8d48b;
+      --gold-dk: #8a6d2b;
+      --cream: #f5f0e8;
+      --ink: #1a1612;
+      --ink-lt: #3d3530;
+      --accent: #00e5a0;
+      --shadow: rgba(0, 0, 0, 0.4);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: var(--ink);
+      color: var(--cream);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── HERO ────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #0d0b08;
+    }
+
+    .hero__bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201, 168, 76, 0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(201, 168, 76, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 30% 50% at 80% 70%, rgba(0, 229, 160, 0.04) 0%, transparent 60%);
+      animation: pulse 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulse {
+      to {
+        opacity: 0.7;
+        transform: scale(1.05);
+      }
+    }
+
+    /* Decorative gold lines */
+    .hero__deco {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .hero__deco::before,
+    .hero__deco::after {
+      content: '';
+      position: absolute;
+      background: linear-gradient(180deg, transparent, var(--gold-dk), transparent);
+      width: 1px;
+      height: 60%;
+      top: 20%;
+    }
+
+    .hero__deco::before {
+      left: 15%;
+      opacity: 0.3;
+    }
+
+    .hero__deco::after {
+      right: 15%;
+      opacity: 0.3;
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    .hero__eyebrow {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 300;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 1s 0.3s forwards;
+    }
+
+    .hero__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(3rem, 8vw, 7rem);
+      line-height: 1.05;
+      color: var(--cream);
+      letter-spacing: -0.01em;
+      opacity: 0;
+      animation: fadeUp 1s 0.5s forwards;
+    }
+
+    .hero__title span {
+      display: block;
+      font-style: italic;
+      color: var(--gold);
+      font-weight: 300;
+    }
+
+    .hero__sub {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 300;
+      font-size: 1.1rem;
+      color: rgba(245, 240, 232, 0.55);
+      margin-top: 28px;
+      letter-spacing: 0.05em;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0;
+      animation: fadeUp 1s 0.8s forwards;
+    }
+
+    .hero__divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 32px auto;
+      opacity: 0;
+      animation: fadeUp 1s 1s forwards;
+    }
+
+    .hero__scroll {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold-dk);
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp 1s 1.5s forwards;
+    }
+
+    .hero__scroll::after {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(180deg, var(--gold-dk), transparent);
+      animation: scrollPulse 2s infinite;
+    }
+
+    @keyframes scrollPulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scaleY(1);
+      }
+
+      50% {
+        opacity: 0.3;
+        transform: scaleY(0.6);
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ─── SECTION: COMMISSION BADGES ──────────────────────── */
+    .badges {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 60px 20px;
+      background: linear-gradient(180deg, #0d0b08, var(--ink));
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      text-align: center;
+      opacity: 0;
+      animation: fadeUp 0.6s forwards;
+    }
+
+    .badge:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .badge:nth-child(2) {
+      animation-delay: 0.25s;
+    }
+
+    .badge:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    .badge__number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      font-weight: 600;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .badge__label {
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(245, 240, 232, 0.45);
+      margin-top: 6px;
+    }
+
+    /* ─── SECTION: PRODUCTS ───────────────────────────────── */
+    .products {
+      padding: 80px 20px 120px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-header__eyebrow {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 300;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-size: 0.8rem;
+      margin-bottom: 16px;
+    }
+
+    .section-header__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--cream);
+    }
+
+    /* Filter pills */
+    .filters {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 50px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: 1px solid rgba(201, 168, 76, 0.25);
+      color: rgba(245, 240, 232, 0.6);
+      padding: 8px 22px;
+      border-radius: 30px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: rgba(201, 168, 76, 0.08);
+    }
+
+    /* Product Grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 28px;
+    }
+
+    /* Product Card */
+    .card {
+      background: linear-gradient(145deg, #1f1b14, #16140f);
+      border: 1px solid rgba(201, 168, 76, 0.12);
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.4s;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(201, 168, 76, 0.4);
+    }
+
+    /* Highlight effect for deep-links */
+    .card.highlight {
+      animation: goldGlow 2s ease-in-out infinite alternate;
+      border-color: var(--gold);
+      z-index: 10;
+    }
+
+    @keyframes goldGlow {
+      from {
+        box-shadow: 0 0 5px var(--gold-dk);
+      }
+
+      to {
+        box-shadow: 0 0 25px var(--gold);
+      }
+    }
+
+    /* Gold corner accents */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 40px;
+      height: 40px;
+      border-top: 2px solid var(--gold-dk);
+      border-left: 2px solid var(--gold-dk);
+      border-radius: 16px 0 0 0;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card__img-wrap {
+      position: relative;
+      height: 260px;
+      background: #141210;
+      overflow: hidden;
+    }
+
+    .card__slideshow {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card__img {
+      position: absolute;
+      max-width: 75%;
+      max-height: 85%;
+      object-fit: contain;
+      transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.8s ease-in-out;
+      filter: brightness(0.95);
+      opacity: 0;
+    }
+
+    .card__img.active {
+      opacity: 1;
+      position: relative;
+    }
+
+    .card:hover .card__img {
+      transform: scale(1.06);
+      filter: brightness(1.05);
+    }
+
+    /* Commission badge on image */
+    .card__commission {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: linear-gradient(135deg, var(--gold-dk), var(--gold));
+      color: var(--ink);
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      padding: 4px 12px;
+      border-radius: 20px;
+      z-index: 2;
+    }
+
+    .card__body {
+      padding: 24px;
+    }
+
+    .card__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 1.25rem;
+      color: var(--cream);
+      line-height: 1.3;
+      margin-bottom: 10px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card__rating {
+      font-size: 0.8rem;
+      color: rgba(245, 240, 232, 0.4);
+      margin-bottom: 16px;
+      letter-spacing: 0.05em;
+    }
+
+    .card__rating .stars {
+      color: var(--gold);
+    }
+
+    .card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card__price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .card__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, var(--gold-dk), var(--gold));
+      color: var(--ink);
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .card__cta:hover {
+      transform: scale(1.04);
+      box-shadow: 0 4px 20px rgba(201, 168, 76, 0.3);
+    }
+
+    /* YouTube indicator */
+    .card__yt {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      color: rgba(245, 240, 232, 0.35);
+      margin-top: 14px;
+      text-decoration: none;
+      transition: color 0.3s;
+      letter-spacing: 0.05em;
+    }
+
+    .card__yt:hover {
+      color: #ff0000;
+    }
+
+    .card__yt svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      color: rgba(245, 240, 232, 0.3);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+    }
+
+    /* ─── FOOTER ──────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 60px 20px;
+      border-top: 1px solid rgba(201, 168, 76, 0.1);
+      color: rgba(245, 240, 232, 0.25);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    footer a {
+      color: var(--gold-dk);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: var(--gold);
+    }
+
+    /* ─── SCROLL REVEAL ───────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1), transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .badges {
+        gap: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ════════════════ HERO ════════════════ -->
+  <section class="hero">
+    <div class="hero__bg"></div>
+    <div class="hero__deco"></div>
+    <div class="hero__content">
+      <p class="hero__eyebrow">Curated Luxury · Automated Daily</p>
+      <h1 class="hero__title">
+        Live it Up<span>Deals</span>
+      </h1>
+      <div class="hero__divider"></div>
+      <p class="hero__sub">
+        Premium products. Unbeatable prices. Every deal handpicked by AI and verified on Amazon.
+      </p>
+    </div>
+    <div class="hero__scroll">Explore</div>
+  </section>
+
+  <!-- ════════════════ STAT BADGES ════════════════ -->
+  <section class="badges">
+    <div class="badge">
+      <div class="badge__number">200+</div>
+      <div class="badge__label">Products Weekly</div>
+    </div>
+    <div class="badge">
+      <div class="badge__number">10%</div>
+      <div class="badge__label">Max Commission</div>
+    </div>
+    <div class="badge">
+      <div class="badge__number">24/7</div>
+      <div class="badge__label">Auto-Updated</div>
+    </div>
+  </section>
+
+  <!-- ════════════════ PRODUCTS ════════════════ -->
+  <section class="products">
+    <div class="section-header reveal">
+      <p class="section-header__eyebrow">Today's Selection</p>
+      <h2 class="section-header__title">Luxury Deals — Refreshed Daily</h2>
+    </div>
+
+    <div class="filters reveal" id="filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="Beauty">Beauty</button>
+      <button class="filter-btn" data-filter="Electronics">Tech</button>
+      <button class="filter-btn" data-filter="Clothing">Fashion</button>
+      <button class="filter-btn" data-filter="Home">Home</button>
+    </div>
+
+    <div class="product-grid" id="productGrid">
+      <div class="empty-state">Loading luxury deals...</div>
+    </div>
+  </section>
+
+  <!-- ════════════════ FOOTER ════════════════ -->
+  <footer>
+    <p>© 2025 Live it Up Deals · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+    <p style="margin-top:8px; opacity:0.6;">
+      As an Amazon Associate, we earn from qualifying purchases. All links are affiliate links.
+    </p>
+  </footer>
+
+  <!-- ═══ SCRIPTS ═══ -->
+  <script>
+    // ─── SCROLL REVEAL ──────────────────────────────────────
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ─── FILTER LOGIC ───────────────────────────────────────
+    let allProducts = [];
+    let activeFilter = 'all';
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilter = btn.dataset.filter;
+        renderProducts();
+      });
+    });
+
+    // ─── RENDER PRODUCTS ────────────────────────────────────
+    function renderProducts() {
+      const grid = document.getElementById('productGrid');
+      const filtered = activeFilter === 'all'
+        ? allProducts
+        : allProducts.filter(p => p.category === activeFilter);
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div class="empty-state">No products in this category yet. Check back soon.</div>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(p => {
+        const images = p.images && p.images.length > 0 ? p.images : [p.image_url];
+        return `
+    <div class="card reveal" id="${p.asin}" data-asin="${p.asin}">
+      <div class="card__img-wrap">
+        <div class="card__slideshow">
+          ${images.map((img, idx) => `
+            <img class="card__img ${idx === 0 ? 'active' : ''}" 
+                 src="${img}" alt="${p.title}" 
+                 loading="lazy" 
+                 onerror="this.style.display='none'">
+          `).join('')}
+        </div>
+      </div>
+      <div class="card__body">
+        <h3 class="card__title">${p.title}</h3>
+        <div class="card__rating">
+          <span class="stars">★★★★☆</span> ${p.rating || '4.5'} stars
+        </div>
+        <div class="card__footer">
+          <span class="card__price">${p.price || 'Check Price'}</span>
+          <a href="${p.affiliate_url}" target="_blank" rel="noopener noreferrer" class="card__cta">
+            Shop Now →
+          </a>
+        </div>
+        ${p.youtube_url ? `
+        <a href="${p.youtube_url}" target="_blank" rel="noopener noreferrer" class="card__yt">
+          <svg viewBox="0 0 24 24"><path d="M23.5 6.2c-.3-1-1-1.8-2-2.1C19.6 3.8 12 3.8 12 3.8s-7.6 0-9.5.3c-1 .3-1.7 1.1-2 2.1C.2 8.2 0 12 0 12s.2 3.8.5 5.8c.3 1 1 1.8 2 2.1 1.9.3 9.5.3 9.5.3s7.6 0 9.5-.3c1-.3 1.7-1.1 2-2.1.3-2 .5-5.8.5-5.8s-.2-3.8-.5-5.8zM9.8 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg>
+          Watch on YouTube Shorts
+        </a>` : ''}
+      </div>
+    </div>
+  `}).join('');
+
+      // Initialize slide timers for the "GIF effect"
+      initSlideshows();
+
+      // Check for ASIN in hash
+      checkHash();
+
+      // Re-observe new reveal elements
+      document.querySelectorAll('.card.reveal:not(.visible)').forEach(el => observer.observe(el));
+    }
+
+    // ─── GIF EFFECT: IMAGE CYCLING ────────────────────────────
+    function initSlideshows() {
+      document.querySelectorAll('.card__slideshow').forEach(slideshow => {
+        const imgs = slideshow.querySelectorAll('.card__img');
+        if (imgs.length <= 1) return;
+
+        let current = 0;
+        setInterval(() => {
+          imgs[current].classList.remove('active');
+          current = (current + 1) % imgs.length;
+          imgs[current].classList.add('active');
+        }, 2200); // 2.2s cycle for "GIF" feel
+      });
+    }
+
+    // ─── SYNC FLOW: HASH NAVIGATION ───────────────────────────
+    function checkHash() {
+      const hash = window.location.hash.substring(1);
+      if (!hash) return;
+
+      const target = document.getElementById(hash);
+      if (target) {
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          target.classList.add('highlight');
+          // Remove highlight after attention is grabbed
+          setTimeout(() => target.classList.remove('highlight'), 4000);
+        }, 500);
+      }
+    }
+
+    window.addEventListener('hashchange', checkHash);
+
+    // ─── LOAD DATA ──────────────────────────────────────────
+    // In production: fetch('data/products.json')
+    // For demo: uses inline sample data
+    async function loadProducts() {
+      try {
+        const res = await fetch('data/products.json');
+        if (!res.ok) throw new Error('No data');
+        allProducts = await res.json();
+      } catch {
+        // Demo data for immediate visual — replace with real data once pipeline runs
+        allProducts = [
+          {
+            asin: "DEMO001", title: "La Mer The Lifting Serum — Ultra-Luxury Skincare",
+            price: "$195.00", rating: "4.8", category: "Beauty", commission: "10%",
+            image_url: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=400&fit=crop",
+            affiliate_url: "#", youtube_url: null
+          },
+          {
+            asin: "DEMO002", title: "Apple AirPods Pro 2 — Premium Wireless Audio",
+            price: "$249.00", rating: "4.7", category: "Electronics", commission: "4%",
+            image_url: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop",
+            affiliate_url: "#", youtube_url: null
+          },
+          {
+            asin: "DEMO003", title: "Tom Ford Ombre Lip Color — Luxury Matte",
+            price: "$58.00", rating: "4.6", category: "Beauty", commission: "10%",
+            image_url: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=400&fit=crop",
+            affiliate_url: "#", youtube_url: null
+          },
+          {
+            asin: "DEMO004", title: "Sony WH-1000XM5 Noise Cancelling Headphones",
+            price: "$348.00", rating: "4.9", category: "Electronics", commission: "4%",
+            image_url: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop",
+            affiliate_url: "#", youtube_url: null
+          },
+          {
+            asin: "DEMO005", title: "Hermès Scarf — Silk Twill 90cm",
+            price: "$485.00", rating: "4.8", category: "Clothing", commission: "4%",
+            image_url: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop",
+            affiliate_url: "#", youtube_url: null
+          },
+          {
+            asin: "DEMO006", title: "Aesop Luxury Hand Cream — Botanical Formula",
+            price: "$72.00", rating: "4.5", category: "Beauty", commission: "10%",
+            image_url: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=400&fit=crop",
+            affiliate_url: "#", youtube_url: null
+          }
+        ];
+      }
+      renderProducts();
+    }
+
+    loadProducts();
+  </script>
+</body>
+
+</html>

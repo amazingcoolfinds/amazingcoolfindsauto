@@ -1,0 +1,13 @@
+# ═══════════════════════════════════════════════════════════
+# pip install -r requirements.txt
+# ═══════════════════════════════════════════════════════════
+
+python-dotenv>=1.0
+python-amazon-paapi>=5.2        # Amazon Creators API + PAAPI 5.0
+google-generativeai>=0.3        # Google Gemini AI for script generation
+google-auth-oauthlib>=1.2       # YouTube OAuth2
+google-api-python-client>=2.140 # YouTube Data API v3
+google-auth-httplib2>=0.1       # Google auth transport
+Pillow>=10.0                    # Image processing (optional enhancements)
+requests>=2.31                  # HTTP fallbacks
+
