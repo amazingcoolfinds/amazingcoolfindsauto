@@ -51,6 +51,9 @@ jobs:
           CF_PROJECT_NAME: ${{ secrets.CF_PROJECT_NAME }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # YouTube Credentials (Base64 encoded)
+          YT_TOKEN_BASE64: ${{ secrets.YT_TOKEN_BASE64 }}
+          YT_CLIENT_SECRET_BASE64: ${{ secrets.YT_CLIENT_SECRET_BASE64 }}
         run: python enhanced_pipeline.py --run
 
       - name: Commit Updated Data

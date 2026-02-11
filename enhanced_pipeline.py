@@ -305,16 +305,16 @@ def run_enhanced_pipeline():
         from groq_generators import GroqVoiceGenerator
         from video_generator import VideoGenerator
         
-        # Initialize uploaders (CI-Safe: Only try YouTube if token exists)
+        # Initialize uploaders (CI-Safe: Only try YouTube if token or Secret exists)
         yt_up = None
-        if Path("token.json").exists():
+        if Path("token.json").exists() or os.getenv("YT_TOKEN_BASE64"):
             try:
                 from youtube_production import ProductionYouTubeUploader
                 yt_up = ProductionYouTubeUploader()
             except Exception as e:
                 log.warning(f"⚠️ YouTube activation skipped/failed: {e}")
         else:
-            log.info("ℹ️ YouTube token.json not found. Skipping YouTube uploader for this run.")
+            log.info("ℹ️ YouTube credentials not found. Skipping YouTube uploader for this run.")
 
         try:
             from meta_uploader import MetaUploader

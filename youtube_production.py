@@ -26,10 +26,32 @@ class ProductionYouTubeUploader:
         self.youtube = build("youtube", "v3", credentials=self.credentials)
     
     def _get_production_credentials(self):
-        """Get credentials using your exact production configuration"""
+        """Get credentials from Env Vars (CI) or Local Files"""
         token_file = "token.json"
         
-        # Try to load existing credentials
+        # 1. Try Loading from Environment Variables (Priority for GitHub Actions)
+        token_b64 = os.getenv("YT_TOKEN_BASE64")
+        secret_b64 = os.getenv("YT_CLIENT_SECRET_BASE64")
+        
+        if token_b64 and secret_b64:
+            import base64
+            import json
+            from google.oauth2.credentials import Credentials
+            try:
+                log.info("🔐 Loading YouTube credentials from Environment Variables...")
+                token_data = json.loads(base64.b64decode(token_b64).decode('utf-8'))
+                creds = Credentials.from_authorized_user_info(token_data, self.scopes)
+                
+                # Refresh if needed
+                if creds.expired and creds.refresh_token:
+                    creds.refresh(Request())
+                    log.info("✅ Refreshed environment credentials")
+                
+                return creds
+            except Exception as e:
+                log.error(f"❌ Failed to load credentials from Env: {e}")
+
+        # 2. Try to load existing local credentials
         if os.path.exists(token_file):
             try:
                 with open(token_file, 'r') as f:
