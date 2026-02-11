@@ -6,35 +6,123 @@
     <title>Welcome to the Elite — Amazing Cool Finds</title>
     <link rel="icon" href="https://i.imgur.com/buAiOrr.png" type="image/png">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+        @import url('https://api.fontshare.com/v2/css?f[]=clash-display@700,600,500&f[]=satoshi@700,500,400,300&display=swap');
+        
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --yellow: #FFD700; --yellow-glow: rgba(255, 215, 0, 0.4); --black: #000000; --dark-grey: #0D0D0D; --white: #FFFFFF; --text-muted: #A0A0A0; --font-main: 'Outfit', sans-serif; --font-accent: 'Space Grotesk', sans-serif; }
-        body { font-family: var(--font-main); background: var(--black); color: var(--white); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; overflow: hidden; }
+        
+        :root {
+            --electric-yellow: #FFD700;
+            --neon-cyan: #00F5FF;
+            --hot-pink: #FF006E;
+            --black: #000000;
+            --charcoal: #1A1A1A;
+            --white: #FFFFFF;
+            --text-muted: #A0A0A0;
+            --font-display: 'Clash Display', sans-serif;
+            --font-body: 'Satoshi', sans-serif;
+            --font-accent: 'Bebas Neue', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--black);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
         
         .bg-glow {
-            position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: -1;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
             background: radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.08) 0%, transparent 60%);
         }
 
-        .container { max-width: 600px; animation: fadeInUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards; opacity: 0; transform: translateY(20px); }
+        .container {
+            max-width: 600px;
+            animation: fadeInUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
 
-        .icon { font-size: 4rem; margin-bottom: 24px; display: block; animation: bounce 2s infinite; }
+        .icon {
+            font-size: 4rem;
+            margin-bottom: 24px;
+            display: block;
+            animation: bounce 2s infinite;
+        }
         
-        h1 { font-family: var(--font-accent); font-size: 3rem; margin-bottom: 16px; line-height: 1.1; }
-        h1 span { color: var(--yellow); }
+        h1 {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            margin-bottom: 16px;
+            line-height: 1.1;
+            letter-spacing: -2px;
+        }
         
-        p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 40px; }
+        h1 span {
+            color: var(--electric-yellow);
+        }
+        
+        p {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
 
         .btn {
-            display: inline-block; padding: 16px 32px; background: var(--yellow); color: var(--black);
-            font-family: var(--font-accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-            text-decoration: none; border-radius: 8px; transition: all 0.3s;
-            box-shadow: 0 4px 20px var(--yellow-glow);
+            display: inline-block;
+            padding: 16px 32px;
+            background: var(--electric-yellow);
+            color: var(--black);
+            font-family: var(--font-accent);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
         }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 30px var(--yellow-glow); }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.5);
+        }
+
+        .btn--outline {
+            background: transparent;
+            color: var(--white);
+            border: 1px solid var(--charcoal);
+            margin-left: 12px;
+            box-shadow: none;
+        }
+
+        .btn--outline:hover {
+            border-color: var(--white);
+            background: rgba(255,255,255,0.05);
+            box-shadow: none;
+        }
 
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .btn--outline { margin: 12px 0 0 0; display: block; }
+        }
     </style>
 </head>
 <body>
@@ -42,11 +130,14 @@
     <div class="bg-glow"></div>
 
     <div class="container">
-        <span class="icon">🎉</span>
-        <h1>You're In, <br><span>Legend.</span></h1>
-        <p>Welcome to the inner circle. Your subscription is confirmed. <br>Access your exclusive guides and resources now.</p>
+        <span class="icon">⚡</span>
+        <h1>Welcome to the <br><span>Elite Circle.</span></h1>
+        <p>Access confirmed. You're now part of a community dedicated to uncovering life-changing gadgets and elite tech deals.</p>
         
-        <a href="downloads.html" class="btn">Go to Downloads ⚡</a>
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+            <a href="downloads.html" class="btn">Access Downloads 📂</a>
+            <a href="index.html" class="btn btn--outline">Back to Shop →</a>
+        </div>
     </div>
 
 </body>

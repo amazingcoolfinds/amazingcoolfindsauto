@@ -307,6 +307,175 @@
             animation: highlightPulse 2.5s cubic-bezier(0.23, 1, 0.32, 1);
             z-index: 100;
         }
+
+        /* ─── SEARCH ENHANCEMENTS ───────────────────────────── */
+        .search-wrap {
+            position: relative;
+            margin-right: 20px;
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .search-input {
+            width: 100%;
+            background: var(--charcoal);
+            border: 1px solid var(--border-grey);
+            color: var(--white);
+            padding: 10px 15px 10px 40px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px var(--cyan-glow);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--charcoal);
+            border: 1px solid var(--border-grey);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1100;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid var(--border-grey);
+        }
+
+        .search-item:last-child { border-bottom: none; }
+
+        .search-item:hover {
+            background: var(--slate);
+        }
+
+        .search-item img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            background: white;
+            border-radius: 4px;
+        }
+
+        .search-item__info {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .search-item__title {
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .search-item__price {
+            font-size: 0.75rem;
+            color: var(--electric-yellow);
+        }
+
+        /* ─── DYNAMIC BADGES ────────────────────────────────── */
+        .trust-tag {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            z-index: 10;
+            text-transform: uppercase;
+        }
+
+        .tag--hot { background: var(--hot-pink); color: white; box-shadow: 0 0 10px var(--pink-glow); }
+        .tag--trending { background: var(--neon-cyan); color: var(--black); box-shadow: 0 0 10px var(--cyan-glow); }
+        .tag--stock { background: var(--white); color: var(--black); }
+
+        /* ─── LEAD MODAL (GLASSMORPISM) ─────────────────────── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .premium-modal {
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 24px;
+            width: 90%;
+            max-width: 500px;
+            padding: 48px;
+            text-align: center;
+            position: relative;
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-overlay.active .premium-modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover { color: var(--white); }
+
+        @media (max-width: 768px) {
+            .search-wrap { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -321,6 +490,11 @@
             <a href="tech.html">Tech & Gaming</a>
             <a href="lifestyle.html" class="active">Lifestyle</a>
             <a href="home.html">Home & Auto</a>
+        </div>
+        <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" placeholder="Search gadgets..." id="searchInput">
+            <div class="search-results" id="searchResults"></div>
         </div>
         <a href="#newsletter" class="btn">Get Updates</a>
     </nav>
@@ -411,9 +585,18 @@
                 const displayPrice = p.price === 'Check Price' ? 'VIEW DEAL' : p.price;
                 const discount = p.discount || 'LIMITED DEAL';
                 
+                // Dynamic Trust Tags based on Performance Logic
+                const tags = [
+                    '<span class="trust-tag tag--hot">🔥 HOT TODAY</span>',
+                    '<span class="trust-tag tag--trending">📱 TRENDING ON TIKTOK</span>',
+                    '<span class="trust-tag tag--stock">📦 READY TO SHIP</span>'
+                ];
+                const tag = p.selection_score > 90 ? tags[0] : (p.rating > 4.7 ? tags[1] : tags[2]);
+
                 return `
                 <div class="card" id="${p.asin}">
                     <div class="card__badge">${discount}</div>
+                    ${tag}
                     <div class="card__img-wrap">
                         <div class="card__slideshow">
                             ${images.map((img, idx) => `
@@ -506,7 +689,91 @@
             await loadProducts();
             loadArticles();
             handleAnchorNavigation();
+
+            // UX Enhancements
+            initSearch();
+            initLeadModal();
         };
+
+        // ─── UX ENHANCEMENTS INITIALIZATION ─────────────────
+        let allProductsGlobal = []; // For search across all products
+
+        function initSearch() {
+            const input = document.getElementById('searchInput');
+            const results = document.getElementById('searchResults');
+
+            input?.addEventListener('input', async (e) => {
+                const query = e.target.value.toLowerCase().trim();
+                if (query.length < 2) {
+                    results.classList.remove('active');
+                    return;
+                }
+
+                if (allProductsGlobal.length === 0) {
+                   const res = await fetch('data/products.json');
+                   if (res.ok) allProductsGlobal = await res.json();
+                }
+
+                const matches = allProductsGlobal.filter(p => 
+                    p.title.toLowerCase().includes(query) || 
+                    (p.category && p.category.toLowerCase().includes(query))
+                ).slice(0, 5);
+
+                if (matches.length > 0) {
+                    results.innerHTML = matches.map(p => `
+                        <div class="search-item" onclick="window.location.href='index.html#${p.asin}';">
+                            <img src="${p.image_url}" alt="">
+                            <div class="search-item__info">
+                                <div class="search-item__title">${p.title}</div>
+                                <div class="search-item__price">${p.price}</div>
+                            </div>
+                        </div>
+                    `).join('');
+                    results.classList.add('active');
+                } else {
+                    results.classList.remove('active');
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!input?.contains(e.target) && !results?.contains(e.target)) {
+                    results?.classList.remove('active');
+                }
+            });
+        }
+
+        function initLeadModal() {
+            if (localStorage.getItem('lead_dismissed')) return;
+            const modal = document.getElementById('leadModal');
+            const closeBtn = document.getElementById('closeModal');
+            const showModal = () => {
+                if (localStorage.getItem('lead_dismissed')) return;
+                modal.classList.add('active');
+            };
+            setTimeout(showModal, 15000);
+            document.addEventListener('mouseleave', (e) => {
+                if (e.clientY < 0) showModal();
+            }, { once: true });
+            closeBtn?.addEventListener('click', () => {
+                modal.classList.remove('active');
+                localStorage.setItem('lead_dismissed', 'true');
+            });
+        }
     </script>
+
+    <!-- 🔐 PREMIUM LEAD MODAL 🔐 -->
+    <div class="modal-overlay" id="leadModal">
+        <div class="premium-modal">
+            <button class="modal-close" id="closeModal">&times;</button>
+            <span class="hero__eyebrow" style="margin-bottom: 16px;">Limited Invitation</span>
+            <h2 style="font-family: var(--font-display); font-size: 2rem; margin-bottom: 16px;">Unlock the 2026 Masterlist</h2>
+            <p style="color: var(--text-muted); margin-bottom: 32px;">Join our elite circle of 50,000+ curators. Get instant access to private tech deals and our verified product database.</p>
+            <form onsubmit="event.preventDefault(); window.location.href='thank-you.html'; localStorage.setItem('lead_dismissed', 'true');" style="display: flex; flex-direction: column; gap: 12px;">
+                <input type="email" placeholder="Your best email..." required style="padding: 16px; border-radius: 8px; border: 1px solid var(--border-grey); background: var(--black); color: var(--white); outline: none;">
+                <button type="submit" class="btn btn--primary">Get Instant Access ⚡</button>
+            </form>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 20px;">No spam. Just elite finds. Unsubscribe anytime.</p>
+        </div>
+    </div>
 </body>
 </html>
