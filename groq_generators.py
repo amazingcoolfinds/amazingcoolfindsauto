@@ -35,6 +35,7 @@ class GroqScriptGenerator:
             "Return the response in JSON format with exactly three keys: "
             "'title' (a catchy hook), 'narration' (the full spoken text, ~20-30s), "
             "and 'hashtags' (3-5 viral hashtags). "
+            "CRITICAL: The entire response MUST be in English. "
             "The narration MUST end with the call to action: 'Check it out in first comment'. "
             "Sound enthusiastic, human, and like you're recommending it to a best friend. "
             "DO NOT include scene descriptions like '[Visual: ...]', ONLY the narration text."
@@ -135,6 +136,7 @@ class GroqProductSelector:
             "INSTRUCTIONS:\n"
             "- Apply a scoring system (0-100) to each product.\n"
             "- Select ONLY products with Score >= 70.\n"
+            "- Everything in the 'reasoning' field MUST be in English.\n"
             "- Return a JSON object with a key 'selections' containing a list of objects. Each object must have 'asin', 'score', and 'reasoning'.\n"
             "- Limit to top 5 selections max."
         )
