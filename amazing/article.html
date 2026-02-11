@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article — Amazing Cool Finds</title>
+    <link rel="icon" href="https://i.imgur.com/buAiOrr.png" type="image/png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --yellow: #FFD700;
+            --black: #000000;
+            --dark-grey: #121212;
+            --border-grey: #262626;
+            --white: #FFFFFF;
+            --text-muted: #A0A0A0;
+            --font-main: 'Outfit', sans-serif;
+            --font-accent: 'Space Grotesk', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: var(--black);
+            color: var(--white);
+            margin: 0;
+            line-height: 1.8;
+        }
+
+        nav {
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-grey);
+        }
+
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--white);
+            font-family: var(--font-accent);
+            font-weight: 700;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .logo-text span { color: var(--yellow); }
+
+        .article-header {
+            width: 100%;
+            height: 60vh;
+            min-height: 400px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #111;
+        }
+
+        .hero-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+            filter: brightness(0.8);
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            padding: 0 5%;
+            text-align: center;
+        }
+
+        .cat-badge {
+            background: var(--yellow);
+            color: var(--black);
+            padding: 6px 15px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            display: inline-block;
+        }
+
+        .article-title {
+            font-family: var(--font-accent);
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 1.1;
+            margin-bottom: 30px;
+            letter-spacing: -2px;
+        }
+
+        .article-meta {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .content-container {
+            max-width: 800px;
+            margin: -60px auto 100px;
+            background: var(--dark-grey);
+            padding: 60px;
+            border-radius: 30px;
+            position: relative;
+            z-index: 20;
+            border: 1px solid var(--border-grey);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        /* ARTICLE CONTENT STYLES (Matching Python polished version) */
+        .article-intro {
+            font-size: 1.25rem;
+            color: var(--white);
+            border-left: 5px solid var(--yellow) !important;
+            padding: 10px 0 10px 30px;
+            margin-bottom: 40px;
+            font-weight: 500;
+            background: rgba(255, 215, 0, 0.03);
+        }
+
+        .article-body {
+            font-size: 1.15rem;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .article-body a {
+            color: var(--yellow) !important;
+            font-weight: 700;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+
+        .article-body a:hover {
+            color: #fff !important;
+        }
+
+        .article-body h2 {
+            font-family: var(--font-accent);
+            color: var(--white);
+            margin: 60px 0 25px;
+            font-size: 2.2rem;
+            border-bottom: 2px solid var(--border-grey);
+            padding-bottom: 15px;
+        }
+
+        .article-body p { margin-bottom: 30px; }
+
+        /* PRODUCT CARDS STYLES */
+        .products-section {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-grey);
+        }
+
+        .products-section h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.2rem;
+            color: var(--yellow);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .product-card {
+            background: #1a1a1a;
+            border: 1px solid var(--border-grey);
+            border-radius: 20px;
+            display: flex;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .product-card:hover { border-color: var(--yellow); }
+
+        .p-img-wrap {
+            width: 300px;
+            min-width: 300px;
+            position: relative;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .p-img-wrap img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .p-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--yellow);
+            color: var(--black);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 800;
+        }
+
+        .p-body {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .p-body h3 {
+            margin: 0 0 15px;
+            font-size: 1.4rem;
+            color: var(--yellow); /* Highlighted product titles */
+            font-family: var(--font-accent);
+        }
+
+        .p-body p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .p-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .p-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--yellow);
+        }
+
+        .p-cta {
+            background: var(--white);
+            color: var(--black);
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: background 0.2s;
+        }
+
+        .p-cta:hover { background: var(--yellow); }
+
+        @media (max-width: 600px) {
+            .product-card { flex-direction: column; }
+            .p-img-wrap { width: 100%; height: 250px; }
+        }
+
+        .footer-cta {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-grey);
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 40px;
+            color: var(--yellow);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .content-container { padding: 30px; border-radius: 0; margin-top: 0; }
+        }
+
+        /* LEAD CAPTURE MODAL */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: #111;
+            border: 1px solid var(--border-grey);
+            padding: 50px;
+            border-radius: 24px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            transform: translateY(30px);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .modal-title {
+            font-family: var(--font-accent);
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--yellow);
+        }
+        .modal-text {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .modal-input {
+            background: #1a1a1a;
+            border: 1px solid var(--border-grey);
+            padding: 15px 20px;
+            border-radius: 12px;
+            color: var(--white);
+            font-family: var(--font-main);
+            font-size: 1rem;
+        }
+        .modal-btn {
+            background: var(--yellow);
+            color: var(--black);
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .modal-btn:hover {
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo-wrap">
+            <div class="logo-text">Amazing<span>Cool</span>Finds</div>
+        </a>
+        <a href="articles.html" style="color: #fff; text-decoration: none; font-weight: 600;">← All Articles</a>
+    </nav>
+
+    <div id="loading" style="text-align: center; padding: 100px;">
+        <p>Loading article content...</p>
+    </div>
+
+    <div id="articleContent" style="display: none;">
+        <header class="article-header">
+            <img src="" id="heroImg" class="hero-img">
+            <div class="header-content">
+                <span id="category" class="cat-badge">Category</span>
+                <h1 id="title" class="article-title">Article Title</h1>
+                <div class="article-meta">
+                    <span id="date">Date</span>
+                    <span id="readTime">5 min read</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-container">
+            <div id="intro" class="article-intro"></div>
+            <div id="body" class="article-body"></div>
+            
+            <div class="footer-cta">
+                <a href="articles.html" class="back-link">← Back to Blog</a>
+                <p>Join our newsletter for more elite finds.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LEAD CAPTURE MODAL -->
+    <div id="leadModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <h3 class="modal-title">Wait! Don't Miss Out</h3>
+            <p class="modal-text">Join 5,000+ tech discovery enthusiasts and get our weekly "Hidden Finds" masterlist delivered to your inbox.</p>
+            <form class="modal-form" onsubmit="handleLead(event)">
+                <input type="email" id="leadEmail" class="modal-input" placeholder="Enter your best email" required>
+                <button type="submit" class="modal-btn">GET THE MASTERLIST</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- LEAD CAPTURE MODAL -->
+    <div id="leadModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <h3 class="modal-title">Wait! Don't Miss Out</h3>
+            <p class="modal-text">Join 5,000+ tech discovery enthusiasts and get our weekly "Hidden Finds" masterlist delivered to your inbox.</p>
+            <form class="modal-form" onsubmit="handleLead(event)">
+                <input type="email" id="leadEmail" class="modal-input" placeholder="Enter your best email" required>
+                <button type="submit" class="modal-btn">GET THE MASTERLIST</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        const WORKER_URL = 'https://article-generator.amazingcoolfinds.workers.dev';
+        const urlParams = new URLSearchParams(window.location.search);
+        const articleId = urlParams.get('id');
+
+        async function loadArticle() {
+            if (!articleId) {
+                window.location.href = 'articles.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${WORKER_URL}/api/articles`);
+                const articles = await response.json();
+                const article = articles.find(a => a.slug === articleId);
+
+                if (!article) {
+                    document.getElementById('loading').innerHTML = '<h2>Article not found</h2>';
+                    return;
+                }
+
+                document.title = `${article.title} — Amazing Cool Finds`;
+                
+                // IMAGE HANDLING WITH FALLBACK
+                const imgElement = document.getElementById('heroImg');
+                const heroImg = article.image || `${WORKER_URL}/media/${article.r2_key}`;
+                
+                imgElement.src = heroImg;
+                imgElement.onerror = () => {
+                    console.log("Worker image failed, trying direct or fallback");
+                    imgElement.src = article.hero_image || "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1280&h=720&fit=crop";
+                };
+
+                document.getElementById('category').innerText = article.category;
+                document.getElementById('title').innerText = article.title;
+                document.getElementById('date').innerText = new Date(article.createdAt).toLocaleDateString();
+                document.getElementById('readTime').innerText = article.readTime;
+                document.getElementById('intro').innerText = article.intro;
+                
+                // Convert markdown content to HTML
+                document.getElementById('body').innerHTML = marked.parse(article.content);
+
+                // Removed Featured Products Section to simplify as requested
+                
+                // Add Conclusion
+                document.getElementById('body').innerHTML += marked.parse("\n\n" + article.conclusion);
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('articleContent').style.display = 'block';
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById('loading').innerHTML = '<h2>Error loading content</h2>';
+            }
+        }
+
+        // MODAL LOGIC
+        let modalTriggered = false;
+        window.onscroll = function() {
+            if (modalTriggered || localStorage.getItem('subscribed')) return;
+            let scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            if (scrollPercent > 45) {
+                document.getElementById('leadModal').classList.add('active');
+                modalTriggered = true;
+            }
+        };
+
+        function closeModal() {
+            document.getElementById('leadModal').classList.remove('active');
+        }
+
+        function handleLead(e) {
+            e.preventDefault();
+            const email = document.getElementById('leadEmail').value;
+            console.log("New Lead Captured:", email);
+            localStorage.setItem('subscribed', 'true');
+            document.getElementById('leadModal').innerHTML = `
+                <div class="modal-content">
+                    <h3 class="modal-title">You're In! 🚀</h3>
+                    <p class="modal-text">Check your email. The Masterlist is on its way.</p>
+                    <button class="modal-btn" onclick="closeModal()">CONTINUE READING</button>
+                </div>
+            `;
+        }
+
+        loadArticle();
+    </script>
+</body>
+</html>

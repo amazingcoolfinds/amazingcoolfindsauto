@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to the Elite — Amazing Cool Finds</title>
+    <link rel="icon" href="https://i.imgur.com/buAiOrr.png" type="image/png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --yellow: #FFD700; --yellow-glow: rgba(255, 215, 0, 0.4); --black: #000000; --dark-grey: #0D0D0D; --white: #FFFFFF; --text-muted: #A0A0A0; --font-main: 'Outfit', sans-serif; --font-accent: 'Space Grotesk', sans-serif; }
+        body { font-family: var(--font-main); background: var(--black); color: var(--white); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; overflow: hidden; }
+        
+        .bg-glow {
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: -1;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.08) 0%, transparent 60%);
+        }
+
+        .container { max-width: 600px; animation: fadeInUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards; opacity: 0; transform: translateY(20px); }
+
+        .icon { font-size: 4rem; margin-bottom: 24px; display: block; animation: bounce 2s infinite; }
+        
+        h1 { font-family: var(--font-accent); font-size: 3rem; margin-bottom: 16px; line-height: 1.1; }
+        h1 span { color: var(--yellow); }
+        
+        p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 40px; }
+
+        .btn {
+            display: inline-block; padding: 16px 32px; background: var(--yellow); color: var(--black);
+            font-family: var(--font-accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            text-decoration: none; border-radius: 8px; transition: all 0.3s;
+            box-shadow: 0 4px 20px var(--yellow-glow);
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 30px var(--yellow-glow); }
+
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <div class="container">
+        <span class="icon">🎉</span>
+        <h1>You're In, <br><span>Legend.</span></h1>
+        <p>Welcome to the inner circle. Your subscription is confirmed. <br>Access your exclusive guides and resources now.</p>
+        
+        <a href="downloads.html" class="btn">Go to Downloads ⚡</a>
+    </div>
+
+</body>
+</html>

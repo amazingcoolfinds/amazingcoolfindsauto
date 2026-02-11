@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exclusive Downloads — Amazing Cool Finds</title>
+    <link rel="icon" href="https://i.imgur.com/buAiOrr.png" type="image/png">
+    <style>
+        /* ─── RESET & VARS ─────────────────────────────────────── */
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --yellow: #FFD700; --yellow-glow: rgba(255, 215, 0, 0.4); --black: #000000; --dark-grey: #0D0D0D; --white: #FFFFFF; --text-muted: #A0A0A0; --font-main: 'Outfit', sans-serif; --font-accent: 'Space Grotesk', sans-serif; }
+        body { font-family: var(--font-main); background: var(--black); color: var(--white); min-height: 100vh; line-height: 1.6; padding: 80px 5%; overflow-x: hidden; }
+
+        .container { max-width: 900px; margin: 0 auto; text-align: center; }
+
+        h1 { font-family: var(--font-accent); font-size: 3rem; margin-bottom: 16px; font-weight: 700; }
+        h1 span { color: var(--yellow); }
+        .subtitle { color: var(--text-muted); font-size: 1.2rem; margin-bottom: 60px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+        .download-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; padding-bottom: 60px; }
+
+        .card { background: var(--dark-grey); border: 1px solid #333; padding: 32px; border-radius: 16px; transition: all 0.3s; position: relative; overflow: hidden; }
+        .card:hover { border-color: var(--yellow); transform: translateY(-5px); box-shadow: 0 8px 30px rgba(0,0,0,0.5); }
+
+        .card__icon { font-size: 3rem; margin-bottom: 24px; color: var(--yellow); }
+        .card__title { font-size: 1.5rem; margin-bottom: 12px; font-weight: 600; }
+        .card__desc { color: var(--text-muted); margin-bottom: 24px; font-size: 0.95rem; }
+
+        .download-btn {
+            display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: transparent; color: var(--yellow); font-family: var(--font-accent); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; border: 1px solid var(--yellow); border-radius: 8px; transition: all 0.3s;
+        }
+        .download-btn:hover { background: var(--yellow); color: var(--black); }
+
+        .locked { filter: grayscale(1); opacity: 0.5; pointer-events: none; position: relative; }
+        .locked::after { content: 'COMING SOON'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #fff; font-weight: 700; background: #000; padding: 8px 16px; border-radius: 4px; font-size: 0.8rem; letter-spacing: 2px; }
+
+        nav { position: fixed; top: 0; left: 0; width: 100%; padding: 20px 5%; background: rgba(0,0,0,0.9); display: flex; justify-content: space-between; align-items: center; z-index: 100; border-bottom: 1px solid #222; }
+        .logo-text { font-family: var(--font-accent); font-weight: 700; font-size: 1.2rem; text-decoration: none; color: #fff; text-transform: uppercase; }
+        .logo-text span { color: var(--yellow); }
+        .back-link { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+        .back-link:hover { color: #fff; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo-text">Amazing<span>Cool</span>Finds</a>
+        <a href="index.html" class="back-link">← Back to Shop</a>
+    </nav>
+
+    <div class="container" style="margin-top: 60px;">
+        <h1>Your Exclusive <span>Downloads</span></h1>
+        <p class="subtitle">Access premium guides, curated lists, and expert insights reserved for our community.</p>
+
+        <div class="download-grid">
+            <!-- ⚡ PDF GUIDE 1 -->
+            <div class="card">
+                <div class="card__icon">📘</div>
+                <h3 class="card__title">2026 Tech Masterlist</h3>
+                <p class="card__desc">The definitive list of 50 must-have gadgets for productivity, gaming, and lifestyle.</p>
+                <a href="assets/2026-Tech-Masterlist.txt" download="2026-Tech-Masterlist.txt" class="download-btn">Download PDF ⬇️</a>
+            </div>
+
+            <!-- ⚡ PDF GUIDE 2 -->
+            <div class="card">
+                <div class="card__icon">✨</div>
+                <h3 class="card__title">Luxury Gift Guide</h3>
+                <p class="card__desc">Curated selection of premium gifts under $200 that look like a million bucks.</p>
+                <a href="#" download class="download-btn">Download PDF ⬇️</a>
+            </div>
+
+            <!-- 🔒 LOCKED CONTENT -->
+            <div class="card locked">
+                <div class="card__icon">💰</div>
+                <h3 class="card__title">Black Friday Secrets</h3>
+                <p class="card__desc">Insider tips on how to score the biggest discounts before anyone else.</p>
+                <a href="#" class="download-btn">Coming Soon</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

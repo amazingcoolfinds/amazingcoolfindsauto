@@ -10,7 +10,9 @@ from googleapiclient.http import MediaFileUpload
 log = logging.getLogger("YouTubeUploader")
 
 class YouTubeUploader:
-    def __init__(self, client_secrets_file="client_secret.json"):
+    def __init__(self, client_secrets_file=None):
+        if client_secrets_file is None:
+            client_secrets_file = os.getenv("YOUTUBE_CLIENT_SECRET_PATH", "client_secret.json")
         self.scopes = ["https://www.googleapis.com/auth/youtube.upload"]
         self.client_secrets_file = client_secrets_file
         self.credentials = self._get_credentials()

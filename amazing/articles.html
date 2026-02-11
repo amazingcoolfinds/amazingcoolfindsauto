@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Articles & Guides — Amazing Cool Finds</title>
+    <link rel="icon" href="https://i.imgur.com/buAiOrr.png" type="image/png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --yellow: #FFD700;
+            --black: #000000;
+            --dark-grey: #0D0D0D;
+            --card-grey: #161616;
+            --border-grey: #262626;
+            --white: #FFFFFF;
+            --text-muted: #A0A0A0;
+            --font-main: 'Outfit', sans-serif;
+            --font-accent: 'Space Grotesk', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: var(--black);
+            color: var(--white);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        nav {
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-grey);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--white);
+            font-family: var(--font-accent);
+            font-weight: 700;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .logo-text span { color: var(--yellow); }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 5%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-family: var(--font-accent);
+            margin-bottom: 20px;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        .blog-card {
+            background: var(--card-grey);
+            border: 1px solid var(--border-grey);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-card:hover {
+            border-color: var(--yellow);
+            transform: translateY(-5px);
+        }
+
+        .blog-card__img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+        }
+
+        .blog-card__body {
+            padding: 30px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-card__tag {
+            color: var(--yellow);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .blog-card__title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            font-family: var(--font-accent);
+        }
+
+        .blog-card__desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            flex-grow: 1;
+        }
+
+        .blog-card__link {
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .blog-card:hover .blog-card__link {
+            color: var(--yellow);
+        }
+
+        footer {
+            padding: 60px 5%;
+            border-top: 1px solid var(--border-grey);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo-wrap">
+            <div class="logo-text">Amazing<span>Cool</span>Finds</div>
+        </a>
+        <a href="index.html" style="color: #fff; text-decoration: none; font-weight: 600; font-family: var(--font-accent); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">← Back to Home</a>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>Expert Analysis & Guides</h1>
+            <p>Depth reviews and stories behind the most trending products of 2026.</p>
+        </div>
+
+        <div class="article-grid" id="articleGrid">
+            <!-- Articles will load here -->
+            <div style="text-align: center; grid-column: 1/-1; padding: 50px;">
+                <p>Loading the latest insights...</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Amazing Cool Finds. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const WORKER_URL = 'https://article-generator.amazingcoolfinds.workers.dev';
+
+        async function loadAllArticles() {
+            const grid = document.getElementById('articleGrid');
+            
+            try {
+                // 1. Fetch Local
+                let localArticles = [];
+                try {
+                    const res = await fetch('data/articles.json');
+                    if(res.ok) localArticles = await res.json();
+                } catch(e){}
+
+                // 2. Fetch Workers
+                let cloudArticles = [];
+                try {
+                    const res = await fetch(`${WORKER_URL}/api/articles`);
+                    if(res.ok) {
+                        const data = await res.json();
+                        cloudArticles = data.map(a => ({
+                            ...a,
+                            image: a.image || `${WORKER_URL}/media/${a.r2_key}`,
+                            url: `article.html?id=${a.slug}`,
+                            isCloud: true
+                        }));
+                    }
+                } catch(e){}
+
+                const all = [...cloudArticles, ...localArticles].sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                if(all.length === 0) {
+                    grid.innerHTML = '<p>No articles found yet.</p>';
+                    return;
+                }
+
+                grid.innerHTML = all.map(a => `
+                    <div class="blog-card" onclick="window.location.href='${a.url}'">
+                        <img src="${a.image}" class="blog-card__img" alt="${a.title}">
+                        <div class="blog-card__body">
+                            <span class="blog-card__tag">${a.category}</span>
+                            <h2 class="blog-card__title">${a.title}</h2>
+                            <p class="blog-card__desc">${a.metaDescription || ''}</p>
+                            <span class="blog-card__link">Read Full Review →</span>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch(err) {
+                grid.innerHTML = '<p>Error loading articles. Please try again later.</p>';
+            }
+        }
+
+        loadAllArticles();
+    </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "review-001",
+    "title": "Why AI-Driven Curation is the Future of Shopping",
+    "tag": "Analysis",
+    "image": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&h=400&fit=crop",
+    "summary": "Explaining how machine learning is replacing manual curation to find the best hidden gems on Amazon.",
+    "links": ["#"]
+  },
+  {
+    "id": "review-002",
+    "title": "The 5 Tech Gadgets That Defined January 2025",
+    "tag": "Gift Guide",
+    "image": "https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=600&h=400&fit=crop",
+    "summary": "A deep look into the products that went viral this month and why they are worth your money.",
+    "links": ["#"]
+  }
+]

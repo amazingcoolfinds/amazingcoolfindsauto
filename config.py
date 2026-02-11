@@ -15,7 +15,7 @@ load_dotenv(BASE_DIR / ".env")
 # ─── AMAZON API CREDENTIALS ────────────────────────────────
 AMAZON_ACCESS_KEY = os.getenv("AMAZON_ACCESS_KEY", "")
 AMAZON_SECRET_KEY = os.getenv("AMAZON_SECRET_KEY", "")
-AMAZON_ASSOCIATE_TAG = os.getenv("AMAZON_ASSOCIATE_TAG", "")
+AMAZON_ASSOCIATE_TAG = os.getenv("AMAZON_ASSOCIATE_TAG", "amazingcoolfinds-20")
 
 # ─── AI API CREDENTIALS ─────────────────────────────────────
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")

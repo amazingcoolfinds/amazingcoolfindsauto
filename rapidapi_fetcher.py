@@ -8,103 +8,87 @@ log = logging.getLogger("RapidAPIFetcher")
 
 class AmazonRapidAPI:
     """
-    Fetcher for Amazon products using RapidAPI (Real-Time Amazon Data).
-    Provides high-quality, real-time data.
+    Fetcher for Amazon products using RapidAPI (HolyEntGold Amazon Data Scraper).
+    Provides high-quality details and images via product enrichment.
     """
     
     def __init__(self):
         self.api_key = os.getenv("RAPIDAPI_KEY")
         self.api_host = os.getenv("RAPIDAPI_HOST")
         self.associate_tag = os.getenv("AMAZON_ASSOCIATE_TAG", "liveitupdea09-20")
-        self.url = f"https://{self.api_host}/search"
+        
+        # New API endpoint for product details
+        self.base_url = f"https://{self.api_host}"
         
         if not self.api_key or not self.api_host:
             log.warning("RapidAPI credentials missing in .env")
 
-    def search(self, keywords: str, count: int = 3) -> List[Dict]:
+    def get_product_details(self, asin: str) -> Dict:
         """
-        Search for products using RapidAPI
+        Fetch detailed product data including high-res images using HolyEntGold API
         """
         if not self.api_key:
-            return []
+            return None
             
         try:
-            querystring = {
-                "query": keywords,
-                "page": "1",
-                "country": "US",
-                "sort_by": "RELEVANCE",
-                "product_condition": "NEW"
-            }
-
+            url = f"{self.base_url}/products/{asin}"
             headers = {
                 "x-rapidapi-key": self.api_key,
                 "x-rapidapi-host": self.api_host
             }
 
-            log.info(f"Fetching from RapidAPI for '{keywords}'...")
-            response = requests.get(self.url, headers=headers, params=querystring, timeout=15)
+            log.info(f"Enriching product {asin} via RapidAPI...")
+            response = requests.get(url, headers=headers, timeout=15)
             response.raise_for_status()
             
             data = response.json()
-            if data.get('status') != 'OK' or 'data' not in data:
-                log.error(f"RapidAPI returned error: {data.get('message', 'Unknown error')}")
-                return []
-                
-            raw_products = data['data'].get('products', [])
-            products = []
+            # Adjust based on API structure (sometimes 'data' is wrapper)
+            product_data = data.get('data', data)
             
-            for p in raw_products[:count]:
-                asin = p.get('asin')
-                log.info(f"  Fetching details for {asin}...")
-                
-                # Fetch detailed info for each product (images and bullet points)
-                details = self._get_details(asin)
-                
-                title = details.get('product_title', p.get('product_title'))
-                price = details.get('product_price', p.get('product_price', 'Check Price'))
-                rating = details.get('product_star_rating', p.get('product_star_rating', '4.5'))
-                
-                # Get up to 5 images
-                images = details.get('product_photos', [p.get('product_photo')])[:5]
-                # Get bullet points for script generation
-                bullets = details.get('about_product', [])
-                
-                affiliate_url = f"https://www.amazon.com/dp/{asin}?tag={self.associate_tag}"
-                
-                if asin and title and images:
-                    products.append({
-                        "asin": asin,
-                        "title": title,
-                        "price": price,
-                        "rating": str(rating),
-                        "image_url": images[0], # Primary image
-                        "images": images,        # All images for carousel
-                        "bullets": bullets,      # For better scripts
-                        "affiliate_url": affiliate_url
-                    })
+            # Extract key details
+            title = product_data.get('product_title')
+            price = product_data.get('product_price')
+            rating = product_data.get('product_star_rating')
             
-            log.info(f"✓ RapidAPI returned {len(products)} enriched products")
-            return products
+            # Get up to 7 images for dynamic carousel
+            # HolyEntGold returns 'product_photos' as list of URLs
+            images = product_data.get('product_photos', [])
+            if not images:
+                single_img = product_data.get('product_photo')
+                if single_img:
+                    images = [single_img]
+            
+            images = [img for img in images if img][:7]
+            
+            # Get bullet points
+            bullets = product_data.get('product_attributes', [])
+            if isinstance(bullets, str): # Handle if it returns a string block
+                bullets = [bullets]
+            
+            if title and images:
+                return {
+                    "asin": asin,
+                    "title": title,
+                    "price": price,
+                    "rating": str(rating),
+                    "image_url": images[0],
+                    "images": images,
+                    "bullets": bullets,
+                    "affiliate_url": f"https://www.amazon.com/dp/{asin}?tag={self.associate_tag}"
+                }
+            
+            log.warning(f"RapidAPI returned incomplete data for {asin}")
+            return None
             
         except Exception as e:
-            log.error(f"RapidAPI search failed: {e}")
-            return []
+            log.warning(f"RapidAPI enrichment failed for {asin}: {e}")
+            return None
 
-    def _get_details(self, asin: str) -> Dict:
-        """Fetch full product details"""
-        try:
-            url = f"https://{self.api_host}/product-details"
-            querystring = {"asin": asin, "country": "US"}
-            headers = {
-                "x-rapidapi-key": self.api_key,
-                "x-rapidapi-host": self.api_host
-            }
-            response = requests.get(url, headers=headers, params=querystring, timeout=10)
-            if response.status_code == 200:
-                res = response.json()
-                return res.get('data', {})
-            return {}
-        except Exception as e:
-            log.error(f"Failed to fetch details for {asin}: {e}")
-            return {}
+    def search(self, keywords: str, count: int = 3) -> List[Dict]:
+        """
+        NOTE: This specific API actor (HolyEntGold) appears to be for product details, not search.
+        We will return empty list here to force fallback to the scraper for discovery,
+        which will then call get_product_details() to get images.
+        """
+        log.info(f"Skipping RapidAPI search (using scraper for discovery, RapidAPI for details)")
+        return []

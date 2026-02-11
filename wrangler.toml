@@ -1,0 +1,33 @@
+name = "article-generator"
+main = "workers/article-generator.js"
+compatibility_date = "2024-01-01"
+
+# Cloudflare Workers AI binding
+[ai]
+binding = "AI"
+
+# KV namespace for storing articles
+[[kv_namespaces]]
+binding = "ARTICLES"
+id = "d11ba385157645608c871333695e80c1"
+preview_id = "1fa11f6b85b2408983ada2d78068f409"
+
+# R2 Bucket for images
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "amazing-finds-images"
+
+[triggers]
+crons = ["0 0 * * *"] # Run daily at midnight
+
+# Environment variables
+[vars]
+ENVIRONMENT = "production"
+WEBSITE_URL = "https://amazingcoolfinds.com"
+
+# REDDIT AUTOMATION (Use 'wrangler secret put' for these in production)
+REDDIT_CLIENT_ID = ""
+REDDIT_SECRET = ""
+REDDIT_USERNAME = ""
+REDDIT_PASSWORD = ""
+REDDIT_SUBREDDIT = "AmazingCoolFinds"

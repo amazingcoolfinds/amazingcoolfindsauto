@@ -1,0 +1,28 @@
+name:
+    css: '#productTitle'
+    type: Text
+price:
+    css: '#price_inside_buybox, .a-price .a-offscreen, #corePrice_feature_div .a-offscreen'
+    type: Text
+    multiple: true
+short_description:
+    css: '#featurebullets_feature_div'
+    type: Text
+images:
+    css: '#landingImage, #imgTagWrapperId img'
+    type: Attribute
+    attribute: src
+hi_res_images:
+    css: 'script:contains("colorImages")'
+    type: Regex
+    regex: '"hiRes":"(https://[^"]+)"'
+    multiple: true
+rating:
+    css: 'span[data-hook="rating-out-of-text"], .a-icon-alt'
+    type: Text
+number_of_reviews:
+    css: 'span[data-hook="total-review-count"], #acrCustomerReviewText'
+    type: Text
+product_description:
+    css: '#productDescription'
+    type: Text

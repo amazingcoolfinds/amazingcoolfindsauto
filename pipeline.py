@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
 ╔══════════════════════════════════════════════════════════════════╗
-║          LIVEITUPDEALS — AUTOMATED AFFILIATE PIPELINE           ║
-║     Amazon Products → AI Script → Video → YouTube Shorts        ║
+║          AMAZING COOL FINDS — 100% AUTOMATED PIPELINE           ║
+║   Amazon → AI Script → Video → YT / TT / FB / IG / Pinterest    ║
+║        Web Synchronizer & Cloudflare Automation Included        ║
 ╚══════════════════════════════════════════════════════════════════╝
 """
 
@@ -13,19 +14,19 @@ import time
 import logging
 import argparse
 import subprocess
+import requests
 from pathlib import Path
 from datetime import datetime
 from dotenv import load_dotenv
 
 # ─── PATHS ────────────────────────────────────────────────────────
 BASE_DIR = Path(__file__).parent
-VIDEOS_DIR = BASE_DIR / "output_videos"
-IMAGES_DIR = BASE_DIR / "output_images"
+AMAZING_DATA_DIR = BASE_DIR / "amazing" / "data"
 LOGS_DIR = BASE_DIR / "logs"
 DATA_DIR = BASE_DIR / "data"
 
-for d in [VIDEOS_DIR, IMAGES_DIR, LOGS_DIR, DATA_DIR]:
-    d.mkdir(exist_ok=True)
+for d in [LOGS_DIR, DATA_DIR, AMAZING_DATA_DIR]:
+    d.mkdir(parents=True, exist_ok=True)
 
 # ─── ENV & LOGGING ───────────────────────────────────────────────
 load_dotenv(BASE_DIR / ".env")
@@ -33,329 +34,237 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[
-        logging.FileHandler(LOGS_DIR / "pipeline.log"),
+        logging.FileHandler(LOGS_DIR / f"pipeline_{datetime.now().strftime('%Y%m%d')}.log"),
         logging.StreamHandler()
     ])
-log = logging.getLogger("LivItUp")
+log = logging.getLogger("AmazingCoolFinds")
 
 # ─── CONFIGURATION ───────────────────────────────────────────────
 PRODUCT_TARGETS = [
-    {"category": "Beauty", "keywords": "luxury beauty skincare premium", "commission": "10%"},
-    {"category": "Beauty", "keywords": "luxury perfume fragrance high end", "commission": "10%"},
-    {"category": "Electronics", "keywords": "premium tech gadgets 2025", "commission": "4%"},
-    {"category": "Clothing", "keywords": "luxury fashion men premium jacket", "commission": "4%"},
-    {"category": "Clothing", "keywords": "luxury fashion women premium dress", "commission": "4%"},
-    {"category": "Home", "keywords": "premium home decor luxury modern", "commission": "3%"},
-    {"category": "Electronics", "keywords": "premium laptop high end 2025", "commission": "3%"},
-    {"category": "Electronics", "keywords": "luxury smartwatch premium 2025", "commission": "4%"},
+    {"category": "Home", "keywords": "smart home devices 2026", "commission": "4%"},
 ]
 
-ITEMS_PER_SEARCH = 3
-VIDEO_WIDTH = 1080
-VIDEO_HEIGHT = 1920
-VIDEO_FPS = 30
-VIDEO_DURATION_SECS = 15
+# ─── RECOVERY & AUTOMATION HELPERS ─────────────────────────────────
+def get_website_link(product):
+    """Generates enhanced website link with unique ID and smooth scroll."""
+    import hashlib
+    import time
+    
+    base_url = os.getenv("WEBSITE_URL", "https://amazing-cool-finds.com")
+    
+    # Generate unique ID
+    timestamp = str(int(time.time()))
+    unique_string = f"{product['asin']}-{timestamp}"
+    unique_id = hashlib.md5(unique_string.encode()).hexdigest()[:12]
+    
+    # Direct link to product card (Static safe)
+    enhanced_link = f"{base_url}/index.html#{product['asin']}"
+    
+    return enhanced_link
 
-# ─── AMAZON FETCHER ───────────────────────────────────────────────
+def send_to_make(product):
+    """Sends product data to Make.com for Reddit review automation."""
+    webhook_url = os.getenv("MAKE_WEBHOOK_URL")
+    if not webhook_url or "your_webhook" in webhook_url:
+        log.warning("⚠️ Make.com Webhook URL not configured. Skipping.")
+        return
+    
+    try:
+        log.info(f"⚡ Sending {product['asin']} to Make.com...")
+        response = requests.post(webhook_url, json=product, timeout=10)
+        if response.ok:
+            log.info("✓ Webhook sent successfully.")
+        else:
+            log.error(f"❌ Webhook failed: {response.status_code}")
+    except Exception as e:
+        log.error(f"❌ Webhook error: {e}")
+
+def deploy_to_site():
+    """Automates Cloudflare Pages deployment for the 'amazing/' folder."""
+    project_name = os.getenv("CF_PROJECT_NAME", "amazing-cool-finds")
+    log.info(f"☁️  Deploying 'amazing/' folder to Cloudflare project: {project_name}...")
+    
+    try:
+        cmd = ["npx", "wrangler", "pages", "deploy", "amazing/", "--project-name", project_name]
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode == 0:
+            log.info("🚀 Deployment SUCCESSFUL!")
+        else:
+            log.error(f"❌ Deployment FAILED: {result.stderr}")
+    except Exception as e:
+        log.error(f"❌ Deployment error: {e}")
+
+# ─── UNIFIED FETCHER ─────────────────────────────────────────────
 class AmazonFetcher:
     def __init__(self):
-        self.access_key = os.getenv("AMAZON_ACCESS_KEY")
-        self.secret_key = os.getenv("AMAZON_SECRET_KEY")
-        self.associate_tag = os.getenv("AMAZON_ASSOCIATE_TAG")
-        if not all([self.access_key, self.secret_key, self.associate_tag]):
-            raise EnvironmentError("Missing Amazon credentials in .env")
-
-    def search(self, keywords: str, search_index: str = "All", count: int = 3) -> list[dict]:
-        try:
-            from amazon_paapi import AmazonApi
-            
-            api = AmazonApi(
-                key=self.access_key,
-                secret=self.secret_key,
-                tag=self.associate_tag,
-                country="US"
-            )
-            
-            results = api.search_items(
-                keywords=keywords,
-                search_index=search_index,
-                item_count=count,
-                resources=[
-                    "images.primary.large",
-                    "images.variants.large",
-                    "itemInfo.title",
-                    "itemInfo.features",
-                    "offersV2.listings.price",
-                    "customerReviews.starRating",
-                ]
-            )
-            
-            products = []
-            if results and results.items:
-                for item in results.items:
-                    try:
-                        title = item.item_info.title.display_value if item.item_info and item.item_info.title else "Product"
-                        
-                        # Get price
-                        price = "Check Price"
-                        if item.offers and item.offers.listings:
-                            try:
-                                price = item.offers.listings[0].price.display_amount
-                            except:
-                                pass
-                        
-                        # Get rating
-                        rating = "4.5"
-                        if item.customer_reviews and item.customer_reviews.star_rating:
-                            try:
-                                rating = str(item.customer_reviews.star_rating.value)
-                            except:
-                                pass
-                        
-                        # Get image
-                        image = None
-                        if item.images and item.images.primary:
-                            try:
-                                image = item.images.primary.large.url
-                            except:
-                                pass
-                        
-                        # Get affiliate URL
-                        url = item.detail_page_url if hasattr(item, 'detail_page_url') else f"https://www.amazon.com/dp/{item.asin}?tag={self.associate_tag}"
-                        
-                        if image:
-                            products.append({
-                                "asin": item.asin,
-                                "title": title,
-                                "price": price,
-                                "rating": str(rating),
-                                "image_url": image,
-                                "affiliate_url": url
-                            })
-                    except Exception as e:
-                        log.warning(f"Skipping malformed product: {e}")
-                        continue
-            
-            log.info(f"✓ Amazon returned {len(products)} products for '{keywords}'")
-            return products
+        self.associate_tag = os.getenv("AMAZON_ASSOCIATE_TAG", "amazingcoolfinds-20")
+        
+        # Core Components - AI Script Generator (Groq)
+        try: 
+            from groq_generators import GroqScriptGenerator
+            GROQ_KEY = os.environ.get("GROQ_API_KEY")
+            self.script_gen = GroqScriptGenerator(GROQ_KEY) if GROQ_KEY else None
+            if self.script_gen:
+                log.info("✅ Groq Script Generator initialized")
         except ImportError:
-            log.error("amazon_paapi not installed. Run: pip install python-amazon-paapi")
-            return []
-        except Exception as e:
-            log.error(f"Amazon API error: {e}")
-            return []
-
-# ─── GEMINI SCRIPT GENERATOR ─────────────────────────────────────
-class ScriptGenerator:
-    def __init__(self):
-        self.api_key = os.getenv("GEMINI_API_KEY")
-        if not self.api_key:
-            raise EnvironmentError("Missing GEMINI_API_KEY in .env")
-        import google.generativeai as gemini
-        gemini.configure(api_key=self.api_key)
-    
-    def generate(self, product: dict) -> dict:
+            log.error("Groq script generator not found.")
+            self.script_gen = None
+        
+        # Groq Voice Generator
+        try: 
+            from groq_generators import GroqVoiceGenerator
+            GROQ_KEY = os.environ.get("GROQ_API_KEY")
+            self.voice_gen = GroqVoiceGenerator(GROQ_KEY) if GROQ_KEY else None
+        except ImportError:
+            log.error("Groq voice generator not found.")
+            self.voice_gen = None
+            
+        try: 
+            from video_generator import VideoGenerator
+            self.video_gen = VideoGenerator()
+        except ImportError:
+            self.video_gen = None
+        
+        # Core Components - Working Scraper from skills
+        import sys
+        skills_scraper_path = str(BASE_DIR / ".agent" / "skills" / "amazon-scraper" / "scripts")
+        if skills_scraper_path not in sys.path:
+            sys.path.append(skills_scraper_path)
+        
         try:
-            prompt = f"""
-You are a viral short-form video script writer for a luxury product showcase channel.
-Write a script for a 15-second faceless product video. Be direct, create urgency, and be aspirational.
+            from amazon_scraper_lib import AmazonScraper
+            self.scraper = AmazonScraper(self.associate_tag)
+        except ImportError:
+            log.error("Working AmazonScraper not found in skills.")
+            self.scraper = None
+        
+    def search(self, keywords: str, count: int = 3) -> list:
+        if self.scraper:
+            log.info(f"🔍 Discovery: Using working scraper for '{keywords}'...")
+            return self.scraper.search(keywords, max_results=count)
+        return []
 
-IMPORTANT: Write ALL content in ENGLISH only.
+    def process_product(self, product: dict):
+        asin = product['asin']
+        log.info(f"Processing {asin}: {product['title'][:30]}...")
+        
+        # 1. Enrich Product Data (Hi-res images, real price, bullets)
+        details = self.scraper.get_details(asin) if self.scraper else None
+        
+        # Merge safely: Don't overwrite good search titles with None/empty from scraper
+        enriched_product = product.copy()
+        if details:
+            # Only update keys that have meaningful values
+            for key, val in details.items():
+                if val: # Skip None, empty lists, or empty strings
+                    enriched_product[key] = val
+        else:
+            log.warning(f"⚠️  Could not enrich {asin}. Using search data.")
+        
+        # 2. Generate Script (Smart Generator)
+        script = self.script_gen.generate_script(enriched_product) if self.script_gen else None
+        if not script: return None, None, enriched_product
+        
+        # 3. Generate Voiceover (Groq)
+        voice_path = self.voice_gen.generate(script['narration'], asin) if self.voice_gen else None
+        if not voice_path: return None, None, enriched_product
+        
+        # 4. Create Video (FFmpeg)
+        video_path = self.video_gen.generate(enriched_product, script, voice_path=voice_path) if self.video_gen else None
+            
+        return video_path, script, enriched_product
 
-Product: {product['title']}
-Price: {product['price']}
-Rating: {product['rating']} stars
-
-Return ONLY valid JSON with these exact keys (no extra text):
-{{
-  "title": "Video title in ENGLISH (max 60 chars, include emoji)",
-  "hook": "First 2 seconds text overlay in ENGLISH — attention grabber (max 8 words)",
-  "body": "Main text shown 3-12 seconds in ENGLISH (max 25 words, punchy)",
-  "cta": "Call to action text overlay in ENGLISH (max 6 words)",
-  "hashtags": ["tag1", "tag2", "tag3", "tag4", "tag5"]
-}}
-"""
-            import google.generativeai as genai
-            model = genai.GenerativeModel('gemini-1.5-flash')
-            response = model.generate_content(prompt)
-            raw = response.text.strip()
-            # Remove markdown code blocks if present
-            if raw.startswith('```'):
-                raw = raw.split('\n', 1)[1].rsplit('\n```', 1)[0]
-            script = json.loads(raw)
-            log.info(f"✓ Script generated: {script['title']}")
-            return script
-        except Exception as e:
-            log.error(f"Script generation failed: {e}")
-            return {
-                "title": f"🔥 {product['title'][:50]}",
-                "hook": "Wait for it...",
-                "body": f"Only {product['price']} — {product['rating']}★ rated. Link in bio.",
-                "cta": "Don't sleep on this",
-                "hashtags": ["luxury", "deals", "amazon", "liveitupdeals", "fyp"]
-            }
-
-# ─── MAIN PIPELINE ORCHESTRATOR ───────────────────────────────────
-def run_pipeline(update_website_only=False):
-    log.info("=" * 60)
-    log.info("🚀 LIVEITUPDEALS PIPELINE STARTED")
-    log.info(f"   Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    log.info(f"   Mode: {'Website Update Only' if update_website_only else 'Full Pipeline'}")
-    log.info("=" * 60)
+# ─── MAIN PIPELINE ───────────────────────────────────────────────
+def run_pipeline():
+    log.info("🚀 PIPELINE STARTED (Web Sync & Quality Engine)")
     
     try:
-        amazon = AmazonFetcher()
-        scripts = ScriptGenerator()
+        fetcher = AmazonFetcher()
+        from youtube_production import ProductionYouTubeUploader
+        from meta_uploader import MetaUploader
+        from tiktok_uploader import TikTokUploader
         
+        try: yt_up = ProductionYouTubeUploader()
+        except: yt_up = None
+        
+        try: meta_up = MetaUploader()
+        except: meta_up = None
+        
+        try: tt_up = TikTokUploader()
+        except: tt_up = None
+        
+        # Load existing products to avoid losing history
         all_products = []
+        if AMAZING_DATA_DIR.joinpath("products.json").exists():
+            try:
+                with open(AMAZING_DATA_DIR / "products.json", 'r') as f:
+                    all_products = json.load(f)
+            except: pass
         
+        newly_processed = []
+
         for target in PRODUCT_TARGETS:
-            log.info(f"\n🔍 Searching {target['category']}: {target['keywords']}")
-            products = amazon.search(
-                keywords=target['keywords'],
-                search_index=target['category'],
-                count=ITEMS_PER_SEARCH
-            )
+            log.info(f"--- Category: {target['category']} ---")
+            products = fetcher.search(target['keywords'], count=1)
             
             for product in products:
+                # Basic enrichment
                 product['category'] = target['category']
                 product['commission'] = target['commission']
-                all_products.append(product)
                 
-                if not update_website_only:
-                    # Generate script for video
-                    script = scripts.generate(product)
-                    log.info(f"  Script: {script['title']}")
-                    # TODO: Generate video, upload to YouTube
+                # Full video process and detailed extraction
+                res = fetcher.process_product(product)
+                if res:
+                    video_path, script, enriched_product = res
+                    # Prioritize the enriched data for the database
+                    product = enriched_product
+                    
+                    # 🔗 Generate and attach the internal website link
+                    product['website_link'] = get_website_link(product)
+
+                    # Only proceed if video was successfully created
+                    if video_path and script:
+                        # ⚡ Automation: Send to Make.com only when video is ready
+                        send_to_make(product)
+                        log.info(f"🔗 Social Media Link: {product['website_link']}")
+                        
+                        desc = f"{script['narration']}\n\n🔥 Get it here: {product['website_link']}\n\n" + " ".join(script.get('hashtags', []))
+                        
+                        # Uploads
+                        if yt_up: 
+                            # Pass affiliate_url for the first comment
+                            yt_up.upload_video(video_path, script['title'], desc, script.get('hashtags', []), product.get('affiliate_url'))
+                        if meta_up:
+                            meta_up.upload_to_facebook(video_path, f"{script['title']}\n{desc}")
+                            meta_up.upload_to_instagram(video_path, f"{script['title']}\n{desc}")
+                        if tt_up: tt_up.upload_video(video_path, script['title'])
+                        
+                # Sync into the historical database
+                # Avoid duplicates
+                if not any(p['asin'] == product['asin'] for p in all_products):
+                    all_products.insert(0, product) # LATEST FIRST
+                    newly_processed.append(product)
             
-            time.sleep(1)  # Respect API rate limits
-        
-        # Save products to JSON for website
-        products_file = DATA_DIR / "products.json"
-        with open(products_file, 'w', encoding='utf-8') as f:
-            json.dump(all_products, f, indent=2, ensure_ascii=False)
-        log.info(f"\n✅ Saved {len(all_products)} products to {products_file}")
-        
-        log.info("\n" + "=" * 60)
-        log.info("✅ PIPELINE COMPLETED SUCCESSFULLY")
-        log.info("=" * 60)
+        # 📂 Dual Directory Sync
+        for path in [DATA_DIR / "products.json", AMAZING_DATA_DIR / "products.json"]:
+            with open(path, 'w', encoding='utf-8') as f:
+                json.dump(all_products, f, indent=2)
+            log.info(f"✓ Data synchronized to {path}")
+
+        # 🚀 Deploy the 'amazing' folder only
+        if newly_processed:
+            deploy_to_site()
+        else:
+            log.info("No new products to deploy.")
+            
+        log.info("✅ Pipeline Execution Finished")
         
     except Exception as e:
-        log.error(f"\n❌ Pipeline failed: {e}")
-        raise
-
-def validate_setup():
-    print("\n🔍 Validating LivItUpDeals Setup...\n")
-    errors = []
-    warnings = []
-    
-    # Check Python packages
-    print("📦 Checking Python dependencies...")
-    required_packages = {
-        'dotenv': 'python-dotenv',
-        'amazon_paapi': 'python-amazon-paapi',
-        'google.generativeai': 'google-generativeai',
-        'PIL': 'Pillow',
-        'requests': 'requests'
-    }
-    
-    for module, package in required_packages.items():
-        try:
-            __import__(module)
-            print(f"  ✓ {package}")
-        except ImportError:
-            errors.append(f"Missing package: {package}")
-            print(f"  ❌ {package} — Run: pip install {package}")
-    
-    # Check environment variables
-    print("\n🔑 Checking API credentials...")
-    required_env = [
-        ('AMAZON_ACCESS_KEY', 'Amazon API Access Key'),
-        ('AMAZON_SECRET_KEY', 'Amazon API Secret Key'),
-        ('AMAZON_ASSOCIATE_TAG', 'Amazon Associate Tag (e.g., yourname-20)'),
-        ('GEMINI_API_KEY', 'Google Gemini API Key')
-    ]
-    
-    for key, description in required_env:
-        value = os.getenv(key)
-        if not value:
-            errors.append(f"Missing environment variable: {key}")
-            print(f"  ❌ {key} — {description}")
-        else:
-            masked = value[:8] + '...' if len(value) > 8 else '***'
-            print(f"  ✓ {key} = {masked}")
-    
-    # Check system dependencies
-    print("\n🛠️  Checking system dependencies...")
-    try:
-        result = subprocess.run(['ffmpeg', '-version'], capture_output=True, timeout=5)
-        if result.returncode == 0:
-            print(f"  ✓ FFmpeg installed")
-        else:
-            errors.append("FFmpeg not working properly")
-            print(f"  ❌ FFmpeg not working")
-    except FileNotFoundError:
-        errors.append("FFmpeg not installed")
-        print(f"  ❌ FFmpeg not found — Install from https://ffmpeg.org/")
-    except subprocess.TimeoutExpired:
-        warnings.append("FFmpeg check timed out")
-        print(f"  ⚠️  FFmpeg check timed out")
-    
-    # Check directory structure
-    print("\n📁 Checking directory structure...")
-    required_dirs = [VIDEOS_DIR, IMAGES_DIR, LOGS_DIR, DATA_DIR]
-    for directory in required_dirs:
-        if directory.exists():
-            print(f"  ✓ {directory.name}/")
-        else:
-            print(f"  ⚠️  {directory.name}/ (will be created automatically)")
-    
-    # Check optional files
-    print("\n📄 Checking optional files...")
-    music_path = BASE_DIR / "assets" / "background_music.mp3"
-    if music_path.exists():
-        print(f"  ✓ background_music.mp3")
-    else:
-        warnings.append("Background music not found (videos will have no audio)")
-        print(f"  ⚠️  background_music.mp3 not found")
-    
-    google_creds = BASE_DIR / "google_credentials" / "client_secret.json"
-    if google_creds.exists():
-        print(f"  ✓ YouTube OAuth credentials")
-    else:
-        warnings.append("YouTube credentials not configured (can't upload videos)")
-        print(f"  ⚠️  client_secret.json not found (YouTube upload disabled)")
-    
-    # Summary
-    print("\n" + "="*50)
-    if errors:
-        print(f"❌ {len(errors)} ERROR(S) FOUND:")
-        for error in errors:
-            print(f"   • {error}")
-        print("\nFix these errors before running the pipeline.")
-        return False
-    elif warnings:
-        print(f"⚠️  {len(warnings)} WARNING(S):")
-        for warning in warnings:
-            print(f"   • {warning}")
-        print("\n✅ Setup is valid but some optional features may not work.")
-        return True
-    else:
-        print("✅ All checks passed! You're ready to run the pipeline.")
-        return True
+        log.error(f"Pipeline Failed: {e}")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="LivItUpDeals Affiliate Pipeline")
-    parser.add_argument("--setup", action="store_true", help="Validate setup")
-    parser.add_argument("--run", action="store_true", help="Run the full pipeline")
-    parser.add_argument("--update-website", action="store_true", help="Update products.json only (no videos)")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--run", action="store_true")
     args = parser.parse_args()
-    
-    if args.setup:
-        validate_setup()
-    elif args.run:
-        run_pipeline(update_website_only=False)
-    elif args.update_website:
-        run_pipeline(update_website_only=True)
-    else:
-        parser.print_help()
+    if args.run: run_pipeline()
+    else: parser.print_help()

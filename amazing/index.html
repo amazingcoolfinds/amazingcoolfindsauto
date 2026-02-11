@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazing Cool Finds — Elite Curations & Daily Tech Deals</title>
+    <link rel="icon" href="https://i.imgur.com/buAiOrr.png" type="image/png">
+    <style>
+        /* ─── RESET & VARS ─────────────────────────────────────── */
+        /* New Design System: Tech Editorial Meets Street Culture */
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+        @import url('https://api.fontshare.com/v2/css?f[]=clash-display@700,600,500&f[]=satoshi@700,500,400,300&display=swap');
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Colors - Neon Tech Palette */
+            --electric-yellow: #FFD700;
+            --neon-cyan: #00F5FF;
+            --hot-pink: #FF006E;
+            --deep-black: #000000;
+            --charcoal: #1A1A1A;
+            --slate: #2D2D2D;
+            --card-grey: #161616;
+            --border-grey: #262626;
+            --white: #FFFFFF;
+            --text-muted: #A0A0A0;
+            
+            /* Legacy aliases for backward compatibility */
+            --yellow: var(--electric-yellow);
+            --yellow-glow: rgba(255, 215, 0, 0.4);
+            --black: var(--deep-black);
+            --dark-grey: var(--charcoal);
+            
+            /* Typography - Premium Fonts */
+            --font-display: 'Clash Display', sans-serif;
+            --font-body: 'Satoshi', sans-serif;
+            --font-accent: 'Bebas Neue', sans-serif;
+            --font-main: var(--font-body); /* Legacy alias */
+            
+            /* Effects */
+            --cyan-glow: rgba(0, 245, 255, 0.3);
+            --pink-glow: rgba(255, 0, 110, 0.3);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: var(--black);
+            color: var(--white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ─── CUSTOM SCROLLBAR ────────────────────────────────── */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--black); }
+        ::-webkit-scrollbar-thumb { background: var(--border-grey); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--yellow); }
+
+        /* ─── NAVIGATION ───────────────────────────────────────── */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-grey);
+        }
+
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-family: var(--font-accent);
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--white);
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+
+        .logo-text span {
+            color: var(--yellow);
+        }
+
+        /* Navigation Links */
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--electric-yellow);
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--electric-yellow);
+        }
+
+        /* Hamburger Menu (Mobile) */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--white);
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(7px, 7px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Mobile Menu Drawer */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100vh;
+            background: var(--charcoal);
+            border-left: 1px solid var(--border-grey);
+            padding: 100px 32px 32px;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-grey);
+            transition: color 0.3s;
+        }
+
+        .mobile-menu a:hover,
+        .mobile-menu a.active {
+            color: var(--electric-yellow);
+        }
+
+        /* Mobile Backdrop */
+        .mobile-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 999;
+        }
+
+        .mobile-backdrop.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            nav {
+                height: 70px;
+            }
+
+            .logo-text {
+                font-size: 1.2rem;
+            }
+
+            .logo-img {
+                height: 40px;
+            }
+        }
+
+        /* ─── HERO SECTION (REDESIGNED) ────────────────────── */
+        .hero {
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 140px 5% 100px;
+            position: relative;
+            overflow: hidden;
+            background: var(--deep-black);
+        }
+
+        /* Animated Gradient Mesh Background */
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 30% 50%, rgba(255, 215, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(0, 245, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 30%, rgba(255, 0, 110, 0.08) 0%, transparent 50%);
+            animation: gradientShift 8s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.1) rotate(5deg); opacity: 0.8; }
+        }
+
+        /* Diagonal Accent Line */
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 20%;
+            right: -10%;
+            width: 2px;
+            height: 60%;
+            background: linear-gradient(180deg, transparent, var(--neon-cyan), transparent);
+            transform: rotate(-15deg);
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        .hero__content {
+            max-width: 1000px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero__eyebrow {
+            font-family: var(--font-accent);
+            color: var(--neon-cyan);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.85rem;
+            font-weight: 400;
+            margin-bottom: 24px;
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 40px;
+            background: rgba(0, 245, 255, 0.1);
+            border: 1px solid rgba(0, 245, 255, 0.3);
+        }
+
+        .hero__title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 32px;
+            letter-spacing: -2px;
+        }
+
+        .hero__title--gradient {
+            background: linear-gradient(135deg, var(--electric-yellow) 0%, var(--neon-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s ease-in-out infinite;
+            display: block;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { filter: hue-rotate(0deg) brightness(1); }
+            50% { filter: hue-rotate(10deg) brightness(1.2); }
+        }
+
+        .hero__subtitle {
+            font-family: var(--font-body);
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 48px;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .hero__subtitle strong {
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .hero__cta-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Trust Badges */
+        .hero__trust-badges {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            margin-top: 48px;
+            flex-wrap: wrap;
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-family: var(--font-body);
+        }
+
+        .trust-badge__icon {
+            font-size: 1.2rem;
+        }
+
+        .btn {
+            padding: 18px 36px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn--primary {
+            background: linear-gradient(135deg, var(--electric-yellow), var(--hot-pink));
+            color: var(--deep-black);
+            box-shadow: 0 4px 20px var(--yellow-glow);
+            font-weight: 700;
+        }
+
+        .btn--primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--pink-glow);
+        }
+
+        .btn--secondary {
+            background: transparent;
+            color: var(--white);
+            border: 1px solid var(--border-grey);
+        }
+
+        .btn--secondary:hover {
+            background: var(--slate);
+            border-color: var(--neon-cyan);
+        }
+
+
+        /* ─── PRODUCTS SECTION ─────────────────────────────── */
+        .products {
+            padding: 100px 5%;
+        }
+
+        .section-header {
+            margin-bottom: 60px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .section-header__title {
+            font-size: 3rem;
+            font-weight: 700;
+            max-width: 500px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 8px;
+            background: var(--dark-grey);
+            padding: 6px;
+            border-radius: 12px;
+            border: 1px solid var(--border-grey);
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: var(--black);
+            color: var(--yellow);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 32px;
+        }
+
+        .card {
+            background: var(--card-grey);
+            border: 1px solid var(--border-grey);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+        }
+
+        .card:hover {
+            border-color: var(--yellow);
+            transform: translateY(-8px);
+        }
+
+        .card__img-wrap {
+            height: 300px;
+            background: #fff;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card__slideshow {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .card__img {
+            position: absolute;
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease-in-out;
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .card__img.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .card:hover .card__img.active {
+            transform: scale(1.05);
+        }
+
+        .card__badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(0, 0, 0, 0.9);
+            color: var(--yellow);
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            border-left: 3px solid var(--yellow);
+            z-index: 10;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .card__body {
+            padding: 24px;
+        }
+
+        .card__title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            height: 3.2rem;
+            line-height: 1.2;
+            color: var(--white);
+        }
+
+        .card__footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 24px;
+        }
+
+        .card__price {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--yellow);
+            letter-spacing: 0.2px;
+            opacity: 0.9;
+        }
+
+        .card__cta {
+            background: var(--white);
+            color: var(--black);
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .card__cta:hover {
+            background: var(--yellow);
+        }
+
+        /* ─── FOOTER ────────────────────────────────────────── */
+        footer {
+            padding: 80px 5% 40px;
+            border-top: 1px solid var(--border-grey);
+            background: var(--dark-grey);
+        }
+
+        .footer__grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 60px;
+        }
+
+        .footer__brand .logo-text {
+            font-size: 2rem;
+            margin-bottom: 24px;
+        }
+
+        .footer__desc {
+            color: var(--text-muted);
+            max-width: 400px;
+        }
+
+        .footer__title {
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+        }
+
+        .footer__links {
+            list-style: none;
+        }
+
+        .footer__links li {
+            margin-bottom: 12px;
+        }
+
+        .footer__links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer__links a:hover {
+            color: var(--yellow);
+        }
+
+        .footer__bottom {
+            padding-top: 40px;
+            border-top: 1px solid var(--border-grey);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* ─── LEAD MAGNET SECTION ─────────────────────────── */
+        .lead-magnet {
+            padding: 100px 5%;
+            background: linear-gradient(180deg, var(--black), var(--dark-grey));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top: 1px solid var(--border-grey);
+        }
+
+        .lead-card {
+            background: rgba(255, 215, 0, 0.03);
+            border: 1px solid var(--yellow);
+            padding: 60px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 800px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lead-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--yellow-glow) 0%, transparent 70%);
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .lead-card__title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .lead-card__desc {
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            font-size: 1.1rem;
+        }
+
+        .lead-form {
+            display: flex;
+            gap: 12px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .lead-form input {
+            flex: 1;
+            padding: 16px 24px;
+            border-radius: 8px;
+            border: 1px solid var(--border-grey);
+            background: var(--black);
+            color: var(--white);
+            font-family: var(--font-main);
+            outline: none;
+        }
+
+        .lead-form input:focus {
+            border-color: var(--yellow);
+        }
+
+        /* ─── BLOG SECTION ────────────────────────────────── */
+        .blog {
+            padding: 100px 5%;
+            background: var(--black);
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 32px;
+        }
+
+        .blog-card {
+            background: var(--dark-grey);
+            border: 1px solid var(--border-grey);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .blog-card:hover {
+            border-color: var(--yellow);
+        }
+
+        .blog-card__img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            opacity: 0.7;
+        }
+
+        .blog-card__body {
+            padding: 24px;
+        }
+
+        .blog-card__tag {
+            color: var(--yellow);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .blog-card__title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .blog-card__link {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .blog-card__link:hover {
+            color: var(--yellow);
+        }
+
+        /* ─── ANIMATIONS ────────────────────────────────────── */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate {
+            animation: fadeInUp 1s forwards;
+        }
+
+        /* ─── RESPONSIVE ────────────────────────────────────── */
+        /* ─── HIGHLIGHT EFFECT ──────────────────────────────── */
+        @keyframes highlightPulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); border-color: var(--border-grey); }
+            30% { box-shadow: 0 0 30px 10px rgba(255, 215, 0, 0.6); border-color: var(--yellow); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); border-color: var(--border-grey); }
+        }
+        .highlight-jump {
+            animation: highlightPulse 2.5s cubic-bezier(0.23, 1, 0.32, 1);
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo-wrap">
+            <img src="https://i.imgur.com/buAiOrr.png" alt="Amazing Cool Finds Logo" class="logo-img">
+            <div class="logo-text">Amazing<span>Cool</span>Finds</div>
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="active">Home</a>
+            <a href="tech.html">Tech & Gaming</a>
+            <a href="lifestyle.html">Lifestyle</a>
+            <a href="home.html">Home & Auto</a>
+        </div>
+        <button class="hamburger" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu Drawer -->
+    <div class="mobile-backdrop"></div>
+    <div class="mobile-menu">
+        <a href="index.html" class="active">Home</a>
+        <a href="tech.html">Tech & Gaming</a>
+        <a href="lifestyle.html">Lifestyle</a>
+        <a href="home.html">Home & Auto</a>
+    </div>
+
+    <section class="hero">
+        <div class="hero__content">
+            <span class="hero__eyebrow animate">AS SEEN ON TIKTOK & YOUTUBE</span>
+            <h1 class="hero__title animate" style="animation-delay: 0.2s;">
+                The Viral Gadgets You Saw<br>
+                <span class="hero__title--gradient">Verified. Curated. Ready to Ship.</span>
+            </h1>
+            <p class="hero__subtitle animate" style="animation-delay: 0.4s;">
+                From <strong>wallet trackers</strong> to <strong>smart locks</strong>, we test and verify every trending product before it hits your feed. No fluff, just the coolest finds on Earth.
+            </p>
+            <div class="hero__cta-group animate" style="animation-delay: 0.6s;">
+                <a href="#deals" class="btn btn--primary">Shop Viral Finds 🔥</a>
+                <a href="#about" class="btn btn--secondary">How It Works</a>
+            </div>
+            <div class="hero__trust-badges animate" style="animation-delay: 0.8s;">
+                <div class="trust-badge">
+                    <span class="trust-badge__icon">📱</span>
+                    <span>Trending on TikTok</span>
+                </div>
+                <div class="trust-badge">
+                    <span class="trust-badge__icon">⭐</span>
+                    <span>Amazon Verified</span>
+                </div>
+                <div class="trust-badge">
+                    <span class="trust-badge__icon">📦</span>
+                    <span>Prime Eligible</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="products" id="deals">
+        <div class="section-header">
+            <h2 class="section-header__title">Elite Trending Finds</h2>
+            <div class="filters">
+                <button class="filter-btn cat-btn active" onclick="filterProducts('all')">All</button>
+                <button class="filter-btn cat-btn" onclick="filterProducts('Tech')">Tech & Gaming 🎮</button>
+                <button class="filter-btn cat-btn" onclick="filterProducts('Lifestyle')">Beauty & Style ✨</button>
+                <button class="filter-btn cat-btn" onclick="filterProducts('Home')">Home & Auto 🏠</button>
+            </div>
+        </div>
+
+        <div class="product-grid" id="productGrid">
+            <!-- Simulated Pulse Loader -->
+            <div class="card" style="opacity: 0.5;">
+                <div class="card__img-wrap" style="background: #222;"></div>
+                <div class="card__body">
+                    <div style="height: 20px; background: #333; margin-bottom: 10px; width: 80%;"></div>
+                    <div style="height: 15px; background: #333; width: 40%;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════════ LEAD MAGNET ════════════════ -->
+    <section class="lead-magnet" id="newsletter">
+        <div class="lead-card animate">
+            <span class="hero__eyebrow">Exclusive Access</span>
+            <h2 class="lead-card__title">The Elite Finds Newsletter</h2>
+            <p class="lead-card__desc">
+                Join 50,000+ curators. Get the "2025 Tech Masterlist" PDF instantly and weekly deep-dives into products that actually matter.
+            </p>
+            <form class="lead-form" id="newsletterForm">
+                <input type="email" name="email" placeholder="Enter your best email..." required>
+                <button type="submit" class="btn btn--primary">Get PDF Guide ⚡</button>
+            </form>
+            <script>
+                document.getElementById('newsletterForm').addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const btn = this.querySelector('button');
+                    const originalText = btn.innerText;
+                    btn.innerText = 'Sending...';
+                    
+                    const email = this.querySelector('input[type="email"]').value;
+                    
+                    try {
+                        // Send to Google Sheets
+                        await fetch('https://script.google.com/macros/s/AKfycby4yr_CoUqZ3Ouh35VwPLZHQE0PhPT5yDy81nI0fuvZd1YL7zzaAdQ4V2k0Vf9ATcZs/exec', {
+                            method: 'POST',
+                            mode: 'no-cors', // Important for Google Script
+                            body: JSON.stringify({ email: email })
+                        });
+                        
+                        // Redirect to Thank You page
+                        window.location.href = 'thank-you.html';
+                    } catch (err) {
+                        console.error('Error:', err);
+                        // Even if it fails (e.g. adblocker), let them through
+                        window.location.href = 'thank-you.html';
+                    }
+                });
+            </script>
+        </div>
+    </section>
+
+    <!-- ════════════════ BLOG / INTERVIEWS ════════════════ -->
+    <section class="blog" id="about">
+        <div class="section-header">
+            <h2 class="section-header__title">Deep Dives & Stories</h2>
+            <a href="articles.html" class="btn btn--secondary">All Articles →</a>
+        </div>
+        <div class="blog-grid" id="blogGrid">
+            <!-- Articles will be loaded dynamically -->
+            <div class="blog-card" style="opacity: 0.5;">
+                <div style="height: 200px; background: #222;"></div>
+                <div class="blog-card__body">
+                    <div style="height: 20px; background: #333; margin-bottom: 10px; width: 80%;"></div>
+                    <div style="height: 15px; background: #333; width: 40%;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer__grid">
+                <div class="footer__brand">
+                    <div class="logo-text">Amazing<span>Cool</span>Finds</div>
+                    <p class="footer__desc">
+                        Your ultimate destination for curated articles and high-value trends. We scan the web so you don't have to.
+                    </p>
+                </div>
+            <div>
+                <h4 class="footer__title">Navigation</h4>
+                <ul class="footer__links">
+                    <li><a href="#deals">Today's Deals</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer__title">Support</h4>
+                <ul class="footer__links">
+                    <li><a href="mailto:hello@amazing-cool-finds.com">Contact Us</a></li>
+                    <li><a href="#">Influencer Program</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>© 2026 Amazing Cool Finds. All rights reserved.</p>
+            <p>As an Amazon Associate we earn from qualifying purchases.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Data loading
+        const WORKER_URL = 'https://article-generator.amazingcoolfinds.workers.dev';
+
+        // ─── CATEGORY MAPPING ───────────────────────────────
+        const categoryMap = {
+            'Tech': 'Tech',
+            'Gaming': 'Tech',
+            'Tech Gadgets': 'Tech',
+            'Home': 'Home',
+            'Home Essentials': 'Home',
+            'Lifestyle': 'Lifestyle',
+            'Lifestyle Accessories': 'Lifestyle',
+            'Automotive Gear': 'Home', // Categoría Home para productos de auto en la web
+            'Auto': 'Home'
+        };
+
+        let allProducts = [];
+        let activeFilter = 'all';
+
+        async function loadProducts() {
+            try {
+                // Fetch local products FIRST (priority)
+                let localProducts = [];
+                try {
+                    const localRes = await fetch(`data/products.json?v=${new Date().getTime()}`);
+                    if (localRes.ok) localProducts = await localRes.json();
+                } catch(e) {
+                    console.log("No local products found");
+                }
+
+                // Fetch autonomous products from Worker
+                let cloudProducts = [];
+                /*
+                try {
+                    const response = await fetch(`${WORKER_URL}/api/products`);
+                    if (response.ok) cloudProducts = await response.json();
+                } catch(e) {
+                    console.log("Worker products unavailable");
+                }
+                */
+
+                // LOCAL PRODUCTS FIRST, then cloud products
+                allProducts = [...localProducts, ...cloudProducts];
+                window.fullProductList = allProducts;
+                
+                if (allProducts.length === 0) {
+                    console.warn("No products available");
+                    document.getElementById('productGrid').innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">New trending finds arriving soon...</p>';
+                } else {
+                    renderProducts();
+                }
+            } catch (e) {
+                console.error("Error loading products:", e);
+                document.getElementById('productGrid').innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">New trending finds arriving soon...</p>';
+            }
+        }
+
+        function filterProducts(category) {
+            currentFilter = category;
+            
+            // Update active button state
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if (btn.innerText.includes(category) || (category === 'all' && btn.innerText === 'All')) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            renderProducts();
+        }
+
+        async function loadData() {
+            const isLocal = window.location.protocol === 'file:';
+            try {
+                // Fetch Reviews
+                const rRes = await fetch('data/reviews.json').catch(err => {
+                    if (isLocal) throw new Error("CORS_BLOCK");
+                    throw err;
+                });
+                reviewsData = await rRes.json();
+                
+                renderReviews();
+            } catch (e) {
+                console.warn("Reviews data load warning/error:", e);
+                
+                if (e.message === "CORS_BLOCK" || (isLocal && (e instanceof TypeError))) {
+                    const notice = document.createElement('div');
+                    notice.style.cssText = "background: #333; color: #fbbf24; padding: 10px; text-align: center; font-size: 0.8rem;";
+                    notice.innerHTML = "⚠️ Browsers block data loading from local files. For a full preview, run: <code>python3 -m http.server</code> in the project folder.";
+                    document.body.prepend(notice);
+                }
+            }
+            await loadProducts(); // Load products after reviews (or in parallel)
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+
+            const filtered = (activeFilter === 'all' 
+                ? allProducts 
+                : allProducts.filter(p => {
+                    // Check if the product's Amazon category maps to the current website filter
+                    const mainCat = categoryMap[p.category] || 'Other';
+                    return mainCat === activeFilter;
+                })).slice(0, 6);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">New trending finds arriving soon...</p>';
+                return;
+            }
+            
+            grid.innerHTML = filtered.map(p => {
+                const images = p.images && p.images.length > 0 ? p.images : [p.image_url];
+                const discount = p.discount || 'LIMITED DEAL';
+                const displayPrice = p.price === 'Check Price' ? 'VIEW DEAL' : p.price;
+                
+                return `
+                <div class="card" id="${p.asin}">
+                    <div class="card__badge">${discount}</div>
+                    <div class="card__img-wrap">
+                        <div class="card__slideshow">
+                            ${images.map((img, idx) => `
+                                <img src="${img}" 
+                                     class="card__img ${idx === 0 ? 'active' : ''}" 
+                                     alt="${p.title}" 
+                                     onerror="this.style.display='none'">
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="card__body">
+                        <h3 class="card__title">${p.title}</h3>
+                        <div class="card__footer">
+                            <span class="card__price">${displayPrice}</span>
+                            <a href="${p.affiliate_url}" target="_blank" class="card__cta">Shop Now</a>
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+            
+            // Initialize hover carousels
+            initCarousels();
+        }
+
+        function initCarousels() {
+            document.querySelectorAll('.card').forEach(card => {
+                const imgs = card.querySelectorAll('.card__img');
+                if (imgs.length <= 1) return;
+
+                let current = 0;
+                let interval = null;
+
+                card.addEventListener('mouseenter', () => {
+                    interval = setInterval(() => {
+                        imgs[current].classList.remove('active');
+                        current = (current + 1) % imgs.length;
+                        imgs[current].classList.add('active');
+                    }, 1200); // 1.2s per image
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    clearInterval(interval);
+                    // Reset to first image
+                    imgs.forEach(img => img.classList.remove('active'));
+                    current = 0;
+                    imgs[0].classList.add('active');
+                });
+            });
+        }
+
+        function renderReviews() {
+            // Load articles instead of reviews
+            loadArticles();
+        }
+
+        async function loadArticles() {
+            const grid = document.getElementById('blogGrid');
+            const WORKER_URL = 'https://article-generator.amazingcoolfinds.workers.dev';
+            
+            try {
+                // 1. Fetch Local Articles
+                let articles = [];
+                try {
+                    const localRes = await fetch(`data/articles.json?v=${new Date().getTime()}`);
+                    if (localRes.ok) articles = await localRes.json();
+                } catch(e) { console.log("No local articles"); }
+
+                // 2. Fetch Autonomous Articles from Cloudflare
+                try {
+                    const cloudRes = await fetch(`${WORKER_URL}/api/articles`);
+                    if (cloudRes.ok) {
+                        const cloudArticles = await cloudRes.json();
+                        // Transform cloud articles to match homepage links
+                        const transformed = cloudArticles.map(a => ({
+                            ...a,
+                            url: `article.html?id=${a.slug}`, // Point to the dynamic viewer
+                            isCloud: true
+                        }));
+                        articles = [...transformed, ...articles];
+                    }
+                } catch(e) { console.log("Cloud articles fetch failed"); }
+                
+                if (articles.length === 0) return;
+                
+                // Sort by date (newest first)
+                articles.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                
+                // Show only the 3 most recent articles
+                const recentArticles = articles.slice(0, 3);
+                
+                grid.innerHTML = recentArticles.map(article => {
+                    const heroImg = article.image || 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1280&h=720&fit=crop';
+                    return `
+                    <div class="blog-card" style="cursor: pointer;" onclick="window.location.href='${article.url}'">
+                        <img src="${heroImg}" class="blog-card__img" alt="${article.title}" onerror="this.src='https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1280&h=720&fit=crop'">
+                        <div class="blog-card__body">
+                            <span class="blog-card__tag">${article.category}</span>
+                            <h3 class="blog-card__title">${article.title}</h3>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">${article.metaDescription}</p>
+                            <a href="${article.url}" class="blog-card__link">Read Full Article →</a>
+                        </div>
+                    </div>
+                `;}).join('');
+            } catch (error) {
+                console.error('Error loading articles:', error);
+            }
+        }
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active state
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Update filter and re-render
+                activeFilter = btn.innerText.includes('Tech') ? 'Tech' 
+                             : btn.innerText.includes('Beauty') ? 'Lifestyle'
+                             : btn.innerText.includes('Home') ? 'Home'
+                             : 'all';
+                renderProducts();
+            });
+        });
+
+        // ─── SMART ARCHIVE REDIRECTION ───────────────────────
+        function handleAnchorNavigation() {
+            const hash = window.location.hash;
+            if (!hash) return;
+
+            let asin = hash.substring(1);
+            if (asin.startsWith('product-')) {
+                asin = asin.replace('product-', '');
+            }
+            const target = document.getElementById(asin);
+
+            if (target) {
+                // Product is in the Elite 6 -> Scroll & Highlight
+                setTimeout(() => {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    target.classList.add('highlight-jump');
+                    console.log("Scrolling to:", asin);
+                    setTimeout(() => target.classList.remove('highlight-jump'), 3000);
+                }, 800);
+            } else {
+                // Product is NOT in Elite 6 -> Check Archive
+                // We need to find the product in the full list to know its category
+                // Since 'allProducts' is not global, we will fetch it again briefly or use a global var.
+                // For robustness, we'll assume we can access the data we just loaded.
+                // Let's attach allProducts to window during loadProducts for this purpose.
+                
+                if (window.fullProductList) {
+                    const product = window.fullProductList.find(p => p.asin === asin);
+                    if (product) {
+                        // Redirect to the correct Archive Page
+                        const categoryMap = {
+                            'Tech': 'tech.html',
+                            'Gaming': 'tech.html',
+                            'Lifestyle': 'lifestyle.html',
+                            'Home': 'home.html',
+                            'Auto': 'home.html'
+                        };
+                        
+                        // Default to Home if mapping fails, though it shouldn't with our data
+                        let targetPage = 'index.html';
+                        
+                        // Map Amazon category to Page
+                        // Valid Categories in DB: Tech, Lifestyle, Home, Auto
+                        if (product.category === 'Tech' || product.category === 'Gaming') targetPage = 'tech.html';
+                        else if (product.category === 'Lifestyle') targetPage = 'lifestyle.html';
+                        else if (product.category === 'Home' || product.category === 'Auto') targetPage = 'home.html';
+                        
+                        if (targetPage !== 'index.html') {
+                             window.location.href = `${targetPage}#${asin}`;
+                        }
+                    }
+                }
+            }
+        }
+
+        async function init() {
+            await loadData(); // This must expose window.fullProductList
+            handleAnchorNavigation();
+            initMobileMenu();
+        }
+
+        // Mobile Menu Toggle
+        function initMobileMenu() {
+            const hamburger = document.querySelector('.hamburger');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const mobileBackdrop = document.querySelector('.mobile-backdrop');
+
+            function toggleMenu() {
+                hamburger.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+                mobileBackdrop.classList.toggle('active');
+                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+            }
+
+            hamburger?.addEventListener('click', toggleMenu);
+            mobileBackdrop?.addEventListener('click', toggleMenu);
+
+            // Close menu when clicking a link
+            mobileMenu?.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', toggleMenu);
+            });
+        }
+
+        init();
+    </script>
+</body>
+</html>
