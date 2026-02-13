@@ -116,7 +116,11 @@ def get_high_performance_products(count_candidates=15, select_top=3):
                 details['commission'] = monitor.commissions.get(target['category'], 0.04)
                 candidates.append(details)
                 log.info(f"  📦 Scraped: {details['asin']} - {details['title'][:40]}...")
-            time.sleep(1) # Be polite to Amazon
+            
+            # Random delay 10-20s to be very polite to Amazon
+            delay = random.uniform(10, 20)
+            log.info(f"  ⏳ Waiting {delay:.1f}s...")
+            time.sleep(delay)
             
         if not candidates:
             log.warning("Final candidate list is empty after filtering duplicates.")

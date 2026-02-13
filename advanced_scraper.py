@@ -16,6 +16,12 @@ class AdvancedScraper:
         self.associate_tag = associate_tag
         self.base_dir = Path(__file__).parent
         # We will hardcode selectors for robustness instead of depending on broken selectorlib
+        self.user_agents = [
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2.1 Safari/605.1.15',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0'
+        ]
         
     def get_details(self, asin: str):
         """
@@ -28,12 +34,24 @@ class AdvancedScraper:
             # Launch browser (Headless)
             browser = p.chromium.launch(headless=True)
             
+            import random
+            
+            # Random delay before starting
+            time.sleep(random.uniform(2, 5))
+            
+            # Select random UA and Viewport
+            ua = random.choice(self.user_agents)
+            
             # Create context with stealthy headers
             context = browser.new_context(
-                user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+                user_agent=ua,
                 viewport={'width': 1920, 'height': 1080},
                 locale='en-US',
-                timezone_id='America/New_York'
+                timezone_id='America/New_York',
+                extra_http_headers={
+                    'Referer': 'https://www.amazon.com/',
+                    'Accept-Language': 'en-US,en;q=0.9',
+                }
             )
             
             page = context.new_page()
