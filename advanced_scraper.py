@@ -208,17 +208,30 @@ class AdvancedScraper:
         """
         Search Amazon for products using Playwright to bypass bot detection.
         """
-        import random
-        url = f"https://www.amazon.com/s?k={keywords.replace(' ', '+')}"
+        from urllib.parse import quote_plus
+        url = f"https://www.amazon.com/s?k={quote_plus(keywords)}"
         products = []
         
         log.info(f"🔍 [Playwright] Searching for '{keywords}'...")
         
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
+            
+            import random
+            
+            # Select random UA
+            ua = random.choice(self.user_agents)
+            
+            # Create context with stealthy headers (Unified with get_details)
             context = browser.new_context(
-                user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-                viewport={'width': 1920, 'height': 1080}
+                user_agent=ua,
+                viewport={'width': 1920, 'height': 1080},
+                locale='en-US',
+                timezone_id='America/New_York',
+                extra_http_headers={
+                    'Referer': 'https://www.amazon.com/',
+                    'Accept-Language': 'en-US,en;q=0.9',
+                }
             )
             page = context.new_page()
             
@@ -241,6 +254,14 @@ class AdvancedScraper:
                     
                     # Log snippet of body for debugging
                     log.debug(f"Page Content Snippet: {content[:500]}")
+                    
+                    # Save error page for manual inspection if needed
+                    debug_file = self.base_dir / "logs" / f"search_error_{int(time.time())}.html"
+                    debug_file.parent.mkdir(exist_ok=True)
+                    with open(debug_file, "w") as f:
+                        f.write(content)
+                    log.error(f"Saved failed search HTML to {debug_file}")
+                    
                     browser.close()
                     return []
                 
