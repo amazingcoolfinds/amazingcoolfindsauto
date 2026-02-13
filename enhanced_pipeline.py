@@ -32,12 +32,7 @@ logging.basicConfig(
 log = logging.getLogger("AmazingCoolFinds")
 
 # ─── CONFIGURATION ───────────────────────────────────────────────
-PRODUCT_TARGETS = [
-    {"category": "Tech", "keywords": "premium tech gadgets 2026", "commission": "4%"},
-    {"category": "Lifestyle", "keywords": "luxury skincare beauty essentials", "commission": "10%"},
-    {"category": "Home", "keywords": "modern home decor luxury office", "commission": "3%"},
-    {"category": "Auto", "keywords": "premium car accessories 2026", "commission": "4%"},
-]
+AFFILIATE_TAG = "amazingcoolfinds-20"
 
 # ─── ENHANCED FUNCTIONS ─────────────────────────────────────
 def generate_unique_product_id(product):
@@ -128,6 +123,7 @@ def get_high_performance_products(count_candidates=15, select_top=3):
         # 4. Enhance links for selections
         for p in selections:
             p['website_link'] = get_enhanced_website_link(p)
+            p['affiliate_url'] = f"https://www.amazon.com/dp/{p['asin']}?tag={AFFILIATE_TAG}"
             p['processed_at'] = datetime.now().isoformat()
             
         return selections
@@ -311,7 +307,7 @@ def run_enhanced_pipeline():
                         script['title'], 
                         desc, 
                         script.get('hashtags', []),
-                        affiliate_link=product['website_link']['link']
+                        affiliate_link=product['affiliate_url']
                     )
                     
                     if video_id:
