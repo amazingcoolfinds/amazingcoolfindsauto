@@ -190,6 +190,7 @@ class AdvancedScraper:
         """
         Search Amazon for products using Playwright to bypass bot detection.
         """
+        import random
         url = f"https://www.amazon.com/s?k={keywords.replace(' ', '+')}"
         products = []
         
@@ -206,16 +207,29 @@ class AdvancedScraper:
             try:
                 page.goto(url, timeout=30000, wait_until='domcontentloaded')
                 
-                # Wait for results
+                # Increase timeout and add random wait to mimic human behavior
+                time.sleep(random.uniform(2, 5))
+                
                 try:
-                    page.wait_for_selector('div[data-component-type="s-search-result"]', timeout=5000)
+                    # Increased timeout to 20s for GitHub Actions / slower networks
+                    page.wait_for_selector('div[data-component-type="s-search-result"], .s-result-item', timeout=20000)
                 except:
-                    log.warning("⚠️  Search results selector not found (or blocked)")
+                    # Check for bot detection specifically
+                    content = page.content()
+                    if "To discuss automated access" in content or "captcha" in content.lower():
+                        log.error("❌ Amazon blocked search (Captcha/Bot Detection)")
+                    else:
+                        log.warning("⚠️  Search results selector not found (Timeout or Page Structure Change)")
+                    
+                    # Log snippet of body for debugging
+                    log.debug(f"Page Content Snippet: {content[:500]}")
                     browser.close()
                     return []
                 
-                # Extract ASINs
+                # Extract ASINs - using multiple possible selectors
                 items = page.query_selector_all('div[data-component-type="s-search-result"]')
+                if not items:
+                    items = page.query_selector_all('.s-result-item[data-asin]')
                 
                 for item in items[:max_results]:
                     asin = item.get_attribute('data-asin')

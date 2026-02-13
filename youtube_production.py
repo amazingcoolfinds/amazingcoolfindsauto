@@ -11,6 +11,7 @@ from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 import logging
+import base64
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("YouTubeUpload")
@@ -34,8 +35,6 @@ class ProductionYouTubeUploader:
         secret_b64 = os.getenv("YT_CLIENT_SECRET_BASE64")
         
         if token_b64 and secret_b64:
-            import base64
-            import json
             from google.oauth2.credentials import Credentials
             try:
                 log.info("🔐 Loading YouTube credentials from Environment Variables...")
@@ -82,8 +81,10 @@ class ProductionYouTubeUploader:
             except Exception as e:
                 log.warning(f"Failed to load existing credentials: {e}")
         
-        # Create new credentials using your exact method
-        return self._create_production_credentials()
+        # If no credentials found and we aren't in a position to run a local server, return None
+        # In a real CI or background task, we don't want to block here.
+        log.warning("⚠️ No valid YouTube credentials found and cannot start interactive auth. Skipping.")
+        return None
     
     def _create_production_credentials(self):
         """Create new credentials using your exact configuration"""

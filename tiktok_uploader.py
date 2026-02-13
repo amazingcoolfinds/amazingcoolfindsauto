@@ -18,6 +18,16 @@ class TikTokUploader:
             log.warning("TikTok credentials missing in .env")
 
     def _load_tokens(self):
+        # 1. Try loading from Environment Variable (CI)
+        token_b64 = os.getenv("TIKTOK_TOKEN_BASE64")
+        if token_b64:
+            try:
+                import base64
+                return base64.b64decode(token_b64).decode('utf-8')
+            except:
+                log.error("Failed to decode TIKTOK_TOKEN_BASE64")
+
+        # 2. Fallback to local file
         if self.token_file.exists():
             try:
                 with open(self.token_file, 'r') as f:

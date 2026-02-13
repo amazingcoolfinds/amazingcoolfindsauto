@@ -59,6 +59,7 @@ jobs:
           INSTAGRAM_ACCOUNT_ID: ${{ secrets.INSTAGRAM_ACCOUNT_ID }}
           TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
           TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+          TIKTOK_TOKEN_BASE64: ${{ secrets.TIKTOK_TOKEN_BASE64 }}
         run: python enhanced_pipeline.py --run
 
       - name: Commit Updated Data
