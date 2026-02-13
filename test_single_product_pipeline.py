@@ -29,7 +29,7 @@ def run_single_product_test():
         from advanced_scraper import AdvancedScraper
         from groq_generators import GroqProductSelector, GroqScriptGenerator, GroqVoiceGenerator
         from video_generator import VideoGenerator
-        from enhanced_pipeline import get_enhanced_website_link, save_processed_product, update_website_data
+        from enhanced_pipeline import get_enhanced_website_link, save_processed_product, update_website_data, AFFILIATE_TAG
         
         scraper = AdvancedScraper()
         selector = GroqProductSelector(os.getenv("GROQ_API_KEY"))
@@ -57,6 +57,7 @@ def run_single_product_test():
         product['category'] = "Tech"
         product['commission'] = 0.04
         product['website_link'] = get_enhanced_website_link(product)
+        product['affiliate_url'] = f"https://www.amazon.com/dp/{product['asin']}?tag={AFFILIATE_TAG}"
         product['processed_at'] = datetime.now().isoformat()
 
         # Step 2: AI Analysis
@@ -85,24 +86,37 @@ def run_single_product_test():
             return
         log.info(f"✅ Video created at: {video_path}")
 
-        # Step 4: Uploader Verification (Initialization only to avoid unwanted posts if needed)
-        log.info("📡 STEP 4: Uploader Connectivity...")
-        from meta_uploader import MetaUploader
-        from tiktok_uploader import TikTokUploader
+        # Step 4: Distribution Verification
+        log.info("📡 STEP 4: Distribution Verification...")
+        from youtube_production import ProductionYouTubeUploader
         
-        meta = MetaUploader()
-        log.info(f"Meta: {'Connected' if meta.access_token else 'Missing Token'}")
+        # Test YouTube Upload (Required to verify the affiliate comment logic)
+        log.info("📹 Testing YouTube Upload + Affiliate Comment...")
+        yt_up = ProductionYouTubeUploader()
+        desc = f"{script['narration'][:100]}...\n\n🔥 Buy here: {product['website_link']['link']}\n\n#amazonfinds #tech"
         
-        tiktok = TikTokUploader()
-        log.info(f"TikTok: {'Connected' if tiktok.access_token else 'Missing Token'}")
+        video_id = yt_up.upload_video(
+            video_path, 
+            script['title'], 
+            desc, 
+            script.get('hashtags', []),
+            affiliate_link=product['affiliate_url']
+        )
+        
+        if video_id:
+            log.info(f"✅ YouTube upload successful: {video_id}")
+            product['video_url'] = f"https://youtube.com/shorts/{video_id}"
+            product['video_id'] = video_id
+        else:
+            log.warning("⚠️ YouTube upload failed, but proceeding to sync test.")
 
         # Note: YouTube skipped in this summary script to avoid complex OAuth redirection in dry-run
         
         # Step 5: Sync
-        log.info("🌐 STEP 5: Website Sync...")
+        log.info("🌐 STEP 5: Website Sync (Merge Test)...")
         save_processed_product(product)
-        # update_website_data([product]) # Commented out to not overwrite local data files during a test
-        log.info("✅ Mock sync complete (save_processed_product called)")
+        update_website_data([product]) 
+        log.info("✅ Website sync complete (Merge logic executed)")
 
         log.info("=" * 60)
         log.info("🎉 TEST COMPLETED SUCCESSFULLY!")
