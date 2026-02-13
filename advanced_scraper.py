@@ -4,7 +4,8 @@ import re
 import yaml
 from pathlib import Path
 from playwright.sync_api import sync_playwright
-from selectorlib import Extractor
+# Removed unused selectorlib import
+
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
