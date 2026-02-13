@@ -41,12 +41,8 @@ PRODUCT_TARGETS = [
 
 # ─── ENHANCED FUNCTIONS ─────────────────────────────────────
 def generate_unique_product_id(product):
-    """Generate unique identifier for each product"""
-    import hashlib
-    timestamp = str(int(time.time()))
-    unique_string = f"{product['asin']}-{timestamp}"
-    unique_id = hashlib.md5(unique_string.encode()).hexdigest()[:12]
-    return unique_id
+    """Generate unique identifier for each product - simplified to ASIN for user transparency"""
+    return product['asin']
 
 def get_enhanced_website_link(product):
     """Generate enhanced website link with unique ID and scroll"""
@@ -231,79 +227,6 @@ def run_enhanced_pipeline():
         from googleapiclient.discovery import build
         from googleapiclient.http import MediaFileUpload
         
-        class SimpleYouTubeUploader:
-            def __init__(self):
-                self.scopes = ['https://www.googleapis.com/auth/youtube.upload']
-                self.credentials = self._get_credentials()
-                self.youtube = build("youtube", "v3", credentials=self.credentials)
-            
-            def _get_credentials(self):
-                token_file = "token.json"
-                if os.path.exists(token_file):
-                    try:
-                        import json, pickle
-                        with open(token_file, 'r') as f:
-                            token_data = json.load(f)
-                        from google.oauth2.credentials import Credentials
-                        creds = Credentials.from_authorized_user_info(token_data, self.scopes)
-                        if creds.expired and creds.refresh_token:
-                            creds.refresh(Request())
-                            with open(token_file, 'w') as f:
-                                f.write(creds.to_json())
-                        return creds
-                    except:
-                        pass
-                return self._create_new_credentials()
-            
-            def _create_new_credentials(self):
-                flow = InstalledAppFlow.from_client_secrets_file(
-                    'client_secret.json', 
-                    scopes=self.scopes
-                )
-                creds = flow.run_local_server(
-                    port=8080, 
-                    access_type='offline', 
-                    prompt='consent'
-                )
-                with open('token.json', 'w') as f:
-                    f.write(creds.to_json())
-                return creds
-            
-            def upload_video(self, video_path, title, description, tags=None):
-                try:
-                    body = {
-                        'snippet': {
-                            'title': title,
-                            'description': description,
-                            'tags': tags or [],
-                            'categoryId': '22'
-                        },
-                        'status': {
-                            'privacyStatus': 'public',
-                            'selfDeclaredMadeForKids': False
-                        }
-                    }
-                    
-                    media = MediaFileUpload(video_path, chunksize=-1, resumable=True)
-                    request = self.youtube.videos().insert(
-                        part=','.join(body.keys()),
-                        body=body,
-                        media_body=media
-                    )
-                    
-                    response = request.execute()
-                    video_id = response.get('id')
-                    
-                    if video_id:
-                        log.info(f"✅ YouTube upload: {video_id}")
-                        return video_id
-                    else:
-                        log.error("❌ YouTube upload failed")
-                        return None
-                        
-                except Exception as e:
-                    log.error(f"❌ YouTube upload error: {e}")
-                    return None
         from meta_uploader import MetaUploader
         from tiktok_uploader import TikTokUploader
         from groq_generators import GroqVoiceGenerator
@@ -387,7 +310,8 @@ def run_enhanced_pipeline():
                         video_path, 
                         script['title'], 
                         desc, 
-                        script.get('hashtags', [])
+                        script.get('hashtags', []),
+                        affiliate_link=product['website_link']['link']
                     )
                     
                     if video_id:
@@ -466,16 +390,35 @@ def send_to_make(product):
     except Exception as e:
         log.error(f"❌ Webhook error: {e}")
 
-def update_website_data(products):
-    """Sync product data to website JSON files"""
+def update_website_data(new_products):
+    """Sync product data to website JSON files with MERGING logic"""
     try:
-        # Update main data files
-        with open(DATA_DIR / "products.json", 'w') as f:
-            json.dump(products, f, indent=2)
-        with open(AMAZING_DATA_DIR / "products.json", 'w') as f:
-            json.dump(products, f, indent=2)
+        site_db = AMAZING_DATA_DIR / "products.json"
+        existing_products = []
         
-        log.info("✅ Data synchronized to website files")
+        if site_db.exists():
+            try:
+                with open(site_db, 'r') as f:
+                    existing_products = json.load(f)
+                    if not isinstance(existing_products, list):
+                        existing_products = []
+            except Exception as e:
+                log.warning(f"⚠️ Could not load existing products.json: {e}")
+        
+        # Merge products by ASIN (new ones overwrite old ones if duplicated)
+        product_dict = {p['asin']: p for p in existing_products}
+        for p in new_products:
+            product_dict[p['asin']] = p
+            
+        merged_list = list(product_dict.values())
+        
+        # Save to both locations
+        with open(DATA_DIR / "products.json", 'w') as f:
+            json.dump(merged_list, f, indent=2)
+        with open(site_db, 'w') as f:
+            json.dump(merged_list, f, indent=2)
+        
+        log.info(f"✅ Data synchronized to website files ({len(merged_list)} total products)")
         
     except Exception as e:
         log.error(f"❌ Website sync failed: {e}")

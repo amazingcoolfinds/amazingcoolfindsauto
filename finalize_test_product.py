@@ -39,7 +39,8 @@ def finalize():
             video_path, 
             title, 
             description, 
-            ["amazonfinds", "tech"]
+            ["amazonfinds", "tech"],
+            affiliate_link=f"https://amazing-cool-finds.com/item/{asin}"
         )
         
         if video_id:

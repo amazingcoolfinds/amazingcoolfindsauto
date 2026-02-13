@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting... — Amazing Cool Finds</title>
+    <style>
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Satoshi', 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 215, 0, 0.1);
+            border-top: 3px solid #FFD700;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <script>
+        // ─── SMART REDIRECTION SYSTEM ────────────────────────
+        (function() {
+            const path = window.location.pathname;
+            const hostname = window.location.hostname;
+            
+            console.log("404 Detected on:", path);
+
+            // Handle /item/{id} routes
+            if (path.includes('/item/')) {
+                const parts = path.split('/');
+                const id = parts[parts.length - 1] || parts[parts.length - 2];
+                
+                if (id) {
+                    console.log("Redirecting to product hash:", id);
+                    // Redirect to home with product hash
+                    window.location.replace('/index.html#product-' + id);
+                    return;
+                }
+            }
+
+            // Fallback for other broken links -> Home
+            setTimeout(() => {
+                window.location.replace('/');
+            }, 500);
+        })();
+    </script>
+</head>
+<body>
+    <div class="spinner"></div>
+    <h1 style="font-size: 1.5rem; letter-spacing: -0.5px;">Finding your elite deals...</h1>
+    <p style="color: #666; font-size: 0.9rem; margin-top: 10px;">If not redirected, <a href="/" style="color: #FFD700; text-decoration: none;">click here</a>.</p>
+</body>
+</html>
