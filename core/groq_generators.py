@@ -93,6 +93,10 @@ class GroqVoiceGenerator:
         Fails fast if Groq API is not available.
         """
         # Only use Groq Neural Voice (Diana)
+        assets_dir = Path("assets")
+        assets_dir.mkdir(parents=True, exist_ok=True)
+        neural_path = assets_dir / f"{asin}_voice.wav"
+        
         for attempt in range(2):
             try:
                 log.info(f"🗣️  Generating Groq Neural Voiceover (Diana) for {asin} (Attempt {attempt+1})...")
