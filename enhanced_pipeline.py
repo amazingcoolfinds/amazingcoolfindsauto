@@ -32,7 +32,12 @@ logging.basicConfig(
 log = logging.getLogger("AmazingCoolFinds")
 
 # ─── CONFIGURATION ───────────────────────────────────────────────
-AFFILIATE_TAG = "amazingcoolfinds-20"
+PRODUCT_TARGETS = [
+    {"category": "Tech", "keywords": "premium tech gadgets 2026", "commission": "4%"},
+    {"category": "Lifestyle", "keywords": "luxury skincare beauty essentials", "commission": "10%"},
+    {"category": "Home", "keywords": "modern home decor luxury office", "commission": "3%"},
+    {"category": "Auto", "keywords": "premium car accessories 2026", "commission": "4%"},
+]
 
 # ─── ENHANCED FUNCTIONS ─────────────────────────────────────
 def generate_unique_product_id(product):
