@@ -16,6 +16,18 @@ AMAZING_DATA_DIR = BASE_DIR / "amazing" / "data"
 LOGS_DIR = BASE_DIR / "logs"
 DATA_DIR = BASE_DIR / "data"
 
+# Add core and tools to path for easy imports
+sys.path.append(str(BASE_DIR))
+sys.path.append(str(BASE_DIR / "core"))
+sys.path.append(str(BASE_DIR / "tools"))
+sys.path.append(str(BASE_DIR / "config"))
+
+# Import custom exceptions
+try:
+    from groq_generators import GroqQuotaExceeded
+except ImportError:
+    class GroqQuotaExceeded(Exception): pass
+
 for d in [LOGS_DIR, DATA_DIR, AMAZING_DATA_DIR]:
     d.mkdir(parents=True, exist_ok=True)
 
@@ -30,6 +42,9 @@ logging.basicConfig(
         logging.StreamHandler()
     ])
 log = logging.getLogger("AmazingCoolFinds")
+
+# Global Affiliate Tag
+AFFILIATE_TAG = os.getenv("AMAZON_ASSOCIATE_TAG", "amazingcool-20")
 
 # ─── CONFIGURATION ───────────────────────────────────────────────
 PRODUCT_TARGETS = [
@@ -63,16 +78,16 @@ def get_high_performance_products(count_candidates=15, select_top=3):
     """
     New selection logic with Duplicate Prevention: 
     1. Check for existing ASINs.
-    2. Scrape candidates (skipping duplicates).
-    3. Score with Groq AI.
-    4. Return top 3-5 high-performance products.
+    2. Search candidates (getting basic info like price/rating directly from search).
+    3. Score with Groq AI using search info.
+    4. Scrape FULL details ONLY for the selected top 3-5 products.
     """
     try:
         from advanced_scraper import AdvancedScraper
         from groq_generators import GroqProductSelector
         from strategy_monitor import StrategyMonitor
         
-        scraper = AdvancedScraper()
+        scraper = AdvancedScraper(associate_tag=AFFILIATE_TAG)
         selector = GroqProductSelector(os.getenv("GROQ_API_KEY"))
         monitor = StrategyMonitor(DATA_DIR)
         
@@ -80,61 +95,67 @@ def get_high_performance_products(count_candidates=15, select_top=3):
         existing_asins = get_all_existing_asins()
         log.info(f"🚫 Duplicate Filter: {len(existing_asins)} products already in database.")
         
-        # Get strategic target
-        targets = monitor.get_discovery_targets()
-        import random
-        target = random.choice(targets)
+        # Get strategic target based on priority (Balanced population)
+        targets = monitor.get_discovery_priority()
         
-        log.info(f"🔍 DISCOVERY MODE: {target['category']} using '{target['keywords']}'")
+        # We'll try to pick candidates from the top 2 priority categories 
+        # to ensure the most underserved sections get filled first.
+        final_selected = []
         
-        # 1. Search for candidates
-        # We search for slightly more to compensate for duplicates we might filter
-        search_results = scraper.search(target['keywords'], max_results=count_candidates + 10)
-        
-        if not search_results:
-            log.warning("No search results found.")
-            return []
-            
-        # 2. Enrich candidates with full details (skipping duplicates)
-        candidates = []
-        for item in search_results:
-            if item['asin'] in existing_asins:
-                log.info(f"  ⏭️ Skipping duplicate: {item['asin']}")
-                continue
-                
-            if len(candidates) >= count_candidates:
+        # Priority 1: The most empty category
+        # Priority 2: The second most empty
+        for priority_target in targets[:2]:
+            if len(final_selected) >= select_top:
                 break
                 
-            details = scraper.get_details(item['asin'])
+            log.info(f"🔍 EQUILIBRIUM MODE: Leveling '{priority_target['category']}' using '{priority_target['keywords']}'")
+            
+            # 1. Search for candidates with High-Ticket leaning keywords
+            search_results = scraper.search(priority_target['keywords'], max_results=10)
+            
+            if not search_results:
+                continue
+                
+            # 2. Filter out duplicates
+            candidates = []
+            for item in search_results:
+                if item['asin'] in existing_asins:
+                    continue
+                item['category'] = priority_target['category']
+                item['commission'] = monitor.commissions.get(priority_target['category'], '4%')
+                candidates.append(item)
+            
+            if not candidates:
+                continue
+                
+            # 3. AI Selection for this specific category (High Ticket logic)
+            log.info(f"🧐 AI selecting winner for {priority_target['category']}...")
+            selections = selector.analyze_candidates(priority_target['category'], candidates)
+            
+            # 4. Enrich selections with FULL details
+            for p in selections:
+                if len(final_selected) >= select_top:
+                    break
+                    
+                log.info(f"  🕸️  Full extraction for {priority_target['category']} winner: {p['asin']}...")
+                details = scraper.get_details(p['asin'])
             if details:
-                # Add category and commission for the AI to calculate profit
-                details['category'] = target['category']
-                details['commission'] = monitor.commissions.get(target['category'], 0.04)
-                candidates.append(details)
-                log.info(f"  📦 Scraped: {details['asin']} - {details['title'][:40]}...")
+                # Merge details back, preserving selection metadata
+                p.update(details)
+                p['website_link'] = get_enhanced_website_link(p)
+                p['affiliate_url'] = f"https://www.amazon.com/dp/{p['asin']}?tag={AFFILIATE_TAG}"
+                p['processed_at'] = datetime.now().isoformat()
+                final_selected.append(p)
+                
+                # Polite delay between full scrapes
+                time.sleep(random.uniform(3, 7))
             
-            # Random delay 10-20s to be very polite to Amazon
-            delay = random.uniform(10, 20)
-            log.info(f"  ⏳ Waiting {delay:.1f}s...")
-            time.sleep(delay)
-            
-        if not candidates:
-            log.warning("Final candidate list is empty after filtering duplicates.")
-            return []
-            
-        # 3. AI Selection
-        selections = selector.analyze_candidates(target['category'], candidates)
-        
-        # 4. Enhance links for selections
-        for p in selections:
-            p['website_link'] = get_enhanced_website_link(p)
-            p['affiliate_url'] = f"https://www.amazon.com/dp/{p['asin']}?tag={AFFILIATE_TAG}"
-            p['processed_at'] = datetime.now().isoformat()
-            
-        return selections
+        return final_selected
 
     except Exception as e:
+        import traceback
         log.error(f"Error in high-performance selection: {e}")
+        log.error(traceback.format_exc())
         return []
 
 def get_all_existing_asins():
@@ -217,9 +238,13 @@ def save_processed_product(product):
         log.error(f"Error saving processed product: {e}")
 
 def run_enhanced_pipeline():
-    """Run enhanced pipeline with new products and enhanced links"""
-    log.info("🚀 ENHANCED PIPELINE STARTED")
+    """Run enhanced pipeline with robust error handling and reporting"""
+    log.info("🚀 STARTING ENHANCED AUTOMATED PIPELINE...")
     log.info("=" * 60)
+    
+    success_count = 0
+    failure_count = 0
+    processed_successfully = []
     
     try:
         # Import YouTube uploader - we'll create it inline
@@ -259,108 +284,92 @@ def run_enhanced_pipeline():
             voice_gen = GroqVoiceGenerator(os.getenv("GROQ_API_KEY"))
         except: voice_gen = None
         
-        # Get high-performance products (Discovery 15 -> Score -> Top 3-5)
-        log.info("🎯 Step 1: Discovering High-Performance Products...")
-        selected_products = get_high_performance_products(count_candidates=15, select_top=5)
-        
-        if not selected_products:
-            log.error("❌ No high-performance products selected")
+        # Step 1: Discover products
+        log.info("🎯 Step 1: Discovering Strategic Candidates...")
+        try:
+            selected_products = get_high_performance_products(count_candidates=15, select_top=5)
+        except GroqQuotaExceeded as e:
+            log.error(f"🛑 ABORTING: {e}")
             return False
-        
-        log.info(f"✅ Found {len(selected_products)} strategic candidates for production.")
+            
+        if not selected_products:
+            log.error("❌ No strategic products found today.")
+            return False
+            
+        log.info(f"✨ Found {len(selected_products)} strategic candidates. Starting production...")
         
         processed_successfully = []
 
         for product in selected_products:
-            log.info("-" * 40)
-            log.info(f"📦 Processing: {product['title'][:50]}...")
-            log.info(f"💰 Price: {product.get('price', 'N/A')} | Score: {product.get('selection_score', 'N/A')}")
-            log.info(f"🔗 Enhanced link: {product['website_link']['link']}")
-            
-            # Generate script with Diana voice
             try:
+                # 2. Scripting
                 log.info("🎤 Generating script...")
-                # We need to use GroqScriptGenerator instead of VoiceGenerator for script
                 from groq_generators import GroqScriptGenerator
                 gpt_gen = GroqScriptGenerator(os.getenv("GROQ_API_KEY"))
                 script = gpt_gen.generate_script(product)
+                product['script'] = script
                 
-                # Generate video with Diana voice
-                log.info("🎥 Generating video with Diana voice...")
-                video_gen = VideoGenerator()
+                # 3. Voiceover (Neural Groq Diana)
+                log.info("🗣️  Generating voiceover...")
                 voice_path = voice_gen.generate(script['narration'], product['asin'])
                 
                 if not voice_path:
-                    log.error(f"❌ Voice generation failed for {product['asin']}")
+                    log.error(f"⚠️ Voiceover failed for {product['asin']}. Skipping.")
+                    failure_count += 1
                     continue
-                    
-                video_path = video_gen.generate(product, script, voice_path=voice_path)
+                product['voice_path'] = voice_path
+                
+                # 4. Video production
+                log.info("🎥 Generating video...")
+                from video_generator import VideoGenerator
+                video_gen_instance = VideoGenerator()
+                video_path = video_gen_instance.generate(product, script, voice_path=voice_path)
                 
                 if not video_path:
-                    log.error(f"❌ Video generation failed for {product['asin']}")
+                    log.error(f"❌ Video production failed for {product['asin']}")
+                    failure_count += 1
                     continue
                 
-                log.info(f"✅ Video created: {video_path}")
-                
-                # Upload to YouTube with enhanced link in description
+                # 5. Distribution
                 if yt_up:
                     log.info("📹 Uploading to YouTube...")
-                    desc = f"{script['narration']}\n\n🔥 Check it out: {product['website_link']['link']}\n\n" + " ".join(script.get('hashtags', []))
-                    
-                    video_id = yt_up.upload_video(
-                        video_path, 
-                        script['title'], 
-                        desc, 
-                        script.get('hashtags', []),
-                        affiliate_link=product['affiliate_url']
-                    )
-                    
-                    if video_id:
-                        log.info(f"✅ YouTube upload successful: {video_id}")
-                        product['video_url'] = f"https://youtube.com/shorts/{video_id}"
-                        product['video_id'] = video_id
-                    else:
-                        log.warning("⚠️ YouTube upload failed")
-                
-                # Upload to social media
-                if meta_up:
-                    log.info("📸 Uploading to Meta...")
-                    meta_up.upload_to_facebook(video_path, f"{script['title']}\n{script['narration']}\n\n{product['website_link']['link']}")
-                    meta_up.upload_to_instagram(video_path, f"{script['title']}\n{script['narration']}\n\n{product['website_link']['link']}")
-                
-                if tt_up:
-                    log.info("🎵 Uploading to TikTok...")
-                    tt_up.upload_video(video_path, script['title'])
-                
-                # Mark as successful
+                    try:
+                        desc = f"{script['narration']}\n\n🔥 Check it out: {product['website_link']['link']}\n\n" + " ".join(script.get('hashtags', []))
+                        yt_up.upload_video(video_path, script['title'], desc, script.get('hashtags', []), affiliate_link=product['affiliate_url'])
+                    except Exception as e:
+                        log.warning(f"⚠️ YouTube upload issue: {e}")
+
+                # Tracking & Success logic
                 processed_successfully.append(product)
-                
-                # Send to Make.com webhook
                 send_to_make(product)
-                
-                # Save to processed history
                 save_processed_product(product)
-                
-                # Be respectful between products
+                success_count += 1
+                log.info(f"✅ Finished production for {product['asin']}!")
                 time.sleep(2)
 
+            except GroqQuotaExceeded as e:
+                log.error(f"🛑 Groq Quota hit during loop: {e}")
+                break # Exit loop but sync what we have
             except Exception as e:
                 log.error(f"❌ Error processing {product['asin']}: {e}")
+                failure_count += 1
                 continue
         
         # Save all successful products to website data at once
         if processed_successfully:
-            log.info("🌐 Syncing all successful products to website...")
+            log.info(f"🌐 Syncing {len(processed_successfully)} products to website...")
             update_website_data(processed_successfully)
-            
-            # Deploy to Cloudflare
             deploy_to_site()
             
             log.info("=" * 60)
-            log.info(f"🎉 ENHANCED PIPELINE COMPLETED! ({len(processed_successfully)} products)")
+            log.info("📊 PIPELINE EXECUTION SUMMARY")
+            log.info(f"🟢 Successes: {success_count}")
+            log.info(f"🔴 Failures:  {failure_count}")
+            log.info(f"🕒 Time: {datetime.now().strftime('%H:%M:%S')}")
+            log.info("=" * 60)
             return True
         else:
-            log.error("❌ No products were successfully processed.")
+            log.error("❌ Pipeline finished with 0 successes.")
             return False
         
     except Exception as e:
@@ -425,28 +434,35 @@ def update_website_data(new_products):
         log.error(f"❌ Website sync failed: {e}")
 
 def deploy_to_site():
-    """Automates Cloudflare Pages deployment"""
+    """Automates Cloudflare Pages deployment using the shared deploy script"""
     try:
-        project_name = os.getenv("CF_PROJECT_NAME", "amazing-cool-finds")
+        deploy_script = Path(__file__).parent / "tools" / "deploy.sh"
+        if not deploy_script.exists():
+            log.warning("⚠️ Deploy script not found, falling back to direct wrangler command.")
+            project_name = os.getenv("CF_PROJECT_NAME", "amazing-cool-finds")
+            cmd = f"npx wrangler pages deploy amazing --project-name {project_name}"
+        else:
+            cmd = f"bash {deploy_script}"
         
         # Use wrangler to deploy
         import subprocess
+        log.info("☁️  Deploying to Cloudflare Pages...")
         result = subprocess.run(
-            f"wrangler pages deploy amazing --project-name {project_name}",
+            cmd,
             shell=True,
             capture_output=True,
             text=True
         )
         
         if result.returncode == 0:
-            log.info("✅ Cloudflare deployment successful")
+            log.info("✅ Cloudflare deployment successful!")
             return True
         else:
-            log.warning(f"⚠️ Cloudflare deployment issue: {result.stderr}")
+            log.error(f"❌ Cloudflare deployment failed: {result.stderr}")
             return False
             
     except Exception as e:
-        log.warning(f"⚠️ Cloudflare deployment failed: {e}")
+        log.error(f"❌ Cloudflare deployment error: {e}")
         return False
 
 def run_pipeline():

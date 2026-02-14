@@ -1049,14 +1049,7 @@
         </div>
 
         <div class="product-grid" id="productGrid">
-            <!-- Simulated Pulse Loader -->
-            <div class="card" style="opacity: 0.5;">
-                <div class="card__img-wrap" style="background: #222;"></div>
-                <div class="card__body">
-                    <div style="height: 20px; background: #333; margin-bottom: 10px; width: 80%;"></div>
-                    <div style="height: 15px; background: #333; width: 40%;"></div>
-                </div>
-            </div>
+            <!-- Loader removed -->
         </div>
     </section>
 
@@ -1190,7 +1183,18 @@
                 }
 
                 // LOCAL PRODUCTS FIRST, then cloud products
-                allProducts = [...localProducts, ...cloudProducts];
+                let distinctMap = new Map();
+                [...localProducts, ...cloudProducts].forEach(p => {
+                    // Strict Image Check
+                    const hasImg = p.image_url && !p.image_url.includes('placehold.co') && !p.image_url.includes('pollinations.ai');
+                    const hasGallery = p.images && p.images.length > 0 && !p.images[0].includes('placehold.co');
+                    
+                    if (hasImg || hasGallery) {
+                        distinctMap.set(p.asin, p);
+                    }
+                });
+                
+                allProducts = Array.from(distinctMap.values());
                 window.fullProductList = allProducts;
                 
                 if (allProducts.length === 0) {
@@ -1350,26 +1354,37 @@
             
             try {
                 // 1. Fetch Local Articles
-                let articles = [];
+                let articlesList = [];
                 try {
                     const localRes = await fetch(`data/articles.json?v=${new Date().getTime()}`);
-                    if (localRes.ok) articles = await localRes.json();
+                    if (localRes.ok) articlesList = await localRes.json();
                 } catch(e) { console.log("No local articles"); }
 
                 // 2. Fetch Autonomous Articles from Cloudflare
+                let cloudArticles = [];
                 try {
                     const cloudRes = await fetch(`${WORKER_URL}/api/articles`);
-                    if (cloudRes.ok) {
-                        const cloudArticles = await cloudRes.json();
-                        // Transform cloud articles to match homepage links
-                        const transformed = cloudArticles.map(a => ({
-                            ...a,
-                            url: `article.html?id=${a.slug}`, // Point to the dynamic viewer
-                            isCloud: true
-                        }));
-                        articles = [...transformed, ...articles];
-                    }
+                    if (cloudRes.ok) cloudArticles = await cloudRes.json();
                 } catch(e) { console.log("Cloud articles fetch failed"); }
+
+                // 3. Merge and De-duplicate by slug
+                const articleMap = new Map();
+                
+                // Load cloud articles first
+                cloudArticles.forEach(a => {
+                    articleMap.set(a.slug, {
+                        ...a,
+                        url: `article.html?id=${a.slug}`,
+                        isCloud: true
+                    });
+                });
+                
+                // Overwrite with local articles (local has priority)
+                articlesList.forEach(a => {
+                    articleMap.set(a.slug, a);
+                });
+
+                let articles = Array.from(articleMap.values());
                 
                 if (articles.length === 0) {
                     grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">New stories arriving soon...</p>';

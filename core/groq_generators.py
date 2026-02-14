@@ -1,8 +1,13 @@
 import os
 import json
 import logging
-from groq import Groq
+from groq import Groq, RateLimitError, InternalServerError, APIStatusError
 from pathlib import Path
+import time
+
+class GroqQuotaExceeded(Exception):
+    """Custom exception when API quota is empty"""
+    pass
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -41,28 +46,40 @@ class GroqScriptGenerator:
             "DO NOT include scene descriptions like '[Visual: ...]', ONLY the narration text."
         )
 
-        try:
-            log.info(f"🧠 Generating Groq script for '{product_name}'...")
-            chat_completion = self.client.chat.completions.create(
-                messages=[{"role": "user", "content": prompt}],
-                model=self.model,
-                response_format={"type": "json_object"},
-                temperature=0.7,
-            )
-            res = json.loads(chat_completion.choices[0].message.content)
-            return {
-                "title": res.get("title", f"Check out this {product_name}!"),
-                "narration": res.get("narration", f"You have to see this! The {product_name} is a game changer at only {price}."),
-                "hashtags": res.get("hashtags", ["#amazonfinds", "#coolgadgets", "#musthaves"])
-            }
+        for attempt in range(3):
+            try:
+                log.info(f"🧠 Generating Groq script for '{product_name}' (Attempt {attempt+1})...")
+                chat_completion = self.client.chat.completions.create(
+                    messages=[{"role": "user", "content": prompt}],
+                    model=self.model,
+                    response_format={"type": "json_object"},
+                    temperature=0.7,
+                )
+                res = json.loads(chat_completion.choices[0].message.content)
+                return {
+                    "title": res.get("title", f"Check out this {product_name}!"),
+                    "narration": res.get("narration", f"You have to see this! The {product_name} is a game changer at only {price}."),
+                    "hashtags": res.get("hashtags", ["#amazonfinds", "#coolgadgets", "#musthaves"])
+                }
 
-        except Exception as e:
-            log.error(f"Groq Script Generation failed: {e}")
-            return {
-                "title": f"Must Have: {product_name}",
-                "narration": f"This {product_name} is absolutely amazing for only {price}. You need to check it out right now!",
-                "hashtags": ["#amazonfinds", "#shopping"]
-            }
+            except RateLimitError as e:
+                log.warning(f"⏳ Groq Rate Limit hit: {e}. Waiting 10s...")
+                if "quota" in str(e).lower() or "insufficient" in str(e).lower():
+                    raise GroqQuotaExceeded("Groq API Quota reached its limit.")
+                time.sleep(10)
+            except (InternalServerError, APIStatusError) as e:
+                log.warning(f"⚠️ Groq API issue: {e}. Retrying...")
+                time.sleep(2)
+            except Exception as e:
+                log.error(f"❌ Unexpected Groq Script error: {e}")
+                break
+
+        # If all retries fail, return a safe fallback script
+        return {
+            "title": f"Must Have: {product_name}",
+            "narration": f"This {product_name} is absolutely amazing for only {price}. You need to check it out right now!",
+            "hashtags": ["#amazonfinds", "#shopping"]
+        }
 
 class GroqVoiceGenerator:
     def __init__(self, api_key):
@@ -76,27 +93,34 @@ class GroqVoiceGenerator:
         Fails fast if Groq API is not available.
         """
         # Only use Groq Neural Voice (Diana)
-        neural_path = f"temp/voice_{asin}.wav"
-        try:
-            log.info(f"🗣️  Generating Groq Neural Voiceover (Diana) for {asin}...")
-            response = self.client.audio.speech.create(
-                model=self.model,
-                voice=self.voice, # "diana"
-                response_format="wav",
-                input=text,
-            )
-            with open(neural_path, 'wb') as f:
-                if hasattr(response, 'iter_bytes'):
-                    for chunk in response.iter_bytes(): f.write(chunk)
-                else:
-                    f.write(response.read())
-            log.info(f"✅ Groq Neural Voiceover saved to {neural_path}")
-            return neural_path
+        for attempt in range(2):
+            try:
+                log.info(f"🗣️  Generating Groq Neural Voiceover (Diana) for {asin} (Attempt {attempt+1})...")
+                response = self.client.audio.speech.create(
+                    model=self.model,
+                    voice=self.voice,
+                    response_format="wav",
+                    input=text,
+                )
+                with open(neural_path, 'wb') as f:
+                    if hasattr(response, 'iter_bytes'):
+                        for chunk in response.iter_bytes(): f.write(chunk)
+                    else:
+                        f.write(response.read())
+                log.info(f"✅ Groq Neural Voiceover saved to {neural_path}")
+                return neural_path
 
-        except Exception as e:
-            log.error(f"❌ Groq Voice API failed: {e}")
-            log.warning(f"⚠️ Skipping voice generation for {asin}. Product will be skipped.")
-            return None
+            except RateLimitError as e:
+                if "quota" in str(e).lower():
+                    raise GroqQuotaExceeded("Groq Voice API Quota exhausted.")
+                log.warning(f"⏳ Voice Rate Limit: {e}. Waiting...")
+                time.sleep(5)
+            except Exception as e:
+                log.error(f"❌ Groq Voice API failed: {e}")
+                if "insufficient" in str(e).lower(): raise GroqQuotaExceeded("Quota exhausted")
+        
+        log.warning(f"⚠️ Failed to generate voice for {asin} after retries.")
+        return None
 
 class GroqProductSelector:
     def __init__(self, api_key):

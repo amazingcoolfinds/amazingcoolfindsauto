@@ -390,7 +390,12 @@
                     }
                 } catch(e){}
 
-                const all = [...cloudArticles, ...localArticles].sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+                // 3. Merge and De-duplicate by slug
+                const articleMap = new Map();
+                cloudArticles.forEach(a => articleMap.set(a.slug, a));
+                localArticles.forEach(a => articleMap.set(a.slug, a));
+
+                const all = Array.from(articleMap.values()).sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
 
                 if(all.length === 0) {
                     grid.innerHTML = '<p>No articles found yet.</p>';

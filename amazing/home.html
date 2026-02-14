@@ -624,7 +624,18 @@
                     if (response.ok) cloudProducts = await response.json();
                 } catch(e) {}
 
-                const allProducts = [...localProducts, ...cloudProducts];
+                // Combine with local first, ensuring valid images and no duplicates
+                let distinctMap = new Map();
+                [...localProducts, ...cloudProducts].forEach(p => {
+                    const hasImg = p.image_url && !p.image_url.includes('placehold.co') && !p.image_url.includes('pollinations.ai');
+                    const hasGallery = p.images && p.images.length > 0 && !p.images[0].includes('placehold.co');
+                    
+                    if (hasImg || hasGallery) {
+                        distinctMap.set(p.asin, p);
+                    }
+                });
+                
+                const allProducts = Array.from(distinctMap.values());
                 
                 // Filter only Home & Auto Items
                 const filtered = allProducts.filter(p => {
@@ -670,7 +681,7 @@
                                 <img src="${img}" 
                                      class="card__img ${idx === 0 ? 'active' : ''}" 
                                      alt="${p.title}" 
-                                     onerror="this.src='https://placehold.co/1080x1920/222/fff?text=No+Image'">
+                                     onerror="this.style.display='none'">
                             `).join('')}
                         </div>
                     </div>
@@ -715,23 +726,26 @@
         async function loadArticles() {
             try {
                 // 1. Fetch Cloud Articles
-                let articles = [];
+                let cloudArticles = [];
                 try {
                     const cloudRes = await fetch(`${WORKER_URL}/api/articles`);
-                    if (cloudRes.ok) articles = await cloudRes.json();
+                    if (cloudRes.ok) cloudArticles = await cloudRes.json();
                 } catch(e) {}
 
                 // 2. Fetch Local Articles
+                let localArticles = [];
                 try {
                     const localRes = await fetch(`data/articles.json?v=${new Date().getTime()}`);
-                    if (localRes.ok) {
-                        const localArticles = await localRes.json();
-                        articles = [...articles, ...localArticles];
-                    }
+                    if (localRes.ok) localArticles = await localRes.json();
                 } catch(e) {}
                 
+                // 3. De-duplicate by slug (Local has priority)
+                const articleMap = new Map();
+                cloudArticles.forEach(a => articleMap.set(a.slug, a));
+                localArticles.forEach(a => articleMap.set(a.slug, a));
+
                 // Filter Articles by Category
-                const filtered = articles.filter(a => a.category === PAGE_CATEGORY);
+                const filtered = Array.from(articleMap.values()).filter(a => a.category === PAGE_CATEGORY);
                 
                 const grid = document.getElementById('articlesGrid');
                 if (filtered.length === 0) {

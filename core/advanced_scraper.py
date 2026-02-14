@@ -61,44 +61,36 @@ class AdvancedScraper:
                 page.goto(url, timeout=30000, wait_until='domcontentloaded')
                 
                 # Check for "dog" page (404) or Captcha
-                if "To discuss automated access" in page.content():
+                content = page.content()
+                if "To discuss automated access" in content or "robot check" in content.lower():
                     log.warning("⚠️  Amazon blocked the request (Captcha/Bot Detection)")
                     return None
                 
                 # Extract content
-                html = page.content()
+                html = content
                 
-                # Close browser immediately to free resources
+                # Close browser explicitly
                 browser.close()
                 
                 # Parse with BeautifulSoup
                 from bs4 import BeautifulSoup
+                import json
                 soup = BeautifulSoup(html, 'html.parser')
                 
                 # 1. Title
                 title = None
-                title_selectors = [
-                    '#productTitle',
-                    '#title',
-                    '.a-size-extra-large',
-                    'h1.a-size-large'
-                ]
+                title_selectors = ['#productTitle', '#title', '.a-size-extra-large']
                 for selector in title_selectors:
                     el = soup.select_one(selector)
                     if el:
                         title = el.get_text(strip=True)
                         break
                 
+                if not title: return None
+
                 # 2. Price
                 price = "$29.99"
-                # Try multiple common price selectors
-                price_selectors = [
-                    '.a-price .a-offscreen',
-                    '#price_inside_buybox',
-                    '#priceblock_ourprice',
-                    '#priceblock_dealprice',
-                    '.apexPriceToPay .a-offscreen'
-                ]
+                price_selectors = ['.a-price .a-offscreen', '#price_inside_buybox', '#priceblock_ourprice']
                 for selector in price_selectors:
                     el = soup.select_one(selector)
                     if el:
@@ -107,28 +99,17 @@ class AdvancedScraper:
                 
                 # 3. Images (Hi-Res) - Improved extraction
                 images = []
-                # Look for the colorImages JSON which contains hi-res variants
-                # This is more reliable than hiRes regex
                 json_match = re.search(r'colorImages":\s*({.+?}),\s*"', html)
                 if json_match:
                     try:
                         img_data = json.loads(json_match.group(1))
-                        # The JSON structure is complex, we target the main hiRes urls
                         for color in img_data.values():
                             for entry in color:
-                                if 'hiRes' in entry and entry['hiRes']:
-                                    images.append(entry['hiRes'])
-                                elif 'large' in entry and entry['large']:
-                                    images.append(entry['large'])
+                                url = entry.get('hiRes') or entry.get('large')
+                                if url and 'https' in url and 'sprite' not in url:
+                                    images.append(url)
                     except: pass
                 
-                # Fallback to previous hiRes regex
-                if not images:
-                    hi_res_matches = re.findall(r'"hiRes":"(https://[^"]+)"', html)
-                    if hi_res_matches:
-                        images = list(dict.fromkeys(hi_res_matches))
-                
-                # Fallback to landing image or thumbnail gallery
                 if not images:
                     img_els = soup.select('#altImages img, #landingImage')
                     for img in img_els:
@@ -136,9 +117,11 @@ class AdvancedScraper:
                         if 'https' in src and 'sprite' not in src:
                             images.append(src)
                         
-                images = list(dict.fromkeys(images)) # Dedup
+                images = [img for img in list(dict.fromkeys(images)) if len(img) > 20] # Dedup & filter short URLs
+                
                 if not images:
-                     images = [f"https://placehold.co/1080x1920/4A90E2/FFF.png?text={asin}"]
+                    log.warning(f"⚠️ No valid images found for {asin}. Skipping.")
+                    return None
                 
                 # 4. Rating & Reviews
                 rating = "4.5"
@@ -272,21 +255,54 @@ class AdvancedScraper:
                 
                 for item in items[:max_results]:
                     asin = item.get_attribute('data-asin')
-                    if asin:
+                    if not asin: continue
+                    
+                    try:
                         # Extract basic info from search result
                         title_el = item.query_selector('h2 span')
                         title = title_el.inner_text() if title_el else f"Product {asin}"
                         
+                        # Extract Price
+                        price = "$0.00"
+                        price_el = item.query_selector('.a-price .a-offscreen')
+                        if price_el:
+                            price = price_el.inner_text()
+                        
+                        # Extract Rating
+                        rating = "0.0"
+                        rating_el = item.query_selector('i.a-icon-star-small span, i.a-icon-star span')
+                        if rating_el:
+                            rating_text = rating_el.inner_text()
+                            r_match = re.search(r'(\d[,.]\d)', rating_text)
+                            if r_match:
+                                rating = r_match.group(1).replace(',', '.')
+                        
+                        # Extract Reviews
+                        reviews = "0"
+                        reviews_el = item.query_selector('span[aria-label*="reviews"], .a-size-small .a-link-normal')
+                        if reviews_el:
+                            rev_text = reviews_el.get_attribute('aria-label') or reviews_el.inner_text()
+                            rev_match = re.search(r'([\d,.]+)', rev_text)
+                            if rev_match:
+                                reviews = rev_match.group(1).replace(',', '').replace('.', '')
+
+                        # Extract Prime
+                        is_prime = bool(item.query_selector('.a-icon-prime'))
+
                         products.append({
                             'asin': asin,
                             'title': title,
-                            'price': "$29.99", # Placeholder, will be enriched
-                            'rating': "4.5",
-                            'image_url': f"https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL300_&ASIN={asin}&MarketPlace=US&ID=AsinImage", # Thumbnail trick
+                            'price': price,
+                            'rating': rating,
+                            'reviews_count': reviews,
+                            'is_prime': is_prime,
+                            'image_url': f"https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL300_&ASIN={asin}&MarketPlace=US&ID=AsinImage",
                             'affiliate_url': f"https://www.amazon.com/dp/{asin}?tag={self.associate_tag}"
                         })
+                    except Exception as e:
+                        log.warning(f"Failed to parse item {asin}: {e}")
                         
-                log.info(f"✓ Found {len(products)} products via Playwright")
+                log.info(f"✓ Found {len(products)} products with basic info via Playwright")
                 
             except Exception as e:
                 log.error(f"Search failed: {e}")
