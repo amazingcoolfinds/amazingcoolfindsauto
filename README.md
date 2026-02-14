@@ -245,3 +245,4 @@ Edit these in `pipeline.py`:
 | YouTube auth browser doesn't open | Delete `google_credentials/token.pkl` and re-run |
 | "ItemNotAccessible" from Amazon | Some products are restricted — pipeline skips them automatically |
 | Video has no audio | Download background music to `assets/background_music.mp3` |
+# Test workflow trigger - Sat Feb 14 12:23:00 EST 2026
