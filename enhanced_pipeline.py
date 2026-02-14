@@ -312,6 +312,11 @@ def run_enhanced_pipeline():
                 
                 # 3. Voiceover (Neural Groq Diana)
                 log.info("🗣️  Generating voiceover...")
+                if not voice_gen:
+                    log.error(f"⚠️ Voice generator not initialized. Skipping {product['asin']}.")
+                    failure_count += 1
+                    continue
+
                 voice_path = voice_gen.generate(script['narration'], product['asin'])
                 
                 if not voice_path:
