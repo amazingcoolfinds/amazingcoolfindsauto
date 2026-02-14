@@ -388,6 +388,17 @@ def get_website_link(product):
     enhanced = get_enhanced_website_link(product)
     return enhanced['link']
 
+def serialize_for_json(obj):
+    """Convert non-serializable objects to JSON-compatible format"""
+    if isinstance(obj, Path):
+        return str(obj)
+    elif isinstance(obj, dict):
+        return {k: serialize_for_json(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [serialize_for_json(item) for item in obj]
+    else:
+        return obj
+
 def send_to_make(product):
     """Sends product data to Make.com"""
     webhook_url = os.getenv("MAKE_WEBHOOK_URL")
@@ -398,7 +409,9 @@ def send_to_make(product):
     try:
         log.info(f"⚡ Sending {product['asin']} to Make.com...")
         import requests
-        response = requests.post(webhook_url, json=product, timeout=10)
+        # Serialize product data to ensure JSON compatibility
+        clean_product = serialize_for_json(product)
+        response = requests.post(webhook_url, json=clean_product, timeout=10)
         if response.ok:
             log.info("✓ Webhook sent successfully.")
         else:
@@ -421,9 +434,12 @@ def update_website_data(new_products):
             except Exception as e:
                 log.warning(f"⚠️ Could not load existing products.json: {e}")
         
+        # Serialize new products to ensure JSON compatibility
+        clean_new_products = [serialize_for_json(p) for p in new_products]
+        
         # Merge products by ASIN (new ones overwrite old ones if duplicated)
         product_dict = {p['asin']: p for p in existing_products}
-        for p in new_products:
+        for p in clean_new_products:
             product_dict[p['asin']] = p
             
         merged_list = list(product_dict.values())

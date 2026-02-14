@@ -20,35 +20,49 @@ class GroqScriptGenerator:
 
     def generate_script(self, product: dict) -> dict:
         """
-        Generates a viral, human-like video script for the product.
+        Generates a viral, native English video script for the product.
         Returns a dictionary with title, narration, and hashtags.
         """
-        product_name = product.get('title', 'Unknown Product')
+        product_title = product.get('title', 'Unknown Product')
         price = product.get('price', '$20')
         category = product.get('category', 'Awesome Find')
-        bullets = " ".join(product.get('bullets', []))
+        bullets = product.get('bullets', [])
         
-        # Strip technical identifiers if they snuck in
-        if product_name.startswith("Product ") and len(product_name.strip()) < 20: 
-            product_name = "this awesome find"
-            
+        # Extract brand name if present (usually first word or before first comma)
+        brand = ""
+        if ',' in product_title:
+            brand = product_title.split(',')[0].strip()
+        else:
+            brand = product_title.split()[0] if product_title else ""
+        
+        # Format bullets for better readability
+        bullet_text = ". ".join(bullets[:4]) if bullets else "Amazing quality and features"
+        
         prompt = (
-            f"Write a short, viral TikTok script for a product named '{product_name}' in the category '{category}', priced at {price}. "
-            f"Product Details: {bullets}. "
-            "CRITICAL: The script MUST be about this specific product and its features. "
-            "Do NOT read the ASIN or technical codes in the narration. "
-            "Return the response in JSON format with exactly three keys: "
-            "'title' (a catchy hook), 'narration' (the full spoken text, ~12-15s), "
-            "and 'hashtags' (3-5 viral hashtags). "
-            "CRITICAL: The entire response MUST be in English. "
-            "Keep it fast-paced and minimal (~3 sentences max) to save viewer time. "
-            "The narration MUST end with: 'Link in bio'. "
-            "Sound enthusiastic but brief."
+            f"You are a viral TikTok/YouTube Shorts content creator. Create an engaging, native English script for this product:\n\n"
+            f"PRODUCT: {product_title}\n"
+            f"BRAND: {brand}\n"
+            f"PRICE: {price}\n"
+            f"CATEGORY: {category}\n"
+            f"KEY FEATURES: {bullet_text}\n\n"
+            "SCRIPT REQUIREMENTS:\n"
+            "1. START by mentioning the brand/product name naturally (e.g., 'Check out this [Brand] [Product]' or 'You need to see the [Brand Name]')\n"
+            "2. USE the product features to create a compelling, viral narrative (2-3 sentences max)\n"
+            "3. HIGHLIGHT what makes it special or solves a problem\n"
+            "4. END with: 'Link is in the first comment!' (MANDATORY)\n"
+            "5. Keep it conversational, enthusiastic, and under 20 seconds when spoken\n"
+            "6. Sound like a real person discovering something cool, NOT like an ad\n"
+            "7. Use native English expressions and natural speech patterns\n\n"
+            "Return JSON with exactly three keys:\n"
+            "- 'title': A catchy, clickable video title (5-8 words)\n"
+            "- 'narration': The full spoken script (natural, conversational, native English)\n"
+            "- 'hashtags': 4-5 viral hashtags as a list\n\n"
+            "CRITICAL: Everything must be in fluent, native English. No technical jargon or ASIN codes."
         )
 
         for attempt in range(3):
             try:
-                log.info(f"🧠 Generating Groq script for '{product_name}' (Attempt {attempt+1})...")
+                log.info(f"🧠 Generating Groq script for '{product_title[:50]}...' (Attempt {attempt+1})...")
                 chat_completion = self.client.chat.completions.create(
                     messages=[{"role": "user", "content": prompt}],
                     model=self.model,
@@ -57,9 +71,9 @@ class GroqScriptGenerator:
                 )
                 res = json.loads(chat_completion.choices[0].message.content)
                 return {
-                    "title": res.get("title", f"Check out this {product_name}!"),
-                    "narration": res.get("narration", f"You have to see this! The {product_name} is a game changer at only {price}."),
-                    "hashtags": res.get("hashtags", ["#amazonfinds", "#coolgadgets", "#musthaves"])
+                    "title": res.get("title", f"Check out this {brand}!"),
+                    "narration": res.get("narration", f"You have to see this! The {brand} is a game changer at only {price}. Link is in the first comment!"),
+                    "hashtags": res.get("hashtags", ["#amazonfinds", "#coolgadgets", "#musthaves", "#viral"])
                 }
 
             except RateLimitError as e:
@@ -76,9 +90,9 @@ class GroqScriptGenerator:
 
         # If all retries fail, return a safe fallback script
         return {
-            "title": f"Must Have: {product_name}",
-            "narration": f"This {product_name} is absolutely amazing for only {price}. You need to check it out right now!",
-            "hashtags": ["#amazonfinds", "#shopping"]
+            "title": f"Must Have: {brand}",
+            "narration": f"Check out this {brand}! It's absolutely amazing at only {price}. You need to see this. Link is in the first comment!",
+            "hashtags": ["#amazonfinds", "#shopping", "#viral", "#musthave"]
         }
 
 class GroqVoiceGenerator:
