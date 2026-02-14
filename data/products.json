@@ -1,5 +1,162 @@
 [
   {
+    "title": "Turbo Ultimate 12V Portable Jump Starter",
+    "price": "$149.99",
+    "asin": "B0B3K8G9M8",
+    "discount": "10% OFF",
+    "category": "Auto",
+    "affiliate_url": "https://www.amazon.com/dp/B0B3K8G9M8?tag=amazingcoolfinds-20",
+    "image_url": "https://image.pollinations.ai/prompt/Turbo%20Ultimate%2012V%20Portable%20Jump%20Starter%20product%20photography%2C%20high%20detail%2C%20studio%20lighting%2C%20white%20background?width=800&height=600&nologo=true",
+    "images": [],
+    "processed_at": "2026-02-14T01:53:42.112804",
+    "rating": "4.5",
+    "reviews_count": "100",
+    "is_prime": true
+  },
+  {
+    "title": "Garage Equipment 1/2 HP Air Compressor",
+    "price": "$129.99",
+    "asin": "B0B3K8G9P9",
+    "discount": "15% OFF",
+    "category": "Auto",
+    "affiliate_url": "https://www.amazon.com/dp/B0B3K8G9P9?tag=amazingcoolfinds-20",
+    "image_url": "https://image.pollinations.ai/prompt/Garage%20Equipment%201%2F2%20HP%20Air%20Compressor%20product%20photography%2C%20high%20detail%2C%20studio%20lighting%2C%20white%20background?width=800&height=600&nologo=true",
+    "images": [],
+    "processed_at": "2026-02-14T01:53:42.112800",
+    "rating": "4.5",
+    "reviews_count": "100",
+    "is_prime": true
+  },
+  {
+    "title": "Levi's Denim Jacket",
+    "price": "$198",
+    "asin": "B07WTSFF7M",
+    "discount": "15% OFF",
+    "category": "Lifestyle",
+    "affiliate_url": "https://www.amazon.com/dp/B07WTSFF7M?tag=amazingcoolfinds-20",
+    "image_url": "https://image.pollinations.ai/prompt/Levi's%20Denim%20Jacket%20product%20photography%2C%20high%20detail%2C%20studio%20lighting%2C%20white%20background?width=800&height=600&nologo=true",
+    "images": [],
+    "processed_at": "2026-02-14T01:53:42.112795",
+    "rating": "4.5",
+    "reviews_count": "100",
+    "is_prime": true
+  },
+  {
+    "title": "Fossil Grant Chronograph Watch",
+    "price": "$229",
+    "asin": "B07QD1RF3R",
+    "discount": "10% OFF",
+    "category": "Lifestyle",
+    "affiliate_url": "https://www.amazon.com/dp/B07QD1RF3R?tag=amazingcoolfinds-20",
+    "image_url": "https://image.pollinations.ai/prompt/Fossil%20Grant%20Chronograph%20Watch%20product%20photography%2C%20high%20detail%2C%20studio%20lighting%2C%20white%20background?width=800&height=600&nologo=true",
+    "images": [],
+    "processed_at": "2026-02-14T01:53:42.112774",
+    "rating": "4.5",
+    "reviews_count": "100",
+    "is_prime": true
+  },
+  {
+    "title": "Breville Smart Oven Air Fryer",
+    "price": "$499.95",
+    "asin": "B07B9RNM3V",
+    "discount": "10% OFF",
+    "category": "Home",
+    "affiliate_url": "https://www.amazon.com/dp/B07B9RNM3V?tag=amazingcoolfinds-20",
+    "image_url": "https://image.pollinations.ai/prompt/Breville%20Smart%20Oven%20Air%20Fryer%20product%20photography%2C%20high%20detail%2C%20studio%20lighting%2C%20white%20background?width=800&height=600&nologo=true",
+    "images": [],
+    "processed_at": "2026-02-14T01:53:42.112769",
+    "rating": "4.5",
+    "reviews_count": "100",
+    "is_prime": true
+  },
+  {
+    "title": "Le Creuset Enameled Cast Iron Dutch Oven",
+    "price": "$249.95",
+    "asin": "B00004OQ9U",
+    "discount": "15% OFF",
+    "category": "Home",
+    "affiliate_url": "https://www.amazon.com/dp/B00004OQ9U?tag=amazingcoolfinds-20",
+    "image_url": "https://image.pollinations.ai/prompt/Le%20Creuset%20Enameled%20Cast%20Iron%20Dutch%20Oven%20product%20photography%2C%20high%20detail%2C%20studio%20lighting%2C%20white%20background?width=800&height=600&nologo=true",
+    "images": [],
+    "processed_at": "2026-02-14T01:53:42.112764",
+    "rating": "4.5",
+    "reviews_count": "100",
+    "is_prime": true
+  },
+  {
+    "title": "Anker Nebula Capsule II",
+    "price": "$699.99",
+    "asin": "B09F9R7K2J",
+    "discount": "None",
+    "category": "Tech",
+    "affiliate_url": "https://www.amazon.com/dp/B09F9R7K2J?tag=amazingcoolfinds-20",
+    "image_url": "https://image.pollinations.ai/prompt/Anker%20Nebula%20Capsule%20II%20product%20photography%2C%20high%20detail%2C%20studio%20lighting%2C%20white%20background?width=800&height=600&nologo=true",
+    "images": [],
+    "processed_at": "2026-02-14T01:53:42.112750",
+    "rating": "4.5",
+    "reviews_count": "100",
+    "is_prime": true
+  },
+  {
+    "title": "Ring Always Home Cam",
+    "price": "$249.99",
+    "asin": "B09R7K3KLY",
+    "discount": "None",
+    "category": "Tech",
+    "affiliate_url": "https://www.amazon.com/dp/B09R7K3KLY?tag=amazingcoolfinds-20",
+    "image_url": "https://image.pollinations.ai/prompt/Ring%20Always%20Home%20Cam%20product%20photography%2C%20high%20detail%2C%20studio%20lighting%2C%20white%20background?width=800&height=600&nologo=true",
+    "images": [],
+    "processed_at": "2026-02-14T01:53:42.110355",
+    "rating": "4.5",
+    "reviews_count": "100",
+    "is_prime": true
+  },
+  {
+    "asin": "B0FZ9ZMF3N",
+    "title": "sharge ICEMAG 3 MagSafe Portable Charger, Qi2 25W Magnetic Power Bank 10000mAh 35W USB-C Fast Charging, with Active Cooling& Built-in Cable, Transparent RGB Design for iPhone 17/16/15/14 Series",
+    "price": "$79.90",
+    "rating": "4.6",
+    "reviews_count": "74",
+    "is_prime": true,
+    "bsr": [
+      {
+        "rank": "4795",
+        "category": "Cell Phones & Accessories"
+      },
+      {
+        "rank": "262",
+        "category": "Cell Phone Portable Power Banks Special features"
+      }
+    ],
+    "image_url": "https://m.media-amazon.com/images/I/716GNbv0UXL._AC_SL1500_.jpg",
+    "images": [
+      "https://m.media-amazon.com/images/I/716GNbv0UXL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61r1MwBqWfL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61RWEsSW9HL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51pG8wx1FGL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71ozVRnj7mL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61H0z4UF8UL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/614qcoaTFLL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61i2gxjWolL._AC_SL1500_.jpg"
+    ],
+    "bullets": [
+      "\u3010Next-Gen Qi2 25W Wireless Charging\u3011Enjoy the freedom of Qi2 25W MagSafe fast charging with up to 25W output. Simply snap and charge \u2014 no cables, no hassle. Designed for iPhone 17/16/15/14 users who want power and convenience in one.",
+      "\u301035W USB-C Super Fast Charging\u3011Power up your MacBook Air, iPad, or Android devices at full speed with a max 35W USB-C port that supports PD, QC, AFC and FCP protocols. One power bank, total compatibility \u2014 perfect for travelers and digital creators.",
+      "\u3010Built-In Stand for Hands-Free Viewing\u3011The upgraded integrated kickstand keeps your device steady while charging \u2014 both in portrait and landscape modes. Perfect for watching videos, FaceTime calls, or following recipes on the go. Comfort meets functionality.",
+      "\u3010Transparent Design with Dynamic RGB Glow\u3011A sleek see-through case and subtle RGB light combine aesthetics with innovation. This portable charger doesn\u2019t just power your phone \u2014 it powers your style.",
+      "\u3010With Built-in USB C Cable\u3011Charge and Create Freely. The side-mounted USB-C cable and port make it easy to hold your phone naturally while charging. Stay connected, scroll, and shoot comfortably \u2014 ideal for on-the-go charging."
+    ],
+    "affiliate_url": "https://www.amazon.com/dp/B0FZ9ZMF3N?tag=amazingcoolfinds-20",
+    "category": "Tech",
+    "processed_at": "2026-02-13T16:00:00",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/item/B0FZ9ZMF3N#product-B0FZ9ZMF3N",
+      "unique_id": "B0FZ9ZMF3N",
+      "scroll_target": "product-B0FZ9ZMF3N",
+      "full_url": "https://amazing-cool-finds.com/item/B0FZ9ZMF3N#product-B0FZ9ZMF3N"
+    }
+  },
+  {
     "asin": "B07VGRVKSN",
     "title": "HOTOR Car Trash Can with Lid and Storage Pockets - 100% Leak-Proof Organizer, Waterproof Garbage Can, Multipurpose Trash Bin for Car, 2 Gallons, Black",
     "price": "$9.49",
@@ -148,5 +305,96 @@
       "full_url": "https://amazing-cool-finds.com/item/e2de77487356#product-B0C49SCMFJ"
     },
     "processed_at": "2026-02-11T11:25:24.018904"
+  },
+  {
+    "asin": "B0F8BR8CK2",
+    "title": "SPOTMINDERS Husband Valentines Day Gifts for Him Apple MFi Certified Wallet Tracker Works with Apple Find My Tracking Card for Wallet Card Rechargeable IP68 0.07in Slim iPhone Item Finder for Luggage",
+    "price": "$29.97",
+    "rating": "4.5",
+    "image_url": "https://m.media-amazon.com/images/I/71ygdUwuR6L._AC_SL1500_.jpg",
+    "images": [
+      "https://m.media-amazon.com/images/I/71ygdUwuR6L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61yc5AZrQmL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/715Od0Ryl0L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61jcHDJltHL._AC_SL1080_.jpg",
+      "https://m.media-amazon.com/images/I/71oJFoM9RFL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81doG7rMzsL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/818zgC1JCBL._AC_SL1500_.jpg"
+    ],
+    "affiliate_url": "https://www.amazon.com/dp/B0F8BR8CK2?tag=amazingcoolfinds-20",
+    "category": "Tech",
+    "commission": 0.04,
+    "selection_score": 95,
+    "selection_reasoning": "Restored viral product.",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/item/restored-B0F8BR8CK2#product-B0F8BR8CK2",
+      "unique_id": "restored-B0F8BR8CK2",
+      "scroll_target": "product-B0F8BR8CK2"
+    },
+    "processed_at": "2026-02-11T12:55:00.000000"
+  },
+  {
+    "asin": "B0FMD7B94T",
+    "title": "Frigga 4G Cellular & WiFi Temperature Humidity Monitor, 2 Years Subscription Included",
+    "price": "$119.99",
+    "rating": "4.5",
+    "image_url": "https://m.media-amazon.com/images/I/71N2tTugvEL._SL1500_.jpg",
+    "images": [
+      "https://m.media-amazon.com/images/I/71N2tTugvEL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81wnoGORAOL._SL1500_.jpg"
+    ],
+    "affiliate_url": "https://www.amazon.com/dp/B0FMD7B94T?tag=amazingcoolfinds-20",
+    "category": "Tech",
+    "commission": 0.04,
+    "selection_score": 90,
+    "selection_reasoning": "Restored high-ticket item.",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/item/restored-B0FMD7B94T#product-B0FMD7B94T",
+      "unique_id": "restored-B0FMD7B94T",
+      "scroll_target": "product-B0FMD7B94T"
+    },
+    "processed_at": "2026-02-11T12:55:00.000000"
+  },
+  {
+    "asin": "B0CX1FRR27",
+    "title": "Portable Bluetooth Speaker Valentines Gifts For Him: Powerful Crystal Clear Sound",
+    "price": "$19.98",
+    "rating": "4.5",
+    "image_url": "https://m.media-amazon.com/images/I/81p9DPknjLL._AC_SL1500_.jpg",
+    "images": [
+      "https://m.media-amazon.com/images/I/81p9DPknjLL._AC_SL1500_.jpg"
+    ],
+    "affiliate_url": "https://www.amazon.com/dp/B0CX1FRR27?tag=amazingcoolfinds-20",
+    "category": "Tech",
+    "commission": 0.04,
+    "selection_score": 88,
+    "selection_reasoning": "Restored viral gift.",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/item/restored-B0CX1FRR27#product-B0CX1FRR27",
+      "unique_id": "restored-B0CX1FRR27",
+      "scroll_target": "product-B0CX1FRR27"
+    },
+    "processed_at": "2026-02-11T12:55:00.000000"
+  },
+  {
+    "asin": "B0BZC3CGS4",
+    "title": "VRURC Portable Charger Built-in Cables and AC Wall Plug, USB C Power Bank 10000mAh",
+    "price": "$26.99",
+    "rating": "4.5",
+    "image_url": "https://m.media-amazon.com/images/I/81paVZ7iQQL._AC_SL1500_.jpg",
+    "images": [
+      "https://m.media-amazon.com/images/I/81paVZ7iQQL._AC_SL1500_.jpg"
+    ],
+    "affiliate_url": "https://www.amazon.com/dp/B0BZC3CGS4?tag=amazingcoolfinds-20",
+    "category": "Tech",
+    "commission": 0.04,
+    "selection_score": 92,
+    "selection_reasoning": "Restored travel essential.",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/item/restored-B0BZC3CGS4#product-B0BZC3CGS4",
+      "unique_id": "restored-B0BZC3CGS4",
+      "scroll_target": "product-B0BZC3CGS4"
+    },
+    "processed_at": "2026-02-11T12:55:00.000000"
   }
 ]
