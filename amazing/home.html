@@ -619,12 +619,10 @@
 
                 // Fetch autonomous products from Worker
                 let cloudProducts = [];
-                /*
                 try {
                     const response = await fetch(`${WORKER_URL}/api/products`);
                     if (response.ok) cloudProducts = await response.json();
                 } catch(e) {}
-                */
 
                 const allProducts = [...localProducts, ...cloudProducts];
                 
@@ -758,7 +756,7 @@
                 
             } catch (e) {
                 console.error("Error loading articles:", e);
-                document.getElementById('articlesGrid').innerHTML = '';
+                document.getElementById('articlesGrid').innerHTML = '<p style="text-align: center; color: var(--text-muted);">Check back soon for new articles.</p>';
             }
         }
 

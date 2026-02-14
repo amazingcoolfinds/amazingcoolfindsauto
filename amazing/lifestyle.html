@@ -552,12 +552,10 @@
 
                 // Fetch autonomous products from Worker
                 let cloudProducts = [];
-                /*
                 try {
                     const response = await fetch(`${WORKER_URL}/api/products`);
                     if (response.ok) cloudProducts = await response.json();
                 } catch(e) {}
-                */
 
                 const allProducts = [...localProducts, ...cloudProducts];
                 
@@ -632,20 +630,33 @@
 
         async function loadArticles() {
             try {
-                const response = await fetch(`data/articles.json?v=${new Date().getTime()}`);
-                if (!response.ok) throw new Error("Failed");
-                const data = await response.json();
+                // 1. Fetch Cloud Articles
+                let articles = [];
+                try {
+                    const cloudRes = await fetch(`${WORKER_URL}/api/articles`);
+                    if (cloudRes.ok) articles = await cloudRes.json();
+                } catch(e) {}
+
+                // 2. Fetch Local Articles
+                try {
+                    const localRes = await fetch(`data/articles.json?v=${new Date().getTime()}`);
+                    if (localRes.ok) {
+                        const localArticles = await localRes.json();
+                        articles = [...articles, ...localArticles];
+                    }
+                } catch(e) {}
                 
-                const filtered = data.filter(a => a.category === PAGE_CATEGORY);
+                // Filter Articles by Category
+                const filtered = articles.filter(a => a.category === PAGE_CATEGORY);
                 
                 const grid = document.getElementById('articlesGrid');
                 if (filtered.length === 0) {
-                    grid.innerHTML = '<p style="text-align: center; color: var(--text-muted);">No articles just yet.</p>';
+                    grid.innerHTML = '<p style="text-align: center; color: var(--text-muted);">New articles coming soon!</p>';
                     return;
                 }
 
                 grid.innerHTML = filtered.map(a => `
-                    <a href="${a.url}" class="article-card">
+                    <a href="article.html?id=${a.slug}" class="article-card">
                         <img src="${a.image}" alt="${a.title}" class="article-card__image">
                         <div class="article-card__body">
                             <div class="article-card__meta">
@@ -661,7 +672,7 @@
                 
             } catch (e) {
                 console.error("Error loading articles:", e);
-                document.getElementById('articlesGrid').innerHTML = '';
+                document.getElementById('articlesGrid').innerHTML = '<p style="text-align: center; color: var(--text-muted);">Check back soon for new articles.</p>';
             }
         }
 

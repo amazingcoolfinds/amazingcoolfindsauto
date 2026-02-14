@@ -1181,14 +1181,12 @@
 
                 // Fetch autonomous products from Worker
                 let cloudProducts = [];
-                /*
                 try {
                     const response = await fetch(`${WORKER_URL}/api/products`);
                     if (response.ok) cloudProducts = await response.json();
                 } catch(e) {
                     console.log("Worker products unavailable");
                 }
-                */
 
                 // LOCAL PRODUCTS FIRST, then cloud products
                 allProducts = [...localProducts, ...cloudProducts];
@@ -1207,7 +1205,7 @@
         }
 
         function filterProducts(category) {
-            currentFilter = category;
+            activeFilter = category;
             
             // Update active button state
             document.querySelectorAll('.cat-btn').forEach(btn => {
@@ -1223,26 +1221,36 @@
 
         async function loadData() {
             const isLocal = window.location.protocol === 'file:';
+            
+            // Start loading all content
+            const productsPromise = loadProducts();
+            const articlesPromise = loadArticles();
+            
+            // Try to load reviews (legacy support)
             try {
-                // Fetch Reviews
-                const rRes = await fetch('data/reviews.json').catch(err => {
-                    if (isLocal) throw new Error("CORS_BLOCK");
-                    throw err;
-                });
-                reviewsData = await rRes.json();
-                
-                renderReviews();
+                const rRes = await fetch('data/reviews.json');
+                if (rRes.ok) {
+                    reviewsData = await rRes.json();
+                    renderReviews(); // Now only renders reviews
+                }
             } catch (e) {
                 console.warn("Reviews data load warning/error:", e);
-                
-                if (e.message === "CORS_BLOCK" || (isLocal && (e instanceof TypeError))) {
-                    const notice = document.createElement('div');
-                    notice.style.cssText = "background: #333; color: #fbbf24; padding: 10px; text-align: center; font-size: 0.8rem;";
-                    notice.innerHTML = "⚠️ Browsers block data loading from local files. For a full preview, run: <code>python3 -m http.server</code> in the project folder.";
-                    document.body.prepend(notice);
+                if (isLocal && (e instanceof TypeError || e.message.includes('CORS'))) {
+                    showLocalNotice();
                 }
             }
-            await loadProducts(); // Load products after reviews (or in parallel)
+
+            await Promise.allSettled([productsPromise, articlesPromise]);
+            initSearch();
+        }
+
+        function showLocalNotice() {
+            if (document.getElementById('localNotice')) return;
+            const notice = document.createElement('div');
+            notice.id = 'localNotice';
+            notice.style.cssText = "background: #333; color: #fbbf24; padding: 10px; text-align: center; font-size: 0.8rem;";
+            notice.innerHTML = "⚠️ Browsers block data loading from local files. For a full preview, run: <code>python3 -m http.server</code> in the project folder.";
+            document.body.prepend(notice);
         }
 
         function renderProducts() {
@@ -1331,8 +1339,8 @@
         }
 
         function renderReviews() {
-            // Load articles instead of reviews
-            loadArticles();
+            // This would render reviews if we had a reviews UI section
+            console.log("Reviews data ready:", reviewsData.length);
         }
 
         async function loadArticles() {
@@ -1362,7 +1370,10 @@
                     }
                 } catch(e) { console.log("Cloud articles fetch failed"); }
                 
-                if (articles.length === 0) return;
+                if (articles.length === 0) {
+                    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">New stories arriving soon...</p>';
+                    return;
+                }
                 
                 // Sort by date (newest first)
                 articles.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -1385,6 +1396,7 @@
                 `;}).join('');
             } catch (error) {
                 console.error('Error loading articles:', error);
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">Check back soon for new articles.</p>';
             }
         }
 
