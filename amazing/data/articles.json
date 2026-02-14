@@ -1,1 +1,47 @@
-[]
+[
+  {
+    "title": "Beneath the Surface: 7 Counterintuitive Secrets to Transform Your Home",
+    "slug": "beneath-the-surface-7-counterintuitive-secrets-to-transform-your-home",
+    "category": "Home",
+    "createdAt": "2026-02-14T00:01:29.448Z",
+    "image": "https://article-generator.amazingcoolfinds.workers.dev/media/hero-beneath-the-surface-7-counterintuitive-secrets-to-transform-your-home-1771027291439.png",
+    "readTime": "2 min read",
+    "metaDescription": "You think you know your home inside and out, but is it possible that you're overlooking some essential..."
+  },
+  {
+    "title": "Accelerate to the Future: 7 Mind-Bending Car Features That Will Change the Road Forever",
+    "slug": "accelerate-to-the-future-7-mind-bending-car-features-that-will-change-the-road-f",
+    "category": "Auto",
+    "createdAt": "2026-02-13T00:01:30.463Z",
+    "image": "https://article-generator.amazingcoolfinds.workers.dev/media/hero-accelerate-to-the-future-7-mind-bending-car-features-that-will-change-the-road-f-1770940891828.png",
+    "readTime": "2 min read",
+    "metaDescription": "Imagine stepping into a car that can drive itself, navigate through dense fog..."
+  },
+  {
+    "title": "Reinventing the Road: 5 Pioneering Car Tech Breakthroughs Changing the Game",
+    "slug": "reinventing-the-road-5-pioneering-car-tech-breakthroughs-changing-the-game",
+    "category": "Auto",
+    "createdAt": "2026-02-12T00:02:12.114Z",
+    "image": "https://article-generator.amazingcoolfinds.workers.dev/media/hero-reinventing-the-road-5-pioneering-car-tech-breakthroughs-changing-the-game-1770854533820.png",
+    "readTime": "4 min read",
+    "metaDescription": "Imagine a world where your car steers itself through treacherous mountain roads..."
+  },
+  {
+    "title": "Beneath the Bottom Shelf: 10 Surprising Secrets to Elevate Your World",
+    "slug": "beneath-the-bottom-shelf-10-surprising-secrets-to-elevate-your-world",
+    "category": "Lifestyle",
+    "createdAt": "2026-02-11T00:00:24.070Z",
+    "image": "https://article-generator.amazingcoolfinds.workers.dev/media/hero-beneath-the-bottom-shelf-10-surprising-secrets-to-elevate-your-world-1770768025410.png",
+    "readTime": "2 min read",
+    "metaDescription": "As you scan the aisles of your local grocery store, you might think that the most exciting thing in your cart is..."
+  },
+  {
+    "title": "Hit the Open Road: 5 Jaw-Dropping Road Trips That Will Rewire Your Adventure Radar",
+    "slug": "hit-the-open-road-5-jaw-dropping-road-trips-that-will-rewire-your-adventure-rada",
+    "category": "Auto",
+    "createdAt": "2026-02-10T00:01:17.870Z",
+    "image": "https://article-generator.amazingcoolfinds.workers.dev/media/hero-hit-the-open-road-5-jaw-dropping-road-trips-that-will-rewire-your-adventure-rada-1770681679066.png",
+    "readTime": "3 min read",
+    "metaDescription": "The open road beckons, and the time has never been more perfect to hit the gas..."
+  }
+]
