@@ -38,12 +38,12 @@ class GroqScriptGenerator:
             "CRITICAL: The script MUST be about this specific product and its features. "
             "Do NOT read the ASIN or technical codes in the narration. "
             "Return the response in JSON format with exactly three keys: "
-            "'title' (a catchy hook), 'narration' (the full spoken text, ~20-30s), "
+            "'title' (a catchy hook), 'narration' (the full spoken text, ~12-15s), "
             "and 'hashtags' (3-5 viral hashtags). "
             "CRITICAL: The entire response MUST be in English. "
-            "The narration MUST end with the call to action: 'Check it out in first comment'. "
-            "Sound enthusiastic, human, and like you're recommending it to a best friend. "
-            "DO NOT include scene descriptions like '[Visual: ...]', ONLY the narration text."
+            "Keep it fast-paced and minimal (~3 sentences max) to save viewer time. "
+            "The narration MUST end with: 'Link in bio'. "
+            "Sound enthusiastic but brief."
         )
 
         for attempt in range(3):
@@ -115,16 +115,8 @@ class GroqVoiceGenerator:
                 return neural_path
 
             except RateLimitError as e:
-                # If it's a model specific rate limit (tokens per day)
-                error_msg = str(e).lower()
-                if "rate limit reached for model" in error_msg and "tokens per day" in error_msg:
-                     log.error(f"🛑 Groq Voice Daily Limit Reached: {e}")
-                     raise GroqQuotaExceeded("Groq Voice Daily Limit Reached")
-                
-                if "quota" in error_msg:
-                    raise GroqQuotaExceeded("Groq Voice API Quota exhausted.")
-                log.warning(f"⏳ Voice Rate Limit: {e}. Waiting...")
-                time.sleep(5)
+                log.error(f"🛑 Groq Use Limit Reached: {e}")
+                raise GroqQuotaExceeded("Groq API Limit Reached - Pausing to save quota.")
             except Exception as e:
                 log.error(f"❌ Groq Voice API failed: {e}")
                 if "insufficient" in str(e).lower(): raise GroqQuotaExceeded("Quota exhausted")
