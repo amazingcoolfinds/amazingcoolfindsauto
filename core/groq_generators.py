@@ -68,6 +68,7 @@ class GroqScriptGenerator:
                     model=self.model,
                     response_format={"type": "json_object"},
                     temperature=0.7,
+                    timeout=30.0  # Add timeout
                 )
                 res = json.loads(chat_completion.choices[0].message.content)
                 return {
@@ -85,10 +86,17 @@ class GroqScriptGenerator:
                 log.warning(f"⚠️ Groq API issue: {e}. Retrying...")
                 time.sleep(2)
             except Exception as e:
-                log.error(f"❌ Unexpected Groq Script error: {e}")
-                break
+                error_msg = str(e).lower()
+                if "connection" in error_msg or "timeout" in error_msg or "network" in error_msg:
+                    wait_time = 2 ** attempt  # Exponential backoff: 1s, 2s, 4s
+                    log.warning(f"🌐 Connection error on attempt {attempt+1}/3: {e}. Waiting {wait_time}s...")
+                    time.sleep(wait_time)
+                else:
+                    log.error(f"❌ Unexpected Groq Script error: {e}")
+                    break
 
         # If all retries fail, return a safe fallback script
+        log.warning("⚠️ Using fallback script due to API failures")
         return {
             "title": f"Must Have: {brand}",
             "narration": f"Check out this {brand}! It's absolutely amazing at only {price}. You need to see this. Link is in the first comment!",
@@ -111,7 +119,7 @@ class GroqVoiceGenerator:
         assets_dir.mkdir(parents=True, exist_ok=True)
         neural_path = assets_dir / f"{asin}_voice.wav"
         
-        for attempt in range(2):
+        for attempt in range(3):  # Increased from 2 to 3 attempts
             try:
                 log.info(f"🗣️  Generating Groq Neural Voiceover (Diana) for {asin} (Attempt {attempt+1})...")
                 response = self.client.audio.speech.create(
@@ -119,6 +127,7 @@ class GroqVoiceGenerator:
                     voice=self.voice,
                     response_format="wav",
                     input=text,
+                    timeout=60.0  # Add timeout
                 )
                 with open(neural_path, 'wb') as f:
                     if hasattr(response, 'iter_bytes'):
@@ -132,8 +141,16 @@ class GroqVoiceGenerator:
                 log.error(f"🛑 Groq Use Limit Reached: {e}")
                 raise GroqQuotaExceeded("Groq API Limit Reached - Pausing to save quota.")
             except Exception as e:
-                log.error(f"❌ Groq Voice API failed: {e}")
-                if "insufficient" in str(e).lower(): raise GroqQuotaExceeded("Quota exhausted")
+                error_msg = str(e).lower()
+                if "connection" in error_msg or "timeout" in error_msg or "network" in error_msg:
+                    wait_time = 2 ** attempt  # Exponential backoff
+                    log.warning(f"🌐 Voice API connection error on attempt {attempt+1}/3: {e}. Waiting {wait_time}s...")
+                    time.sleep(wait_time)
+                else:
+                    log.error(f"❌ Groq Voice API failed: {e}")
+                    if "insufficient" in error_msg:
+                        raise GroqQuotaExceeded("Quota exhausted")
+                    break
         
         log.warning(f"⚠️ Failed to generate voice for {asin} after retries.")
         return None
