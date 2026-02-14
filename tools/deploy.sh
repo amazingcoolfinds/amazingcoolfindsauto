@@ -2,7 +2,8 @@
 # 🚀 Script de despliegue ultrarrápido a Cloudflare Pages
 
 # Configuración
-PROJECT_DIR="/Users/zoomies/Desktop/liveitupdeals"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 AMAZING_DIR="$PROJECT_DIR/amazing"
 PROJECT_NAME="amazing-cool-finds" # Corrected name with hyphens
 
