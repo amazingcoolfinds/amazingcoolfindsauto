@@ -115,7 +115,13 @@ class GroqVoiceGenerator:
                 return neural_path
 
             except RateLimitError as e:
-                if "quota" in str(e).lower():
+                # If it's a model specific rate limit (tokens per day)
+                error_msg = str(e).lower()
+                if "rate limit reached for model" in error_msg and "tokens per day" in error_msg:
+                     log.error(f"🛑 Groq Voice Daily Limit Reached: {e}")
+                     raise GroqQuotaExceeded("Groq Voice Daily Limit Reached")
+                
+                if "quota" in error_msg:
                     raise GroqQuotaExceeded("Groq Voice API Quota exhausted.")
                 log.warning(f"⏳ Voice Rate Limit: {e}. Waiting...")
                 time.sleep(5)

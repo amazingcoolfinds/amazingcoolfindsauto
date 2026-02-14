@@ -317,12 +317,15 @@ def run_enhanced_pipeline():
                     failure_count += 1
                     continue
 
-                voice_path = voice_gen.generate(script['narration'], product['asin'])
-                
+                try:
+                    voice_path = voice_gen.generate(script['narration'], product['asin'])
+                except Exception as e:
+                    log.warning(f"⚠️ Voice generation exception: {e}")
+                    voice_path = None
+
                 if not voice_path:
-                    log.error(f"⚠️ Voiceover failed for {product['asin']}. Skipping.")
-                    failure_count += 1
-                    continue
+                    log.warning(f"⚠️ Voiceover unavailable for {product['asin']}. Proceeding without voice.")
+                
                 product['voice_path'] = voice_path
                 
                 # 4. Video production
