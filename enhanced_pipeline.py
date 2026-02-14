@@ -9,6 +9,7 @@ import time
 import logging
 from pathlib import Path
 from datetime import datetime
+import random
 
 # ─── PATHS ────────────────────────────────────────────────────────
 BASE_DIR = Path(__file__).parent
