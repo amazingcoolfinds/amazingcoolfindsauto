@@ -13,4 +13,5 @@ google-api-python-client>=2.140
 google-auth-oauthlib>=1.2
 google-auth-httplib2>=0.1
 flask>=3.0
+google-generativeai>=0.8.0
 

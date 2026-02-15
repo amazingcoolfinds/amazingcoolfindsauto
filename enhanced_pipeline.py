@@ -29,6 +29,17 @@ try:
 except ImportError:
     class GroqQuotaExceeded(Exception): pass
 
+# Import AI Generators
+try:
+    from groq_generators import GroqProductSelector, GroqScriptGenerator, GroqVoiceGenerator
+except ImportError:
+    log.warning("⚠️ Could not import Groq generators")
+
+try:
+    from gemini_generators import GeminiProductSelector, GeminiScriptGenerator
+except ImportError:
+    log.warning("⚠️ Could not import Gemini generators")
+
 for d in [LOGS_DIR, DATA_DIR, AMAZING_DATA_DIR]:
     d.mkdir(parents=True, exist_ok=True)
 
@@ -89,7 +100,20 @@ def get_high_performance_products(count_candidates=15, select_top=3):
         from strategy_monitor import StrategyMonitor
         
         scraper = AdvancedScraper(associate_tag=AFFILIATE_TAG)
-        selector = GroqProductSelector(os.getenv("GROQ_API_KEY"))
+        
+        # Use Gemini if key is available, else fallback to Groq
+        gemini_key = os.getenv("GEMINI_API_KEY")
+        groq_key = os.getenv("GROQ_API_KEY")
+        
+        if gemini_key:
+            log.info("💎 Using Gemini for product selection")
+            from gemini_generators import GeminiProductSelector
+            selector = GeminiProductSelector(gemini_key)
+        else:
+            log.info("🧠 Using Groq for product selection")
+            from groq_generators import GroqProductSelector
+            selector = GroqProductSelector(groq_key)
+            
         monitor = StrategyMonitor(DATA_DIR)
         
         # 0. Get all existing ASINs to prevent duplicates
@@ -130,9 +154,33 @@ def get_high_performance_products(count_candidates=15, select_top=3):
                 continue
                 
             # 3. AI Selection for this specific category (High Ticket logic)
-            log.info(f"🧐 AI selecting winner for {priority_target['category']}...")
-            selections = selector.analyze_candidates(priority_target['category'], candidates)
+            log.info(f"🧐 Selecting winner for {priority_target['category']}...")
+            selections = []
             
+            # Try Gemini if configured
+            if gemini_key:
+                try:
+                    from gemini_generators import GeminiProductSelector
+                    gemini_selector = GeminiProductSelector(gemini_key)
+                    selections = gemini_selector.analyze_candidates(priority_target['category'], candidates)
+                except Exception as e:
+                    log.warning(f"💎 Gemini selection failed: {e}. Trying Groq...")
+            
+            # Try Groq if Gemini failed or isn't available
+            if not selections and groq_key:
+                try:
+                    from groq_generators import GroqProductSelector
+                    groq_selector = GroqProductSelector(groq_key)
+                    selections = groq_selector.analyze_candidates(priority_target['category'], candidates)
+                except Exception as e:
+                    log.warning(f"🧠 Groq selection failed: {e}. Using heuristic selection.")
+            
+            # Final fallback: Heuristic (top rated/priced)
+            if not selections:
+                log.info("⚖️ Using heuristic selection (fallback)")
+                candidates.sort(key=lambda x: (float(x.get('rating', 0)), float(x.get('price', '$0').replace('$', '').replace(',', ''))), reverse=True)
+                selections = candidates[:3]
+
             # 4. Enrich selections with FULL details
             for p in selections:
                 if len(final_selected) >= select_top:
@@ -140,13 +188,23 @@ def get_high_performance_products(count_candidates=15, select_top=3):
                     
                 log.info(f"  🕸️  Full extraction for {priority_target['category']} winner: {p['asin']}...")
                 details = scraper.get_details(p['asin'])
-            if details:
+                
+                if not details:
+                    continue
+                
+                # Check image count rule (At least 5 required)
+                image_count = len(details.get('images', []))
+                if image_count < 5:
+                    log.warning(f"⚠️ Skipping {p['asin']} due to image count: {image_count} (Rule: At least 5 images required)")
+                    continue
+                
                 # Merge details back, preserving selection metadata
                 p.update(details)
                 p['website_link'] = get_enhanced_website_link(p)
                 p['affiliate_url'] = f"https://www.amazon.com/dp/{p['asin']}?tag={AFFILIATE_TAG}"
                 p['processed_at'] = datetime.now().isoformat()
                 final_selected.append(p)
+                existing_asins.add(p['asin']) # Prevent duplicates in same run
                 
                 # Polite delay between full scrapes
                 time.sleep(random.uniform(3, 7))
@@ -305,9 +363,32 @@ def run_enhanced_pipeline():
             try:
                 # 2. Scripting
                 log.info("🎤 Generating script...")
-                from groq_generators import GroqScriptGenerator
-                gpt_gen = GroqScriptGenerator(os.getenv("GROQ_API_KEY"))
-                script = gpt_gen.generate_script(product)
+                gemini_key = os.getenv("GEMINI_API_KEY")
+                groq_key = os.getenv("GROQ_API_KEY")
+                script = None
+                
+                # Try Gemini first
+                if gemini_key:
+                    try:
+                        from gemini_generators import GeminiScriptGenerator
+                        gpt_gen = GeminiScriptGenerator(gemini_key)
+                        script = gpt_gen.generate_script(product)
+                    except Exception as e:
+                        log.warning(f"💎 Gemini Scripting failed: {e}. Falling back to Groq...")
+                
+                # Fallback to Groq
+                if not script and groq_key:
+                    try:
+                        from groq_generators import GroqScriptGenerator
+                        gpt_gen = GroqScriptGenerator(groq_key)
+                        script = gpt_gen.generate_script(product)
+                    except Exception as e:
+                        log.error(f"🧠 Groq Scripting also failed: {e}")
+                
+                if not script:
+                    log.error(f"❌ All script generation attempts failed for {product['asin']}")
+                    failure_count += 1
+                    continue
                 product['script'] = script
                 
                 # 3. Voiceover (Neural Groq Diana)

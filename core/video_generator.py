@@ -30,25 +30,25 @@ class VideoGenerator:
         image_urls = product.get('images', [product.get('image_url')])
         
         try:
-            # 1. Download up to 7 images (filter successful downloads)
+            # 1. Download up to 10 images (filter successful downloads)
             local_images = []
             # Ensure image_urls is a list
             if not isinstance(image_urls, list):
                 if image_urls: image_urls = [image_urls]
                 else: image_urls = []
                 
-            for i, url in enumerate(image_urls[:7]):
+            for i, url in enumerate(image_urls[:10]):
                 path = self.temp_dir / f"img_{asin}_{i}.jpg"
                 if self._download_image(url, path):
                     local_images.append(path)
             
-            # Ensure we have at least 1 image
+            # Ensure we have some images (pipeline ensures >= 5, but we check for safety)
             if not local_images:
                 log.error(f"No images downloaded for {asin}")
                 if output_path.exists(): output_path.unlink()
                 return None
             
-            log.info(f"✓ Downloaded {len(local_images)} images for carousel")
+            log.info(f"✓ Using {len(local_images)} image segments for carousel")
             
             # --- DYNAMIC DURATION LOGIC ---
             # Default to 18s if no voice, but if voice exists, measure it

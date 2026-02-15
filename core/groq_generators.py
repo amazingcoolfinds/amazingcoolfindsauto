@@ -185,7 +185,7 @@ class GroqProductSelector:
         prompt = (
             f"You are a High-Performance Affiliate Marketing Expert. Your goal is to select the TOP 3-5 products from this list for the '{category}' category. "
             "CRITERIA FOR IDEAL PRODUCT:\n"
-            "1. Profit Maximization (MANDATORY): Prioritize products with higher price points ($100+ USD) to maximize absolute commission per sale. A product costing $200 with 4% commission ($8 profit) is BETTER than a $50 product with 10% commission ($5 profit).\n"
+            "1. Profit Maximization (MANDATORY): ONLY select products with a price GREATER THAN $60 USD. If a product is below $60, its score MUST be 0. Prioritize products with higher price points ($100+ USD) to maximize absolute commission per sale. A product costing $200 with 4% commission ($8 profit) is BETTER than a $50 product with 10% commission ($5 profit).\n"
             "2. High Commission: Target products yielding $10+ USD per sale (calculate based on price and commission_rate).\n"
             "3. High Rotation: BSR (Best Sellers Rank) should be < 50,000 in main categories.\n"
             "4. High Conversion: Rating 4.3+ and Prime availability are MUSTS.\n"
