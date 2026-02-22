@@ -2,7 +2,7 @@ name: Daily Product Pipeline
 
 on:
   schedule:
-    - cron: '0 12 * * *' # Daily at 12:00 UTC
+    - cron: '0 */6 * * *' # Every 6 hours to handle potential quota limits
   workflow_dispatch: # Allow manual trigger
   push:
     branches:

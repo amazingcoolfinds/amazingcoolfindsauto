@@ -80,8 +80,7 @@ class GroqScriptGenerator:
             except RateLimitError as e:
                 log.warning(f"⏳ Groq Rate Limit hit: {e}. Waiting 10s...")
                 if "quota" in str(e).lower() or "insufficient" in str(e).lower():
-                    log.error("Groq API Quota reached its limit.")
-                    break # Exit retry loop and use fallback
+                    raise GroqQuotaExceeded("Groq API Quota reached its limit.")
                 time.sleep(10)
             except (InternalServerError, APIStatusError) as e:
                 log.warning(f"⚠️ Groq API issue: {e}. Retrying...")
@@ -139,10 +138,9 @@ class GroqVoiceGenerator:
                 return neural_path
 
             except RateLimitError as e:
-                log.warning(f"⏳ Groq Audio Rate Limit hit: {e}")
+                log.error(f"🛑 Groq Audio Rate Limit hit: {e}")
                 if "quota" in str(e).lower() or "insufficient" in str(e).lower():
-                    # Instead of raising immediately, try fallback
-                    break
+                   raise GroqQuotaExceeded("Groq API Limit Reached - Pausing to save quota.")
                 time.sleep(10)
             except Exception as e:
                 error_msg = str(e).lower()
@@ -153,21 +151,11 @@ class GroqVoiceGenerator:
                 else:
                     log.error(f"❌ Groq Voice API failed: {e}")
                     if "insufficient" in error_msg or "quota" in error_msg:
-                        break
+                        raise GroqQuotaExceeded("Quota exhausted")
                     time.sleep(2)
         
-        # ─── FALLBACK TO gTTS ──────────────────────────────────────
-        log.warning(f"⚠️ Groq Voice failed. Falling back to gTTS for {asin}...")
-        try:
-            from gtts import gTTS
-            fallback_path = assets_dir / f"{asin}_voice.mp3"
-            tts = gTTS(text=text, lang='en', tld='com')
-            tts.save(str(fallback_path))
-            log.info(f"✅ Fallback gTTS Voiceover saved to {fallback_path}")
-            return fallback_path
-        except Exception as e:
-            log.error(f"❌ gTTS Fallback also failed: {e}")
-            return None
+        log.warning(f"⚠️ Failed to generate voice for {asin} after retries.")
+        return None
 
 class GroqProductSelector:
     def __init__(self, api_key):
