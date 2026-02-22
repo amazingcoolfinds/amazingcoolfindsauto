@@ -199,10 +199,10 @@ def get_high_performance_products(count_candidates=15, select_top=3):
                 if not details:
                     continue
                 
-                # Check image count rule (At least 4 required)
+                # Check image count rule (At least 5 required)
                 image_count = len(details.get('images', []))
-                if image_count < 4:
-                    log.warning(f"⚠️ Skipping {p['asin']} due to image count: {image_count} (Rule: At least 4 images required)")
+                if image_count < 5:
+                    log.warning(f"⚠️ Skipping {p['asin']} due to image count: {image_count} (Rule: At least 5 images required)")
                     continue
                 
                 # Merge details back, preserving selection metadata
@@ -228,27 +228,20 @@ def get_all_existing_asins():
     """Compiles a list of ASINs from both processing history and website database"""
     existing = set()
     
-    # Check processed history (Pipeline records)
-    history_file = DATA_DIR / "processed_products.json"
-    if history_file.exists():
-        try:
-            with open(history_file, 'r') as f:
-                data = json.load(f)
-                for item in data: existing.add(item['asin'])
-        except: pass
-
-    # Check website database (Live items)
-    site_db = AMAZING_DATA_DIR / "products.json"
-    if site_db.exists():
-        try:
-            with open(site_db, 'r') as f:
-                data = json.load(f)
-                for item in data: existing.add(item['asin'])
-        except: pass
+    # Check main products file
+    for db_path in [AMAZING_DATA_DIR / "products.json", DATA_DIR / "products.json", DATA_DIR / "processed_products.json"]:
+        if db_path.exists():
+            try:
+                with open(db_path, 'r') as f:
+                    data = json.load(f)
+                    for item in data: 
+                        if isinstance(item, dict) and 'asin' in item:
+                            existing.add(item['asin'])
+            except: pass
         
     return existing
 
-def get_new_product():
+def get_recent_asins():
     """Get list of recently processed ASINs"""
     try:
         history_file = DATA_DIR / "processed_products.json"
