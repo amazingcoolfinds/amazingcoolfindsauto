@@ -204,6 +204,17 @@ def get_high_performance_products(count_candidates=15, select_top=3):
                 if image_count < 5:
                     log.warning(f"⚠️ Skipping {p['asin']} due to image count: {image_count} (Rule: At least 5 images required)")
                     continue
+
+                # Rigorous Price Rule: Min $60
+                price_str = details.get('price', '$0').replace('$', '').replace(',', '')
+                try:
+                    price_val = float(price_str)
+                    if price_val < 60:
+                        log.warning(f"⚠️ Skipping {p['asin']} due to price: ${price_val} (Rule: Minimum $60 required)")
+                        continue
+                except:
+                    log.warning(f"⚠️ Could not verify price for {p['asin']}: {details.get('price')}")
+                    continue
                 
                 # Merge details back, preserving selection metadata
                 p.update(details)
