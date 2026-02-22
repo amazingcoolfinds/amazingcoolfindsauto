@@ -15,10 +15,11 @@ log = logging.getLogger("GroqGenerators")
 
 class GroqScriptGenerator:
     def __init__(self, api_key):
-        self.api_key = api_key
+        self.api_key = api_key.strip() if api_key else ""
+        import httpx
         self.client = Groq(
-            api_key=api_key,
-            timeout=60.0,
+            api_key=self.api_key,
+            http_client=httpx.Client(trust_env=False, http2=True, timeout=60.0),
             max_retries=5
         )
         self.model = "llama-3.3-70b-versatile"
@@ -110,10 +111,11 @@ class GroqScriptGenerator:
 
 class GroqVoiceGenerator:
     def __init__(self, api_key):
-        self.api_key = api_key
+        self.api_key = api_key.strip() if api_key else ""
+        import httpx
         self.client = Groq(
-            api_key=api_key,
-            timeout=120.0,
+            api_key=self.api_key,
+            http_client=httpx.Client(trust_env=False, http2=True, timeout=120.0),
             max_retries=5
         )
         self.model = "canopylabs/orpheus-v1-english"
@@ -169,10 +171,11 @@ class GroqVoiceGenerator:
 
 class GroqProductSelector:
     def __init__(self, api_key):
-        self.api_key = api_key
+        self.api_key = api_key.strip() if api_key else ""
+        import httpx
         self.client = Groq(
-            api_key=api_key,
-            timeout=60.0,
+            api_key=self.api_key,
+            http_client=httpx.Client(trust_env=False, http2=True, timeout=60.0),
             max_retries=5
         )
         self.model = "llama-3.3-70b-versatile"
