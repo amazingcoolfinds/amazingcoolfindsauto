@@ -50,12 +50,12 @@ class GroqScriptGenerator:
             "2. USE the product features to create a compelling, viral narrative (2-3 sentences max)\n"
             "3. HIGHLIGHT what makes it special or solves a problem\n"
             "4. END with: 'Link is in the first comment!' (MANDATORY)\n"
-            "5. Keep it conversational, enthusiastic, and under 20 seconds when spoken\n"
+            "5. Keep it conversational, enthusiastic, and under 20 seconds when spoken (STRICT LIMIT: 45-55 words)\n"
             "6. Sound like a real person discovering something cool, NOT like an ad\n"
             "7. Use native English expressions and natural speech patterns\n\n"
             "Return JSON with exactly three keys:\n"
             "- 'title': A catchy, clickable video title (5-8 words)\n"
-            "- 'narration': The full spoken script (natural, conversational, native English)\n"
+            "- 'narration': The full spoken script (natural, conversational, native English, approx 50 words)\n"
             "- 'hashtags': 4-5 viral hashtags as a list\n\n"
             "CRITICAL: Everything must be in fluent, native English. No technical jargon or ASIN codes."
         )
@@ -80,7 +80,8 @@ class GroqScriptGenerator:
             except RateLimitError as e:
                 log.warning(f"⏳ Groq Rate Limit hit: {e}. Waiting 10s...")
                 if "quota" in str(e).lower() or "insufficient" in str(e).lower():
-                    raise GroqQuotaExceeded("Groq API Quota reached its limit.")
+                    log.error("Groq API Quota reached its limit.")
+                    break # Exit retry loop and use fallback
                 time.sleep(10)
             except (InternalServerError, APIStatusError) as e:
                 log.warning(f"⚠️ Groq API issue: {e}. Retrying...")
@@ -138,8 +139,11 @@ class GroqVoiceGenerator:
                 return neural_path
 
             except RateLimitError as e:
-                log.error(f"🛑 Groq Use Limit Reached: {e}")
-                raise GroqQuotaExceeded("Groq API Limit Reached - Pausing to save quota.")
+                log.warning(f"⏳ Groq Audio Rate Limit hit: {e}")
+                if "quota" in str(e).lower() or "insufficient" in str(e).lower():
+                    # Instead of raising immediately, try fallback
+                    break
+                time.sleep(10)
             except Exception as e:
                 error_msg = str(e).lower()
                 if "connection" in error_msg or "timeout" in error_msg or "network" in error_msg:
@@ -148,12 +152,22 @@ class GroqVoiceGenerator:
                     time.sleep(wait_time)
                 else:
                     log.error(f"❌ Groq Voice API failed: {e}")
-                    if "insufficient" in error_msg:
-                        raise GroqQuotaExceeded("Quota exhausted")
-                    break
+                    if "insufficient" in error_msg or "quota" in error_msg:
+                        break
+                    time.sleep(2)
         
-        log.warning(f"⚠️ Failed to generate voice for {asin} after retries.")
-        return None
+        # ─── FALLBACK TO gTTS ──────────────────────────────────────
+        log.warning(f"⚠️ Groq Voice failed. Falling back to gTTS for {asin}...")
+        try:
+            from gtts import gTTS
+            fallback_path = assets_dir / f"{asin}_voice.mp3"
+            tts = gTTS(text=text, lang='en', tld='com')
+            tts.save(str(fallback_path))
+            log.info(f"✅ Fallback gTTS Voiceover saved to {fallback_path}")
+            return fallback_path
+        except Exception as e:
+            log.error(f"❌ gTTS Fallback also failed: {e}")
+            return None
 
 class GroqProductSelector:
     def __init__(self, api_key):

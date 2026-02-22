@@ -418,21 +418,40 @@ def run_enhanced_pipeline():
                     continue
                 
                 # 5. Distribution
+                # 5.1 YouTube
                 if yt_up:
                     log.info("📹 Uploading to YouTube...")
                     try:
                         desc = f"{script['narration']}\n\n🔥 Check it out: {product['website_link']['link']}\n\n" + " ".join(script.get('hashtags', []))
                         yt_up.upload_video(video_path, script['title'], desc, script.get('hashtags', []), affiliate_link=product['affiliate_url'])
                     except Exception as e:
-                        log.warning(f"⚠️ YouTube upload issue: {e}")
+                        log.warning(f"⚠️ YouTube upload failed: {e}")
+
+                # 5.2 Meta (Facebook & Instagram)
+                if meta_up:
+                    log.info("📸 Uploading to Meta (FB/IG)...")
+                    caption = f"{script['narration']}\n\nProduct: {product['website_link']['link']}\n\n" + " ".join(script.get('hashtags', []))
+                    try:
+                        meta_up.upload_to_facebook(video_path, caption)
+                        meta_up.upload_to_instagram(video_path, caption)
+                    except Exception as e:
+                        log.warning(f"⚠️ Meta upload failed: {e}")
+
+                # 5.3 TikTok
+                if tt_up:
+                    log.info("🎵 Uploading to TikTok...")
+                    try:
+                        tt_up.upload_video(video_path, script['title'])
+                    except Exception as e:
+                        log.warning(f"⚠️ TikTok upload failed: {e}")
 
                 # Tracking & Success logic
                 processed_successfully.append(product)
                 send_to_make(product)
                 save_processed_product(product)
                 success_count += 1
-                log.info(f"✅ Finished production for {product['asin']}!")
-                time.sleep(2)
+                log.info(f"✅ Finished production & distribution for {product['asin']}!")
+                time.sleep(5) # Give APIs a breather
 
             except GroqQuotaExceeded as e:
                 log.error(f"🛑 Groq Quota hit during loop: {e}")
@@ -547,22 +566,27 @@ def deploy_to_site():
         else:
             cmd = f"bash {deploy_script}"
         
-        # Use wrangler to deploy
+        # Try up to 3 times
         import subprocess
-        log.info("☁️  Deploying to Cloudflare Pages...")
-        result = subprocess.run(
-            cmd,
-            shell=True,
-            capture_output=True,
-            text=True
-        )
+        for attempt in range(3):
+            log.info(f"☁️  Deploying to Cloudflare Pages (Attempt {attempt+1}/3)...")
+            result = subprocess.run(
+                cmd,
+                shell=True,
+                capture_output=True,
+                text=True
+            )
+            
+            if result.returncode == 0:
+                log.info("✅ Cloudflare deployment successful!")
+                return True
+            else:
+                log.warning(f"⚠️ Deployment attempt {attempt+1} failed: {result.stderr}")
+                if attempt < 2:
+                    time.sleep(10) # Wait 10s before retry
         
-        if result.returncode == 0:
-            log.info("✅ Cloudflare deployment successful!")
-            return True
-        else:
-            log.error(f"❌ Cloudflare deployment failed: {result.stderr}")
-            return False
+        log.error("❌ Cloudflare deployment failed after 3 attempts.")
+        return False
             
     except Exception as e:
         log.error(f"❌ Cloudflare deployment error: {e}")

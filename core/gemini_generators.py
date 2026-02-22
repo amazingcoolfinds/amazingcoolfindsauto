@@ -40,12 +40,12 @@ class GeminiScriptGenerator:
             "2. USE the product features to create a compelling, viral narrative (2-3 sentences max)\n"
             "3. HIGHLIGHT what makes it special or solves a problem\n"
             "4. END with: 'Link is in the first comment!' (MANDATORY)\n"
-            "5. Keep it conversational, enthusiastic, and under 20 seconds when spoken\n"
+            "5. Keep it conversational, enthusiastic, and under 20 seconds when spoken (STRICT LIMIT: 45-55 words)\n"
             "6. Sound like a real person discovering something cool, NOT like an ad\n"
             "7. Use native English expressions and natural speech patterns\n\n"
             "Return JSON with exactly three keys:\n"
             "- 'title': A catchy, clickable video title (5-8 words)\n"
-            "- 'narration': The full spoken script (natural, conversational, native English)\n"
+            "- 'narration': The full spoken script (natural, conversational, native English, approx 50 words)\n"
             "- 'hashtags': 4-5 viral hashtags as a list\n"
         )
 
