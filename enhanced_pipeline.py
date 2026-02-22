@@ -105,16 +105,16 @@ def get_high_performance_products(count_candidates=15, select_top=3):
         gemini_key = os.getenv("GEMINI_API_KEY")
         groq_key = os.getenv("GROQ_API_KEY")
         
-        if groq_key:
-            groq_key = groq_key.strip()
-            log.info("🧠 Using Groq for product selection")
-            from groq_generators import GroqProductSelector
-            selector = GroqProductSelector(groq_key)
-        elif gemini_key:
+        if gemini_key:
             gemini_key = gemini_key.strip()
-            log.info("💎 Using Gemini for product selection (Groq not available)")
+            log.info("💎 Using Gemini for product selection")
             from gemini_generators import GeminiProductSelector
             selector = GeminiProductSelector(gemini_key)
+        elif groq_key:
+            groq_key = groq_key.strip()
+            log.info("🧠 Using Groq for product selection (Gemini not available)")
+            from groq_generators import GroqProductSelector
+            selector = GroqProductSelector(groq_key)
         else:
             log.error("❌ No AI keys found for selection.")
             return []
@@ -162,8 +162,17 @@ def get_high_performance_products(count_candidates=15, select_top=3):
             log.info(f"🧐 Selecting winner for {priority_target['category']}...")
             selections = []
             
-            # Try Groq first (Preferred for viral style)
-            if groq_key:
+            # Try Gemini first (Better reasoning for selection)
+            if gemini_key:
+                try:
+                    from gemini_generators import GeminiProductSelector
+                    gemini_selector = GeminiProductSelector(gemini_key)
+                    selections = gemini_selector.analyze_candidates(priority_target['category'], candidates)
+                except Exception as e:
+                    log.warning(f"💎 Gemini selection failed: {e}. Trying Groq...")
+            
+            # Try Groq if Gemini failed or isn't available
+            if not selections and groq_key:
                 try:
                     from groq_generators import GroqProductSelector
                     groq_selector = GroqProductSelector(groq_key)
@@ -171,16 +180,7 @@ def get_high_performance_products(count_candidates=15, select_top=3):
                 except GroqQuotaExceeded:
                     raise # Re-raise to halt pipeline
                 except Exception as e:
-                    log.warning(f"🧠 Groq selection failed: {e}. Trying Gemini...")
-            
-            # Try Gemini if Groq failed or isn't available
-            if not selections and gemini_key:
-                try:
-                    from gemini_generators import GeminiProductSelector
-                    gemini_selector = GeminiProductSelector(gemini_key)
-                    selections = gemini_selector.analyze_candidates(priority_target['category'], candidates)
-                except Exception as e:
-                    log.warning(f"💎 Gemini selection failed: {e}. Using heuristic selection.")
+                    log.warning(f"🧠 Groq selection failed: {e}. Using heuristic selection.")
             
             # Final fallback: Heuristic (top rated/priced)
             if not selections:
@@ -199,10 +199,10 @@ def get_high_performance_products(count_candidates=15, select_top=3):
                 if not details:
                     continue
                 
-                # Check image count rule (At least 5 required)
+                # Check image count rule (At least 4 required)
                 image_count = len(details.get('images', []))
-                if image_count < 5:
-                    log.warning(f"⚠️ Skipping {p['asin']} due to image count: {image_count} (Rule: At least 5 images required)")
+                if image_count < 4:
+                    log.warning(f"⚠️ Skipping {p['asin']} due to image count: {image_count} (Rule: At least 4 images required)")
                     continue
                 
                 # Merge details back, preserving selection metadata
@@ -374,8 +374,17 @@ def run_enhanced_pipeline():
                 groq_key = os.getenv("GROQ_API_KEY", "").strip()
                 script = None
                 
-                # Try Groq first (Mandatory per configuration)
-                if groq_key:
+                # Try Gemini first (Better reasoning)
+                if gemini_key:
+                    try:
+                        from gemini_generators import GeminiScriptGenerator
+                        gpt_gen = GeminiScriptGenerator(gemini_key)
+                        script = gpt_gen.generate_script(product)
+                    except Exception as e:
+                        log.warning(f"💎 Gemini Scripting failed: {e}. Trying Groq...")
+                
+                # Fallback to Groq
+                if not script and groq_key:
                     try:
                         from groq_generators import GroqScriptGenerator
                         gpt_gen = GroqScriptGenerator(groq_key)
@@ -383,16 +392,7 @@ def run_enhanced_pipeline():
                     except GroqQuotaExceeded:
                         raise # Halt if quota empty
                     except Exception as e:
-                        log.warning(f"🧠 Groq Scripting failed: {e}. Trying Gemini...")
-                
-                # Fallback to Gemini only if Groq is literally broken/timeout
-                if not script and gemini_key:
-                    try:
-                        from gemini_generators import GeminiScriptGenerator
-                        gpt_gen = GeminiScriptGenerator(gemini_key)
-                        script = gpt_gen.generate_script(product)
-                    except Exception as e:
-                        log.error(f"💎 Gemini Scripting also failed: {e}")
+                        log.error(f"🧠 Groq Scripting failed: {e}")
                 
                 if not script:
                     log.error(f"❌ All script generation attempts failed for {product['asin']}")

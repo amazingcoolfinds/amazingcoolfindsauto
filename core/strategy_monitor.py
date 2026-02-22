@@ -46,10 +46,10 @@ class StrategyMonitor:
 
         # Define targets with High-Ticket leaning keywords
         targets = [
-            {"category": "Lifestyle", "keywords": "premium luxury skincare sets beauty tech", "count": counts["Lifestyle"]},
-            {"category": "Tech", "keywords": "high-end innovative gadgets professional electronics", "count": counts["Tech"]},
-            {"category": "Home", "keywords": "luxury smart home automation designer decor", "count": counts["Home"]},
-            {"category": "Auto", "keywords": "premium car electronics luxury auto accessories", "count": counts["Auto"]}
+            {"category": "Lifestyle", "keywords": "trending lifestyle products luxury beauty", "count": counts["Lifestyle"]},
+            {"category": "Tech", "keywords": "cool innovative tech gadgets", "count": counts["Tech"]},
+            {"category": "Home", "keywords": "smart home decor gadgets automation", "count": counts["Home"]},
+            {"category": "Auto", "keywords": "premium car accessories electronics", "count": counts["Auto"]}
         ]
 
         # Sort by count (ascending) to prioritize the least populated category
