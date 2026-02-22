@@ -1244,5 +1244,63 @@
       ]
     },
     "voice_path": "assets/B0CXVSC6ZQ_voice.wav"
+  },
+  {
+    "asin": "B0F6QSCSTH",
+    "title": "Car and Driver IntelliDash Pro X10, 10\" Wireless Apple CarPlay & Android Auto Display, Portable Touchscreen Car Stereo w/Bluetooth, GPS Navigation, FM/AUX, Backup Camera Compatible for Cars & Trucks",
+    "price": "$179.99",
+    "rating": "4.3",
+    "reviews_count": "43",
+    "is_prime": false,
+    "image_url": "https://m.media-amazon.com/images/I/41L9llkQMVL._SL1500_.jpg",
+    "affiliate_url": "https://www.amazon.com/dp/B0F6QSCSTH?tag=amazingcoolfinds-20",
+    "category": "Auto",
+    "commission": 0.04,
+    "bsr": [
+      {
+        "rank": "20803",
+        "category": "Electronics"
+      },
+      {
+        "rank": "17",
+        "category": "Car In"
+      }
+    ],
+    "images": [
+      "https://m.media-amazon.com/images/I/41L9llkQMVL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51n37jNFj7L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51fym-zWVVL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51k-J-1FWUL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51-w7RSMEiL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51TY8mOo+RL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51447raLtvL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61QS1gTyMYL._AC_SY300_SX300_QL70_FMwebp_.jpg"
+    ],
+    "bullets": [
+      "Premium Wireless CarPlay & Android Auto Integration Instantly upgrade any car with a true wireless CarPlay and Android Auto experience. Connect your iPhone or Android device via Bluetooth and Wi-Fi to access maps, calls, texts, Siri, Google Assistant, music apps, and more \u2014 completely hands-free.",
+      "Large 10\" HD Touchscreen for Safer, Smarter Driving Enjoy a bright, responsive, high-resolution display designed for navigation and on-road visibility. Perfect for using Apple Maps, Google Maps, Waze, Spotify, YouTube Music, and other apps with crystal-clear clarity",
+      "Voice Control with Siri & Google Assistant Keep your hands on the wheel and your eyes on the road. Use simple voice commands to make calls, reply to messages, launch apps, adjust music, and navigate \u2014 ideal for safe driving, long trips, commuting, and new drivers.",
+      "Multiple Audio Output Options (Bluetooth, FM, AUX, Built-In Speaker) Route sound directly to your car stereo via Bluetooth, the FM transmitter, or 3.5mm AUX. Or use the built-in speaker for quick prompts. Compatible with older vehicles, new models, trucks, SUVs, and RVs.",
+      "Plug-and-Play Setup + Backup Camera Compatible No installation or wiring required \u2014 mount the IntelliDash Pro X10 on your dashboard and power it from your 12V outlet. Works with optional backup cameras for safer reversing. Includes power cable, AUX cable, mount, and cable-management clips."
+    ],
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/item/B0F6QSCSTH#product-B0F6QSCSTH",
+      "unique_id": "B0F6QSCSTH",
+      "scroll_target": "product-B0F6QSCSTH",
+      "full_url": "https://amazing-cool-finds.com/item/B0F6QSCSTH#product-B0F6QSCSTH"
+    },
+    "processed_at": "2026-02-22T07:54:46.884554",
+    "script": {
+      "title": "Game Changing Car Stereo Upgrade",
+      "narration": "Check out the Car and Driver IntelliDash Pro X10! Wireless CarPlay and Android Auto on a 10-inch touchscreen? Mind blown! Link is in the first comment!",
+      "hashtags": [
+        "#CarTech",
+        "#WirelessCarPlay",
+        "#AndroidAuto",
+        "#CarStereoUpgrade",
+        "#IntelliDashPro"
+      ]
+    },
+    "voice_path": "assets/B0F6QSCSTH_voice.wav"
   }
 ]
