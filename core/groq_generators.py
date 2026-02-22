@@ -15,7 +15,12 @@ log = logging.getLogger("GroqGenerators")
 
 class GroqScriptGenerator:
     def __init__(self, api_key):
-        self.client = Groq(api_key=api_key)
+        self.api_key = api_key
+        self.client = Groq(
+            api_key=api_key,
+            timeout=60.0,
+            max_retries=5
+        )
         self.model = "llama-3.3-70b-versatile"
 
     def generate_script(self, product: dict) -> dict:
@@ -105,7 +110,12 @@ class GroqScriptGenerator:
 
 class GroqVoiceGenerator:
     def __init__(self, api_key):
-        self.client = Groq(api_key=api_key)
+        self.api_key = api_key
+        self.client = Groq(
+            api_key=api_key,
+            timeout=120.0,
+            max_retries=5
+        )
         self.model = "canopylabs/orpheus-v1-english"
         self.voice = "diana" # Changed to Diana voice
 
@@ -159,7 +169,12 @@ class GroqVoiceGenerator:
 
 class GroqProductSelector:
     def __init__(self, api_key):
-        self.client = Groq(api_key=api_key)
+        self.api_key = api_key
+        self.client = Groq(
+            api_key=api_key,
+            timeout=60.0,
+            max_retries=5
+        )
         self.model = "llama-3.3-70b-versatile"
 
     def analyze_candidates(self, category: str, products: list) -> list:

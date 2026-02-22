@@ -322,7 +322,26 @@ def run_enhanced_pipeline():
         from groq_generators import GroqVoiceGenerator
         from video_generator import VideoGenerator
         
-        # Initialize uploaders (CI-Safe: Only try YouTube if token or Secret exists)
+        # Step 0: Connectivity & Key Check
+        log.info("🔍 Step 0: Checking API connectivity...")
+        groq_key = os.getenv("GROQ_API_KEY")
+        if not groq_key:
+            log.error("❌ GROQ_API_KEY is missing from environment variables!")
+            return False
+            
+        import requests
+        try:
+            # Simple connectivity check to Groq API
+            response = requests.get("https://api.groq.com/openai/v1/models", headers={"Authorization": f"Bearer {groq_key}"}, timeout=10)
+            if response.status_code == 200:
+                log.info("✅ Groq API is reachable and key is valid.")
+            else:
+                log.warning(f"⚠️ Groq API responded with {response.status_code}: {response.text}")
+        except Exception as e:
+            log.error(f"❌ Failed to reach Groq API: {e}")
+            # We don't return False here yet, let the library try with its own retries
+        
+        # Initialize uploaders
         yt_up = None
         if Path("token.json").exists() or os.getenv("YT_TOKEN_BASE64"):
             try:
