@@ -1418,5 +1418,118 @@
       ]
     },
     "voice_path": "assets/B0CCJW9GF3_voice.wav"
+  },
+  {
+    "asin": "B0C52MMQ49",
+    "title": "Magnetic Levitation Bluetooth Speaker,Playing Music and Floating in The air,with 5W Louder Sound,Bluetooth 5.1,Cool Tech Gadgets for Men,Unique Gifts for Home Office Decor",
+    "price": "$99.99",
+    "rating": "4.5",
+    "reviews_count": "284",
+    "is_prime": true,
+    "image_url": "https://m.media-amazon.com/images/I/41toHhOnv7L._SL1500_.jpg",
+    "affiliate_url": "https://www.amazon.com/dp/B0C52MMQ49?tag=amazingcoolfinds-20",
+    "category": "Tech",
+    "commission": 0.04,
+    "bsr": [
+      {
+        "rank": "22006",
+        "category": "Electronics"
+      },
+      {
+        "rank": "615",
+        "category": "Portable Bluetooth Speakers Date First Available May"
+      }
+    ],
+    "images": [
+      "https://m.media-amazon.com/images/I/41toHhOnv7L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41J1fpDbdwL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41sPJeGIQAL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41tno+DAI+L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41GkexLVj0L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51dkS5u5bBL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/7139VHxUsWL.SS40_BG85,85,85_BR-120_PKdp-play-icon-overlay__.jpg",
+      "https://m.media-amazon.com/images/I/71mMub4Ls2L._AC_SY300_SX300_QL70_FMwebp_.jpg"
+    ],
+    "bullets": [
+      "[LEVITATING BLUETOOTH SPEAKER] - Developed with levitation technology,the speaker is floating and Spinning in the air.",
+      "[PLAYBACK LONG TIME] - The speaker can continuously play music up to 10 hours.",
+      "[UNIQUE GIFTS] - The Levitating bluetooth speaker is amazing gift for family,friends, kids for Christmas, birthday,party, father's day,Gifts for Science fiction fans.",
+      "[TECH GADGET FOR DECOR] - The floating speaker can impress your friends an family as a cool tech decor for room, office.",
+      "[BLUETOOTH 5.1]- Enjoy your crystal clear music with bluetooth 5.1 technology."
+    ],
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/item/B0C52MMQ49#product-B0C52MMQ49",
+      "unique_id": "B0C52MMQ49",
+      "scroll_target": "product-B0C52MMQ49",
+      "full_url": "https://amazing-cool-finds.com/item/B0C52MMQ49#product-B0C52MMQ49"
+    },
+    "processed_at": "2026-02-23T05:22:30.721494",
+    "script": {
+      "title": "Mind Blown by Magnetic Speaker",
+      "narration": "You need to see the Magnetic Levitation Bluetooth Speaker! It floats, spins, and plays music for 10 hours. Super cool tech decor! Link is in the first comment!",
+      "hashtags": [
+        "TechGadgets",
+        "CoolInnovations",
+        "MagneticMagic",
+        "BluetoothSpeakers",
+        "GadgetLovers"
+      ]
+    },
+    "voice_path": "assets/B0C52MMQ49_voice.wav"
+  },
+  {
+    "asin": "B0FWBSC7LW",
+    "title": "AI Voice Recorder, Note Pro Voice Recorder Transcribe & Summarize, AI Noise Cancellation Technology, Supports 152 Languages, 64GB Memory APP Control Audio Recorder for Lectures, Meetings, Calls",
+    "price": "$79.98",
+    "rating": "4.6",
+    "reviews_count": "988",
+    "is_prime": false,
+    "image_url": "https://m.media-amazon.com/images/I/818pQne3tuL._AC_SL1500_.jpg",
+    "affiliate_url": "https://www.amazon.com/dp/B0FWBSC7LW?tag=amazingcoolfinds-20",
+    "category": "Tech",
+    "commission": 0.04,
+    "bsr": [
+      {
+        "rank": "2384",
+        "category": "Electronics"
+      },
+      {
+        "rank": "12",
+        "category": "Digital Voice Recorders Date First Available July"
+      }
+    ],
+    "images": [
+      "https://m.media-amazon.com/images/I/818pQne3tuL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/715mC8PNuRL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81MrWhMBlhL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81ruzKfN2vL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81OOqcwfLEL._AC_SL1500_.jpg"
+    ],
+    "bullets": [
+      "Cutting-Edge AI Transcription & Summarization: Leverage GPT-4o\u2019s advanced intelligence in this top-tier AI voice recorder for real-time, highly accurate speech-to-text conversion and contextual summarization. Experience natural language processing that delivers polished, instantly usable transcripts\u2014eliminating manual editing. Ideal for professionals seeking efficient documentation",
+      "1-Year Unlimited Premium Suite: Unlock 12 months of free DOWAY premium access with your powerful voice recorder: Enjoy limitless transcription, AI-powered professional templates, and smart note-organization tools. Transform recordings into structured documents for business reports, academic notes, or content creation",
+      "Global 152Language Comprehension: Seamlessly transcribe and summarize content across 152 languages with this intelligent AI recorder \u2013 from major business dialects to regional languages. Break communication barriers in international meetings, research, or travel without compromising accuracy",
+      "Massive 64GB Storage + Military-Grade Cloud Sync: Store 500+ hours of high-fidelity audio internally (no cards needed) on this feature-packed voice recorder, with automatic backups to encrypted cloud storage. Access files securely worldwide through the DOWAY app\u2014your data remains private yet universally available",
+      "35-Hour Marathon Battery: Operate this long-lasting voice recorder continuously for 2,100 minutes (35 hours) on one charge. Capture multi-day conferences, field research, or interviews without battery anxiety. Power-optimized for travelers and high-volume users (Note: studio-grade bluetooth 5.3, works Instantly, no Wi-Fi needed)"
+    ],
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/item/B0FWBSC7LW#product-B0FWBSC7LW",
+      "unique_id": "B0FWBSC7LW",
+      "scroll_target": "product-B0FWBSC7LW",
+      "full_url": "https://amazing-cool-finds.com/item/B0FWBSC7LW#product-B0FWBSC7LW"
+    },
+    "processed_at": "2026-02-23T05:22:42.408486",
+    "script": {
+      "title": "Mind Blown by AI Voice Recorder",
+      "narration": "You need to see the AI Voice Recorder - it transcribes and summarizes in real-time, supports 152 languages, and has 64GB of storage! Total game-changer. Link is in the first comment!",
+      "hashtags": [
+        "AIVoiceRecorder",
+        "TechDisruptors",
+        "InnovationNation",
+        "ProductivityHacks",
+        "FutureOfTech"
+      ]
+    },
+    "voice_path": "assets/B0FWBSC7LW_voice.wav"
   }
 ]
