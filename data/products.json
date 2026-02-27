@@ -1705,5 +1705,62 @@
       ]
     },
     "voice_path": "assets/B0BYRLX5DK_voice.wav"
+  },
+  {
+    "asin": "B016UG6PWE",
+    "title": "NOCO Boost GB70: 2000A UltraSafe Jump Starter \u2013 12V Lithium Battery Booster Pack, Portable Jump Box, Power Bank & Jumper Cables - for 8.0L Gas and 6.0L Diesel Engines",
+    "price": "$199.95",
+    "rating": "4.6",
+    "reviews_count": "29077",
+    "is_prime": true,
+    "image_url": "https://m.media-amazon.com/images/I/71HLDMPtodL._AC_SX679_.jpg",
+    "affiliate_url": "https://www.amazon.com/dp/B016UG6PWE?tag=amazingcoolfinds-20",
+    "category": "Auto",
+    "commission": 0.04,
+    "bsr": [
+      {
+        "rank": "184",
+        "category": "Automotive"
+      },
+      {
+        "rank": "6",
+        "category": "Jump Starters Date First Available January"
+      }
+    ],
+    "images": [
+      "https://m.media-amazon.com/images/I/71HLDMPtodL._AC_SX679_.jpg",
+      "https://m.media-amazon.com/images/I/71HLDMPtodL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/814IOpQ2K2L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71CQOsyJ4tL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71yu3HdGgFL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/818uRr7eaeL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81xT1iwDAjL._AC_SL1500_.jpg"
+    ],
+    "bullets": [
+      "START DEAD BATTERIES \u2014 Instantly start dead batteries with 2000 amps of peak lithium power. Up to 40 starts per charge on engines up to 8.0L gas and 6.0L diesel.",
+      "ULTRASAFE TECHNOLOGY \u2014 Engineered with patented spark-proof and reverse polarity protection for foolproof connections to any 12V vehicle - no sparks, no wrong connections.",
+      "PORTABLE POWER BANK \u2014 Integrated power bank delivers emergency power to smartphones, tablets, and more. Recharges in 6 hours so it\u2019s ready when it matters most.",
+      "INTEGRATED LED FLASHLIGHT \u2014 Precision-engineered 400-lumen LED with 7 light modes, including SOS and strobe. Illuminate repairs, emergencies, or low-light environments.",
+      "COMPACT YET POWERFUL \u2014 High-discharge lithium technology delivers exceptional starting performance in a compact 5.0 lb form factor - perfectly sized for glove boxes and emergency kits."
+    ],
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/item/B016UG6PWE#product-B016UG6PWE",
+      "unique_id": "B016UG6PWE",
+      "scroll_target": "product-B016UG6PWE",
+      "full_url": "https://amazing-cool-finds.com/item/B016UG6PWE#product-B016UG6PWE"
+    },
+    "processed_at": "2026-02-27T20:28:31.721890",
+    "script": {
+      "title": "NOCO Boost GB70 Review",
+      "narration": "You need to see the NOCO Boost GB70! It jump-starts dead batteries instantly and safely. Link is in the first comment!",
+      "hashtags": [
+        "NOCOBoost",
+        "JumpStarter",
+        "CarEssentials",
+        "AutoTech",
+        "RoadsideSavior"
+      ]
+    },
+    "voice_path": "assets/B016UG6PWE_voice.wav"
   }
 ]
