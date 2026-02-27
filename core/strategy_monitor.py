@@ -7,6 +7,7 @@ import json
 import logging
 from pathlib import Path
 from datetime import datetime
+import random
 
 log = logging.getLogger("StrategyMonitor")
 
@@ -44,12 +45,18 @@ class StrategyMonitor:
             except Exception as e:
                 log.warning(f"Error counting products for balance: {e}")
 
-        # Define targets with High-Ticket leaning keywords
+        # Define high-intent, targeted keywords for realistic Amazon searches
+        lifestyle_keywords = ["luxury skincare set", "premium espresso machine maker", "shiatsu massage gun", "designer sunglasses polarized", "high end blender smoothie"]
+        tech_keywords = ["4k gaming monitor", "premium mechanical keyboard OLED", "smart noise cancelling headphones", "VR headset advanced", "portable power station 1000w"]
+        home_keywords = ["smart air purifier HEPA", "robot vacuum mop combo", "luxury automated curtains", "premium memory foam mattress topper", "smart security camera system 4k"]
+        auto_keywords = ["4k dual dash cam", "portable car jump starter 2000A", "wireless apple carplay adapter", "premium car detailing kit professional", "portable tire inflator air compressor digital"]
+
+        # Mix the targets
         targets = [
-            {"category": "Lifestyle", "keywords": "premium luxury skincare sets beauty tech", "count": counts["Lifestyle"]},
-            {"category": "Tech", "keywords": "high-end innovative gadgets professional electronics", "count": counts["Tech"]},
-            {"category": "Home", "keywords": "luxury smart home automation designer decor", "count": counts["Home"]},
-            {"category": "Auto", "keywords": "premium car electronics luxury auto accessories", "count": counts["Auto"]}
+            {"category": "Lifestyle", "keywords": random.choice(lifestyle_keywords), "count": counts["Lifestyle"]},
+            {"category": "Tech", "keywords": random.choice(tech_keywords), "count": counts["Tech"]},
+            {"category": "Home", "keywords": random.choice(home_keywords), "count": counts["Home"]},
+            {"category": "Auto", "keywords": random.choice(auto_keywords), "count": counts["Auto"]}
         ]
 
         # Sort by count (ascending) to prioritize the least populated category
@@ -82,5 +89,5 @@ class StrategyMonitor:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     monitor = StrategyMonitor(Path("./data"))
-    print("Strategic Targets:", monitor.get_discovery_targets())
+    print("Strategic Targets:", monitor.get_discovery_priority())
     print("Profit Test (Lifestyle, $50):", monitor.calculate_potential_profit("$50", "Lifestyle"))

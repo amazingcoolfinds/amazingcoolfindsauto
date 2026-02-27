@@ -160,10 +160,12 @@ class VideoGenerator:
         try:
             if not url: return False
             response = requests.get(url, timeout=10)
-            response.raise_for_status()
-            with open(path, 'wb') as f:
-                f.write(response.content)
-            return path.exists() and path.stat().st_size > 0
+            if response.status_code == 200:
+                with open(path, 'wb') as f:
+                    f.write(response.content)
+                size_kb = path.stat().st_size / 1024
+                log.info(f"📥 Downloaded image: {path.name} ({size_kb:.1f} KB)")
+                return path.exists() and path.stat().st_size > 0
         except Exception as e:
             log.warning(f"Could not download image: {url} - {e}")
             return False

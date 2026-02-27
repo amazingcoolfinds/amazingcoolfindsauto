@@ -86,7 +86,7 @@ def get_enhanced_website_link(product):
         'full_url': enhanced_link
     }
 
-def get_high_performance_products(count_candidates=15, select_top=3):
+def get_high_performance_products(count_candidates=15, select_top=3, min_price=60):
     """
     New selection logic with Duplicate Prevention: 
     1. Check for existing ASINs.
@@ -144,6 +144,7 @@ def get_high_performance_products(count_candidates=15, select_top=3):
             search_results = scraper.search(priority_target['keywords'], max_results=10)
             
             if not search_results:
+                log.warning(f"⚠️ No search results for '{priority_target['keywords']}'")
                 continue
                 
             # 2. Filter out duplicates
@@ -156,6 +157,7 @@ def get_high_performance_products(count_candidates=15, select_top=3):
                 candidates.append(item)
             
             if not candidates:
+                log.info(f"ℹ️ All found products for {priority_target['category']} are already in database.")
                 continue
                 
             # 3. AI Selection for this specific category (High Ticket logic)
@@ -169,7 +171,11 @@ def get_high_performance_products(count_candidates=15, select_top=3):
                     gemini_selector = GeminiProductSelector(gemini_key)
                     selections = gemini_selector.analyze_candidates(priority_target['category'], candidates)
                 except Exception as e:
-                    log.warning(f"💎 Gemini selection failed: {e}. Trying Groq...")
+                    error_msg = str(e).lower()
+                    if "429" in error_msg or "quota" in error_msg:
+                        log.warning(f"💎 Gemini Quota Exceeded during selection. Falling back to Groq...")
+                    else:
+                        log.warning(f"💎 Gemini selection failed: {e}. Trying Groq...")
             
             # Try Groq if Gemini failed or isn't available
             if not selections and groq_key:
@@ -178,14 +184,18 @@ def get_high_performance_products(count_candidates=15, select_top=3):
                     groq_selector = GroqProductSelector(groq_key)
                     selections = groq_selector.analyze_candidates(priority_target['category'], candidates)
                 except GroqQuotaExceeded:
-                    raise # Re-raise to halt pipeline
+                    log.error("🛑 Groq Quota Exceeded during selection.")
                 except Exception as e:
                     log.warning(f"🧠 Groq selection failed: {e}. Using heuristic selection.")
             
             # Final fallback: Heuristic (top rated/priced)
             if not selections:
                 log.info("⚖️ Using heuristic selection (fallback)")
-                candidates.sort(key=lambda x: (float(x.get('rating', 0)), float(x.get('price', '$0').replace('$', '').replace(',', ''))), reverse=True)
+                # Sort by price then rating
+                def sort_val(x):
+                    try: return float(x.get('price', '$0').replace('$', '').replace(',', ''))
+                    except: return 0.0
+                candidates.sort(key=lambda x: (sort_val(x), float(x.get('rating', 0))), reverse=True)
                 selections = candidates[:3]
 
             # 4. Enrich selections with FULL details
@@ -197,6 +207,7 @@ def get_high_performance_products(count_candidates=15, select_top=3):
                 details = scraper.get_details(p['asin'])
                 
                 if not details:
+                    log.warning(f"⚠️ Could not extract details for {p['asin']}")
                     continue
                 
                 # Check image count rule (At least 5 required)
@@ -205,15 +216,15 @@ def get_high_performance_products(count_candidates=15, select_top=3):
                     log.warning(f"⚠️ Skipping {p['asin']} due to image count: {image_count} (Rule: At least 5 images required)")
                     continue
 
-                # Rigorous Price Rule: Min $60
+                # Rigorous Price Rule: Min price (Dynamic)
                 price_str = details.get('price', '$0').replace('$', '').replace(',', '')
                 try:
                     price_val = float(price_str)
-                    if price_val < 60:
-                        log.warning(f"⚠️ Skipping {p['asin']} due to price: ${price_val} (Rule: Minimum $60 required)")
+                    if price_val < min_price:
+                        log.warning(f"⚠️ Skipping {p['asin']} due to price: ${price_val} (Required: ${min_price})")
                         continue
                 except:
-                    log.warning(f"⚠️ Could not verify price for {p['asin']}: {details.get('price')}")
+                    log.warning(f"⚠️ Could not verify price for {p['asin']}: {details.get('price')}. Skipping product.")
                     continue
                 
                 # Merge details back, preserving selection metadata
@@ -354,16 +365,31 @@ def run_enhanced_pipeline():
             voice_gen = GroqVoiceGenerator(os.getenv("GROQ_API_KEY"))
         except: voice_gen = None
         
-        # Step 1: Discover products
+        # Step 1: Discover products with dynamic fallback
         log.info("🎯 Step 1: Discovering Strategic Candidates...")
-        try:
-            selected_products = get_high_performance_products(count_candidates=15, select_top=5)
-        except GroqQuotaExceeded as e:
-            log.error(f"🛑 ABORTING: {e}")
-            return False
+        selected_products = []
+        price_thresholds = [60, 45, 30] # Try high-ticket first, then mid, then low-mid
+        
+        for threshold in price_thresholds:
+            try:
+                log.info(f"🔍 Attempting production run with ${threshold} minimum price...")
+                selected_products = get_high_performance_products(count_candidates=15, select_top=5, min_price=threshold)
+                if selected_products:
+                    log.info(f"✅ Found {len(selected_products)} products with ${threshold} threshold.")
+                    break
+                else:
+                    log.warning(f"⚠️ No products found at ${threshold}. Retrying with lower threshold...")
+            except GroqQuotaExceeded as e:
+                log.error(f"🛑 Groq Quota hit during discovery: {e}")
+                # We can't do much if both AIs (Gemini/Groq) are failing quota, 
+                # but let's see if we can continue with what we have (nothing yet)
+                break
+            except Exception as e:
+                log.error(f"❌ Error during discovery at ${threshold}: {e}")
+                continue
             
         if not selected_products:
-            log.error("❌ No strategic products found today.")
+            log.error("❌ No strategic products found today after all attempts.")
             return False
             
         log.info(f"✨ Found {len(selected_products)} strategic candidates. Starting production...")

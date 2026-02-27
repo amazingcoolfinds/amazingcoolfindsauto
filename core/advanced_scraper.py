@@ -57,8 +57,8 @@ class AdvancedScraper:
             page = context.new_page()
             
             try:
-                # Go to page
-                page.goto(url, timeout=30000, wait_until='domcontentloaded')
+                # Go to page with longer timeout and wait_until='networkidle'
+                page.goto(url, timeout=60000, wait_until='load')
                 
                 # Check for "dog" page (404) or Captcha
                 content = page.content()
@@ -97,27 +97,58 @@ class AdvancedScraper:
                         price = el.get_text(strip=True)
                         break
                 
-                # 3. Images (Hi-Res) - Improved extraction
+                # 3. Images (Hi-Res) - Enhanced multi-stage extraction
                 images = []
+                
+                # A. Main Image Dynamic Data (Highest priority for main image)
+                landing_img = soup.select_one('#landingImage, #imgBlkFront, #ebooksImgBlkFront')
+                if landing_img and landing_img.get('data-a-dynamic-image'):
+                    try:
+                        dyn_data = json.loads(landing_img.get('data-a-dynamic-image'))
+                        # Sort by resolution (key is resolution string or width/height depending on layout)
+                        # Usually keys are URLs, values are [width, height]
+                        sorted_urls = sorted(dyn_data.items(), key=lambda x: x[1][0] * x[1][1], reverse=True)
+                        if sorted_urls:
+                            images.append(sorted_urls[0][0])
+                    except: pass
+
+                # B. Gallery JSON (colorImages)
                 json_match = re.search(r'colorImages":\s*({.+?}),\s*"', html)
+                if not json_match:
+                    json_match = re.search(r'\'colorImages\':\s*({.+?}),', html)
+                
                 if json_match:
                     try:
                         img_data = json.loads(json_match.group(1))
                         for color in img_data.values():
                             for entry in color:
-                                url = entry.get('hiRes') or entry.get('large')
+                                # Prioritize hiRes, then large
+                                url = entry.get('hiRes') or entry.get('large') or entry.get('main', {}).get('url')
                                 if url and 'https' in url and 'sprite' not in url:
                                     images.append(url)
                     except: pass
                 
-                if not images:
-                    img_els = soup.select('#altImages img, #landingImage')
+                # C. Manual Scrape + Universal High-Res Transformer
+                if len(images) < 5:
+                    img_els = soup.select('#altImages img, #landingImage, .a-dynamic-image')
                     for img in img_els:
-                        src = img.get('src', '').replace('_SS40_', '_SL1500_').replace('_AC_US40_', '_SL1500_')
-                        if 'https' in src and 'sprite' not in src:
-                            images.append(src)
+                        src = img.get('src') or img.get('data-old-hires') or img.get('data-a-dynamic-image')
+                        if src and 'https' in src and 'sprite' not in src:
+                            # Universal Transformer: 
+                            # Convert thumbnails (e.g. ._SS40_.jpg, ._AC_US40_.jpg, ._SR38,50_.jpg) to high-res (_SL1500_)
+                            # This regex matches the common patterns between the last dot and the extension
+                            hi_res_src = re.sub(r'\._[A-Z0-9,._]+_\.(jpg|jpeg|png|gif)', r'._SL1500_.\1', src)
+                            images.append(hi_res_src)
                         
-                images = [img for img in list(dict.fromkeys(images)) if len(img) > 20] # Dedup & filter short URLs
+                # Dedup while preserving order
+                seen = set()
+                final_images = []
+                for img in images:
+                    if img not in seen and len(img) > 20:
+                        final_images.append(img)
+                        seen.add(img)
+                
+                images = final_images[:12]
                 
                 if not images:
                     log.warning(f"⚠️ No valid images found for {asin}. Skipping.")
@@ -296,7 +327,7 @@ class AdvancedScraper:
                             'rating': rating,
                             'reviews_count': reviews,
                             'is_prime': is_prime,
-                            'image_url': f"https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL300_&ASIN={asin}&MarketPlace=US&ID=AsinImage",
+                            'image_url': f"https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN={asin}&MarketPlace=US&ID=AsinImage",
                             'affiliate_url': f"https://www.amazon.com/dp/{asin}?tag={self.associate_tag}"
                         })
                     except Exception as e:

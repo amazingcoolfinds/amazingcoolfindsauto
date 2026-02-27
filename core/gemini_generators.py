@@ -94,13 +94,13 @@ class GeminiProductSelector:
         prompt = (
             f"You are a High-Performance Affiliate Marketing Expert. Select the TOP 3-5 products from this list for the '{category}' category.\n"
             "CRITERIA:\n"
-            "1. Profit Maximization (MANDATORY): ONLY select products with a price GREATER THAN $60 USD. If a product is below $60, its score must be 0. Prioritize products $100+ USD to maximize absolute commission per sale.\n"
-            "2. High Commission: Target products yielding $10+ USD per sale.\n"
-            "3. High Rotation: BSR < 50,000.\n"
-            "4. High Conversion: Rating 4.3+ and Prime availability.\n\n"
+            "1. Profit Potential: Prioritize products with a price GREATER THAN $60 USD where possible. If a product is below $30, it should generally be avoided unless it has exceptional reviews and high volume.\n"
+            "2. High Commission: Target products with high absolute commission potential (Price * Commission Rate).\n"
+            "3. High Rotation: BSR < 100,000 (Prefer < 50,000).\n"
+            "4. High Conversion: Rating 4.0+ (Prefer 4.3+) and Prime availability.\n\n"
             f"CANDIDATES:\n{json.dumps(candidates_data, indent=2)}\n\n"
             "Return JSON object with key 'selections' containing a list of objects with 'asin', 'score' (0-100), and 'reasoning' (in English).\n"
-            "Select ONLY products with Score >= 70."
+            "Select products with Score >= 70. If few products meet high-ticket criteria, you may select the best available candidates above $30."
         )
 
         try:
@@ -130,5 +130,10 @@ class GeminiProductSelector:
             return final_products[:5]
 
         except Exception as e:
-            log.error(f"Gemini Selection failed: {e}")
+            error_msg = str(e)
+            if "429" in error_msg or "quota" in error_msg.lower():
+                log.error(f"⚠️ Gemini Quota Exceeded (429): {e}")
+                # Signal to pipeline that it should potentially fallback
+            else:
+                log.error(f"Gemini Selection failed: {e}")
             return products[:3]
