@@ -1762,5 +1762,65 @@
       ]
     },
     "voice_path": "assets/B016UG6PWE_voice.wav"
+  },
+  {
+    "asin": "B0FPJLPZ2B",
+    "title": "Chemical Guys Car Detailing Kit, Car Cleaning Kit with Total Interior Cleaner & Protectant, Sprayable Wheel Cleaner, Car Wash Soap, Bucket, Brushes, and Detailing Accessories - 17 Piece Wash Kit",
+    "price": "$99.99",
+    "rating": "4.6",
+    "reviews_count": "14",
+    "is_prime": false,
+    "image_url": "https://m.media-amazon.com/images/I/81hqBEBd0EL._AC_SX679_PIbundle-17,TopRight,0,0_SH20_.jpg",
+    "affiliate_url": "https://www.amazon.com/dp/B0FPJLPZ2B?tag=amazingcoolfinds-20",
+    "category": "Auto",
+    "commission": 0.04,
+    "bsr": [
+      {
+        "rank": "4388",
+        "category": "Automotive"
+      },
+      {
+        "rank": "13",
+        "category": "Cleaning Kits Date First Available November"
+      }
+    ],
+    "images": [
+      "https://m.media-amazon.com/images/I/81hqBEBd0EL._AC_SX679_PIbundle-17,TopRight,0,0_SH20_.jpg",
+      "https://m.media-amazon.com/images/G/01/marketing/prime/2022PrimeBrand/Logos/Prime_Logo_RGB_Prime_Blue_MASTER._SL1500_.png",
+      "https://m.media-amazon.com/images/I/51TOeCFzJJL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51J3KHF6iOL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51uAOH0IG+L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51P4pn5ry9L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61QPzyeDP2L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51fIznS6JPL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51hNgSdPEwL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81hqBEBd0EL._AC_SX466_PIbundle-17,TopRight,0,0_SH20_.jpg"
+    ],
+    "bullets": [
+      "HIGH QUALITY BRUSHES AND DETAILING TOOLS: Designed to give users the right tools for every step of car cleaning, this kit centers around durable brushes and detailing tools that help scrub wheels and tires, agitate interior surfaces, and clean exterior areas with better control.",
+      "COMPLETE CAR CLEANING KIT FOR HOME USE (HOL489): Built as an all-in-one solution for at-home car care, this detailing kit combines cleaning solutions, wash tools, and accessories so users can handle interior cleaning, exterior washing, and routine maintenance without buying separate products.",
+      "INTERIOR CLEANING FOR EVERYDAY MESS: Made to support regular interior detailing, this kit helps clean dashboards, seats, carpet, vinyl, plastic, and rubber by lifting dust, dirt, spills, and interior buildup caused by daily driving.",
+      "CAR DETAILING SUPPLIES: Multiple professional-grade brushes help tackle tough detailing jobs, paired with a sturdy wash bucket with dirt trap and lid, a chenille microfiber wash mitt, and microfiber towels, including Workhorse Towels and a plush gold drying towel for a streak-free finish.",
+      "WHEEL, TIRE, AND TRIM MAINTENANCE: Created to simplify wheel and exterior care, the kit includes tools and cleaners that help remove brake dust and road grime while restoring a clean, finished look during routine washes."
+    ],
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/item/B0FPJLPZ2B#product-B0FPJLPZ2B",
+      "unique_id": "B0FPJLPZ2B",
+      "scroll_target": "product-B0FPJLPZ2B",
+      "full_url": "https://amazing-cool-finds.com/item/B0FPJLPZ2B#product-B0FPJLPZ2B"
+    },
+    "processed_at": "2026-02-28T04:37:29.845566",
+    "script": {
+      "title": "Epic Car Detailing Kit Found!",
+      "narration": "You need to see the Chemical Guys Car Detailing Kit! It's a total game-changer with high-quality brushes and a complete cleaning solution. Link is in the first comment!",
+      "hashtags": [
+        "CarCare",
+        "DetailingKit",
+        "AutoEssentials",
+        "CarLove",
+        "DetailingMadeEasy"
+      ]
+    },
+    "voice_path": "assets/B0FPJLPZ2B_voice.wav"
   }
 ]
