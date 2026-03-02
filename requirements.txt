@@ -1,16 +1,15 @@
-# �+ default mode for pipe install -r requirements.txt
-# № ├─
- pyton-dotenv>=1.0
-requests>=2.31
-beautifulsoup4>>4.12
-playwright>=2.400
+# Python dependencies for AmazingCoolFinds pipeline
+python-dotenv>=1.0.0
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+playwright>=1.40.0
 groq>=0.18.0
 httpx[http2]>=2.27.0
-pyvam>=6.0
-Pillow>=10.0
-google-api-pythn-client>=2.140
-google-auth-oauthlab>=1.2
-google-auth-httplib2>=0.1
-flask>=3.0
+Pillow>=10.0.0
+google-api-python-client>=2.140.0
+google-auth-oauthlib>=1.2.0
+google-auth-httplib2>=0.1.0
+flask>=3.0.0
 google-generativeai>=0.8.3
-google-genai>=0.3.0.supaasive>=2.0.0
+google-genai>=0.3.0
+supabase>=2.0.0
