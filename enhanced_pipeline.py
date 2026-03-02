@@ -55,6 +55,37 @@ logging.basicConfig(
     ])
 log = logging.getLogger("AmazingCoolFinds")
 
+# ─── SUPABASE CLIENT ─────────────────────────────────────────────
+def get_supabase_client():
+    """Initialize Supabase client if credentials available"""
+    try:
+        from supabase import create_client
+        supabase_url = os.getenv("SUPABASE_URL")
+        supabase_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("SUPABASE_ANON_KEY")
+        if supabase_url and supabase_key:
+            return create_client(supabase_url, supabase_key)
+    except Exception as e:
+        log.warning(f"⚠️ Supabase client init failed: {e}")
+    return None
+
+# Initialize Supabase client
+supabase_client = get_supabase_client()
+if supabase_client:
+    log.info("✅ Supabase client initialized")
+else:
+    log.info("ℹ️ Supabase not available - skipping database logging")
+
+def log_to_supabase(table_name, data):
+    """Log data to Supabase table"""
+    if not supabase_client:
+        return False
+    try:
+        supabase_client.table(table_name).insert(data).execute()
+        return True
+    except Exception as e:
+        log.warning(f"⚠️ Failed to log to {table_name}: {e}")
+        return False
+
 # Global Affiliate Tag
 AFFILIATE_TAG = os.getenv("AMAZON_ASSOCIATE_TAG", "amazingcool-20")
 
@@ -488,6 +519,22 @@ def run_enhanced_pipeline():
                 processed_successfully.append(product)
                 send_to_make(product)
                 save_processed_product(product)
+
+                # Log to Supabase
+                log_to_supabase("products", {
+                    "asin": product.get("asin"),
+                    "title": product.get("title"),
+                    "price": product.get("price"),
+                    "rating": product.get("rating"),
+                    "reviews_count": product.get("reviews_count"),
+                    "category": product.get("category"),
+                    "affiliate_url": product.get("affiliate_url"),
+                    "website_link": product.get("website_link", {}).get("link") if isinstance(product.get("website_link"), dict) else None,
+                    "script_title": product.get("script", {}).get("title") if isinstance(product.get("script"), dict) else None,
+                    "video_path": str(product.get("video_path")) if product.get("video_path") else None,
+                    "processed_at": product.get("processed_at")
+                })
+
                 success_count += 1
                 log.info(f"✅ Finished production & distribution for {product['asin']}!")
                 time.sleep(5) # Give APIs a breather
@@ -513,6 +560,18 @@ def run_enhanced_pipeline():
             log.info(f"🔴 Failures:  {failure_count}")
             log.info(f"🕒 Time: {datetime.now().strftime('%H:%M:%S')}")
             log.info("=" * 60)
+
+            # Log cycle metrics to Supabase
+            log_to_supabase("cycle_metrics", {
+                "run_date": datetime.now().isoformat(),
+                "success_count": success_count,
+                "failure_count": failure_count,
+                "products_processed": len(processed_successfully),
+                "youtube_uploaded": sum(1 for p in processed_successfully if p.get("youtube_uploaded")),
+                "meta_uploaded": sum(1 for p in processed_successfully if p.get("meta_uploaded")),
+                "tiktok_uploaded": sum(1 for p in processed_successfully if p.get("tiktok_uploaded"))
+            })
+
             return True
         else:
             log.error("❌ Pipeline finished with 0 successes.")
