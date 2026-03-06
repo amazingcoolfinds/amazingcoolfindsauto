@@ -1,7 +1,6 @@
 import logging
 import time
 import re
-import yaml
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 # Removed unused selectorlib import
