@@ -65,7 +65,7 @@ class GeminiScriptGenerator:
                 }
             except Exception as e:
                 log.warning(f"⚠️ Gemini API issue: {e}. Retrying...")
-                time.sleep(2)
+                time.sleep(5)
 
         return None
 
