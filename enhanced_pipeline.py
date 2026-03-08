@@ -399,7 +399,7 @@ def run_enhanced_pipeline():
         # Step 1: Discover products with dynamic fallback
         log.info("🎯 Step 1: Discovering Strategic Candidates...")
         selected_products = []
-        price_thresholds = [60, 45, 30] # Try high-ticket first, then mid, then low-mid
+        price_thresholds = [50, 35, 20] # Try high-ticket first, then mid, then low-mid
         
         for threshold in price_thresholds:
             try:
