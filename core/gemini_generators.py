@@ -35,7 +35,7 @@ class GeminiScriptGenerator:
             f"CATEGORY: {category}\n"
             f"KEY FEATURES: {bullet_text}\n\n"
             "CREATIVE GUIDELINES:\n"
-            "1. THE HOOK (Scroll-Stopper): NEVER start with 'Check this out' or 'You need this'. Use one of these formats to VARY structure across runs:\n"
+            "1. THE HOOK (Scroll-Stopper): STRICTLY FORBIDDEN openers: 'Check this out', 'You need this', 'You need to see', 'Look at this'. ANY script starting with these phrases will be REJECTED. Use one of these formats to VARY structure across runs:\n"
             "   - Relatable Pain Point: 'Does your [Pain Point Related to Category] drive you crazy?'\n"
             "   - Bold Prediction: 'This [Product Name] is literally going to save you [Time/Space/Hassle] this year.'\n"
             "   - Curiosity Gap: 'Most people don't know [Brand] solved the biggest problem with [Category].'\n"
