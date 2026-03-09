@@ -65,6 +65,9 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "").strip()
 MAKE_WEBHOOK_URL = os.getenv("MAKE_WEBHOOK_URL", "")
 WEBSITE_URL = os.getenv("WEBSITE_URL", "https://amazing-cool-finds.com")
+CF_ACCOUNT_ID = os.getenv("CLOUDFLARE_ACCOUNT_ID", "")
+CF_API_TOKEN = os.getenv("CLOUDFLARE_API_TOKEN", "")
+CF_WORKER_NAME = "article-generator" # Adjust based on real name
 
 GH_HEADERS = {
     "Authorization": f"token {GITHUB_TOKEN}",
@@ -206,6 +209,31 @@ def get_run_jobs_summary(run_id: int) -> dict:
     except Exception as e:
         log.warning(f"⚠️ Could not get job summary: {e}")
         return {}
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  CLOUDFLARE MONITORING
+# ══════════════════════════════════════════════════════════════════════════════
+
+def fetch_cloudflare_worker_health() -> dict:
+    """Check Cloudflare Worker health (via API or recent activity)."""
+    if not CF_API_TOKEN or not CF_ACCOUNT_ID:
+        return {"status": "unknown", "message": "Cloudflare credentials missing"}
+
+    try:
+        # Check KV for last article timestamp as a health proxy
+        # Or check Worker status via API
+        resp = requests.get(
+            f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/workers/scripts/{CF_WORKER_NAME}",
+            headers={"Authorization": f"Bearer {CF_API_TOKEN}", "Content-Type": "application/json"},
+            timeout=15
+        )
+        if resp.status_code == 200:
+            return {"status": "ok", "message": "Worker is active and configured"}
+        else:
+            return {"status": "error", "message": f"Cloudflare API error: {resp.status_code}"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -605,6 +633,12 @@ def generate_daily_report(health: dict) -> str:
     # YT improvements block
     improvements_txt = "\n".join([f"  📈 {i.get('description', 'Improvement applied')}" for i in improvements_today]) or "  ✅ La calidad de scripts YT está en niveles óptimos"
 
+    # Cloudflare block
+    last_run = today_runs[-1] if today_runs else (health.get("runs")[-1] if health.get("runs") else {})
+    cf_status = last_run.get("cloudflare_health", {"status": "unknown", "message": "No data"})
+    cf_icon = "✅" if cf_status.get("status") == "ok" else ("❌" if cf_status.get("status") == "error" else "⚪")
+    cf_txt = f"  {cf_icon} Worker: {CF_WORKER_NAME}\n  💬 Estado: {cf_status.get('message')}"
+
     # Overall health
     overall_today = "✅ SALUDABLE" if all(r.get("conclusion") == "success" for r in today_runs) and today_runs else ("❌ CON ERRORES" if any(r.get("conclusion") == "failure" for r in today_runs) else "⏳ INCOMPLETO")
 
@@ -623,6 +657,10 @@ Fecha: {today_str}  |  Estado: {overall_today}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 💡 MEJORAS DE CALIDAD YOUTUBE IMPLEMENTADAS
 {improvements_txt}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🌐 ESTADO DE CLOUDFLARE (Article Generator)
+{cf_txt}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📈 MÉTRICAS ÚLTIMOS 7 DÍAS
@@ -814,6 +852,7 @@ def mode_diagnose(health: dict, run_id: int = None, conclusion: str = None, dry_
     log.info("📜 Downloading run logs from GitHub Actions...")
     log_text = fetch_run_logs(run_id)
     jobs_summary = get_run_jobs_summary(run_id)
+    cf_health = fetch_cloudflare_worker_health()
 
     # Detect errors
     detected_fixes = detect_errors(log_text)
@@ -875,6 +914,7 @@ def mode_diagnose(health: dict, run_id: int = None, conclusion: str = None, dry_
         "errors": error_lines,
         "diagnosis": diagnosis,
         "fixes_detected": [f[1] for f in detected_fixes],
+        "cloudflare_health": cf_health,
         "url": run_url,
         "timestamp": now.isoformat()
     }
