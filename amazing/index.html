@@ -800,7 +800,7 @@
         .tag--new-arrival {
             position: absolute;
             top: 16px;
-            right: 16px;
+            left: 16px;
             background: var(--hot-pink);
             color: white;
             padding: 6px 14px;
@@ -808,10 +808,18 @@
             font-size: 0.7rem;
             font-weight: 800;
             letter-spacing: 1px;
-            z-index: 10;
+            z-index: 20;
             text-transform: uppercase;
             box-shadow: 0 4px 15px var(--pink-glow);
             animation: pulse-glow 2s infinite;
+        }
+
+        /* Offset badges when new arrival is present */
+        .card.is-new .card__badge {
+            top: 52px !important;
+        }
+        .card.is-new .card__badge[style*="top: 48px"] {
+            top: 88px !important;
         }
 
         @keyframes pulse-glow {
@@ -1335,7 +1343,7 @@
                 const isNewArrival = isNew(p);
 
                 return `
-                <div class="card" id="${p.asin}">
+                <div class="card ${isNewArrival ? 'is-new' : ''}" id="${p.asin}">
                     ${isNewArrival ? '<div class="tag--new-arrival">NEW ARRIVAL</div>' : ''}
                     <div class="card__badge">${discount}</div>
                     ${p.youtube_uploaded ? `
