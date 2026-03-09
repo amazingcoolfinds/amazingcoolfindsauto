@@ -172,16 +172,17 @@ class SmartScriptGenerator:
         features = analysis.get('key_features', [])
         price = analysis['price']
         
-        title = f"Transform Your {vehicle.title()} With These {material.title()} Seat Covers"
+        title = f"Stop Scuffing Your {vehicle.title()}! These {material.title()} Covers Are A Must"
         
-        narration = f"""Upgrade your {vehicle} with these premium {material} seat covers! 
+        narration = f"""POV: You just found the ultimate {vehicle} upgrade with these premium {material} seat covers! 
         
 They're 100% waterproof and super durable - perfect for any adventure. 
-Installation takes just 15 minutes with no tools needed.
+Installation is a breeze, takes just 15 minutes with no tools needed.
 {' '.join([f'Features include {feature}.' for feature in features[:3]])}
+        
+At only {price}, these are a total game changer for your interior.
+Link is in the first comment!"""
 
-At only {price}, these seat covers will keep your car looking brand new.
-Check out the first comment for the link!"""
         
         hashtags = ['#CarAccessories', '#SeatCovers', f'#{vehicle.title().replace(" ", "")}', '#CarUpgrade']
         
@@ -193,11 +194,12 @@ Check out the first comment for the link!"""
     
     def _generate_tech_script(self, analysis: Dict, product: Dict) -> Dict:
         """Generate script for tech gadgets"""
-        title = f"This Tech Gadget Will Change Your Life!"
-        narration = f"""You won't believe what this tech gadget can do! 
-It's packed with amazing features and works perfectly with all your devices.
-At only {analysis['price']}, this is a must-have for 2026.
-Check out the first comment for the link!"""
+        title = f"This Tech Discovery Is Literally A Life Saver!"
+        narration = f"""I wasn't expecting this level of quality! This tech gadget is a total game changer.
+It's packed with insane features and works perfectly with all your devices.
+At only {analysis['price']}, this is the one piece of tech you need this year.
+Link is in the first comment!"""
+
         hashtags = ['#TechGadgets', '#MustHave', '#AmazonFinds']
         
         return {
@@ -208,11 +210,12 @@ Check out the first comment for the link!"""
     
     def _generate_home_script(self, analysis: Dict, product: Dict) -> Dict:
         """Generate script for home decor"""
-        title = f"Beautiful Home Decor You Need!"
-        narration = f"""Transform your home with this beautiful decor piece!
-It's the perfect addition to any room and looks absolutely stunning.
-At only {analysis['price']}, this is a steal!
-Check out the first comment for the link!"""
+        title = f"Your Home Setup Is Missing This One Item"
+        narration = f"""Most people don't know how much of a difference this one piece makes!
+It's the perfect addition to any room and the quality is absolutely top-tier.
+At only {analysis['price']}, it looks way more expensive than it is.
+Link is in the first comment!"""
+
         hashtags = ['#HomeDecor', '#InteriorDesign', '#AmazonFinds']
         
         return {
@@ -223,12 +226,13 @@ Check out the first comment for the link!"""
     
     def _generate_kitchen_script(self, analysis: Dict, product: Dict) -> Dict:
         """Generate script for kitchen items"""
-        title = f"This Kitchen Tool Is A Game Changer!"
-        narration = f"""You need this kitchen tool in your life!
-It makes cooking so much easier and faster.
-Perfect quality and amazing design.
-At only {analysis['price']}, it's a must-have!
-Check out the first comment for the link!"""
+        title = f"The Kitchen Hack You Didn't Know You Needed"
+        narration = f"""Does your cooking prep drive you crazy? You need this tool!
+It makes everything so much faster and the design is obsessively thought out.
+Professional quality that fits right in your kitchen.
+At only {analysis['price']}, it's an absolute no-brainer.
+Link is in the first comment!"""
+
         hashtags = ['#KitchenGadgets', '#Cooking', '#AmazonFinds']
         
         return {
@@ -239,12 +243,13 @@ Check out the first comment for the link!"""
     
     def _generate_beauty_script(self, analysis: Dict, product: Dict) -> Dict:
         """Generate script for beauty products"""
-        title = f"This Beauty Product Is Amazing!"
-        narration = f"""Your skincare routine needs this product!
-It's absolutely incredible and works wonders.
-Perfect for all skin types.
-At only {analysis['price']}, you can't go wrong!
-Check out the first comment for the link!"""
+        title = f"The Secret To A Perfect Skincare Routine"
+        narration = f"""If you're looking for the perfect addition to your routine, stop scrolling!
+This product is absolutely incredible and the results speak for themselves.
+Perfect for all skin types and feels so premium.
+At only {analysis['price']}, your skin will thank you later.
+Link is in the first comment!"""
+
         hashtags = ['#Beauty', '#Skincare', '#AmazonFinds']
         
         return {
@@ -255,12 +260,13 @@ Check out the first comment for the link!"""
     
     def _generate_fitness_script(self, analysis: Dict, product: Dict) -> Dict:
         """Generate script for fitness items"""
-        title = f"Take Your Fitness To The Next Level!"
-        narration = f"""This fitness equipment is exactly what you need!
-Perfect for home workouts and getting in shape.
-Durable, professional quality.
-At only {analysis['price']}, it's a great investment!
-Check out the first comment for the link!"""
+        title = f"Stop Settling For Basic Workouts"
+        narration = f"""POV: You just found the missing piece for your home gym setup!
+This equipment is exactly what you need to hit those fitness goals.
+Durable, professional grade, and built to last.
+At only {analysis['price']}, it's the best investment you'll make this month.
+Link is in the first comment!"""
+
         hashtags = ['#Fitness', '#Workout', '#HomeGym']
         
         return {
@@ -271,12 +277,13 @@ Check out the first comment for the link!"""
     
     def _generate_general_script(self, analysis: Dict, product: Dict) -> Dict:
         """Generate script for general products"""
-        title = f"This Product Is Absolutely Amazing!"
-        narration = f"""You have to check out this incredible product!
-It's exactly what you've been looking for.
-Amazing quality and great price.
-At only {analysis['price']}, it's a steal!
-Check out the first comment for the link!"""
+        title = f"The Viral Amazon Find You've Been Seeing Everywhere"
+        narration = f"""I finally found it - the product everyone is talking about!
+It's even better in person and the quality is absolutely insane.
+If you've been on the fence, this is your sign to grab one.
+At only {analysis['price']}, it's a total steal.
+Link is in the first comment!"""
+
         hashtags = ['#AmazonFinds', '#MustHave', '#Shopping']
         
         return {

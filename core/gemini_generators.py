@@ -29,22 +29,29 @@ class GeminiScriptGenerator:
         bullet_text = ". ".join(bullets[:4]) if bullets else "Amazing quality and features"
         
         prompt = (
-            f"You are a top-tier viral content creator for TikTok and YouTube Shorts. Your goal is to create a high-energy, native English script that stops the scroll.\n\n"
+            f"You are a visionary viral content creator for TikTok and YouTube Shorts. Your mission is to craft a high-energy, stop-the-scroll video script that makes people fall in love with the product's value and brand story.\n\n"
             f"PRODUCT: {product_title}\n"
             f"BRAND: {brand}\n"
-            f"PRICE: {price}\n"
             f"CATEGORY: {category}\n"
             f"KEY FEATURES: {bullet_text}\n\n"
             "CREATIVE GUIDELINES:\n"
-            "1. THE HOOK: Do NOT start every video the same way. Avoid 'Check out this' or 'You need this'. Use a unique hook: a question, a bold statement, or a relatable pain point (e.g., 'Stop scrolling if you drive a sedan' or 'This is the gadget I wish I had last year').\n"
-            "2. THE BODY: Focus on the MOST impressive feature. Use vivid, sensory language. Sound like an enthusiast, not a salesman.\n"
-            "3. THE CTA: End with: 'Link is in the first comment!' (MANDATORY).\n"
-            "4. TIMING: Maximum 50 words. Must be spoken in under 20 seconds.\n"
-            "5. TONE: High energy, native English, conversational, viral potential.\n\n"
+            "1. THE HOOK (Scroll-Stopper): NEVER start with 'Check this out' or 'You need this'. Use one of these formats to VARY structure across runs:\n"
+            "   - Relatable Pain Point: 'Does your [Pain Point Related to Category] drive you crazy?'\n"
+            "   - Bold Prediction: 'This [Product Name] is literally going to save you [Time/Space/Hassle] this year.'\n"
+            "   - Curiosity Gap: 'Most people don't know [Brand] solved the biggest problem with [Category].'\n"
+            "   - Visual Hook: 'I wasn't expecting this level of quality from the [Brand] [Product Name].'\n"
+            "   - Gift Idea: 'If you're looking for the perfect gift for a [Category] lover, stop scrolling.'\n"
+            "   - Life Hack: 'Here's a [Category] hack that actually works, thanks to [Brand].'\n"
+            "   - POV: 'POV: You just found the missing piece for your [Category] setup.'\n"
+
+            "2. THE NARRATIVE (Brand & Utility Focus): Focus on the MOST impressive feature and how it actually changes the user's life. Use evocative, high-sensory language (e.g., 'silky smooth', 'obsessively designed', 'industrial-grade').\n"
+            "3. PRICE POLICY: Only mention the price if it is an absolute steal (e.g., 'At just {price}, it's a no-brainer'). Otherwise, focus entirely on the VALUE and quality of {brand}.\n"
+            "4. CALL TO ACTION: End with: 'Link is in the first comment!' (MANDATORY).\n"
+            "5. CONSTRAINTS: Max 50 words. Natural, conversational, high-energy native English.\n\n"
             "Return JSON with exactly three keys:\n"
-            "- 'title': A clickable, clickbait-style title (no hashtags here).\n"
+            "- 'title': A click-worthy, curiosity-inducing title (no hashtags).\n"
             "- 'narration': The spoken script.\n"
-            "- 'hashtags': 4-5 trending, relevant hashtags.\n"
+            "- 'hashtags': 4-5 trending, niche-relevant hashtags.\n"
         )
 
         for attempt in range(3):
@@ -60,7 +67,7 @@ class GeminiScriptGenerator:
                 res = json.loads(response.text)
                 return {
                     "title": res.get("title", f"Check out this {brand}!"),
-                    "narration": res.get("narration", f"You have to see this! The {brand} is a game changer at only {price}. Link is in the first comment!"),
+                    "narration": res.get("narration", f"POV: You just found the ultimate {category} upgrade. The {brand} is a total game changer for your daily routine. Link is in the first comment!"),
                     "hashtags": res.get("hashtags", ["#amazonfinds", "#coolgadgets", "#musthaves", "#viral"])
                 }
             except Exception as e:
@@ -137,3 +144,36 @@ class GeminiProductSelector:
             else:
                 log.error(f"Gemini Selection failed: {e}")
             return products[:3]
+
+    def classify_product(self, product: dict) -> str:
+        """Classifies a product into one of the three consolidated categories."""
+        product_title = product.get('title', '')
+        bullets = ". ".join(product.get('bullets', []))
+        
+        prompt = (
+            "Classify this Amazon product into EXACTLY one of these three categories:\n"
+            "1. 'Tech' (Laptops, smartphones, headphones, gaming consoles, smart home hubs, cameras)\n"
+            "2. 'Life & Style' (Skincare, makeup, fashion, jewelry, watches, yoga/fitness, fragrance, wellness)\n"
+            "3. 'Home & Auto' (Kitchen appliances, blenders, coffee makers, home furniture, car accessories, power tools, decor)\n\n"
+            "EXAMPLES:\n"
+            "- 'Ninja Blender' -> 'Home & Auto'\n"
+            "- 'Face Serum' -> 'Life & Style'\n"
+            "- 'Wireless Mouse' -> 'Tech'\n"
+            "- 'Car Dash Cam' -> 'Home & Auto'\n\n"
+            f"PRODUCT TITLE: {product_title}\n"
+            f"KEY FEATURES: {bullets}\n\n"
+            "Return JSON with key 'category'."
+        )
+
+        try:
+            response = self.model.generate_content(
+                prompt,
+                generation_config=genai.GenerationConfig(
+                    response_mime_type="application/json",
+                    temperature=0.1
+                )
+            )
+            res = json.loads(response.text)
+            return res.get("category", "Life & Style")
+        except:
+            return "Life & Style"

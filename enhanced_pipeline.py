@@ -24,6 +24,10 @@ sys.path.append(str(BASE_DIR / "tools"))
 sys.path.append(str(BASE_DIR / "config"))
 
 # Import custom exceptions
+class CriticalPipelineError(Exception):
+    """Exception raised when a critical pipeline step fails."""
+    pass
+
 try:
     from groq_generators import GroqQuotaExceeded
 except ImportError:
@@ -92,9 +96,8 @@ AFFILIATE_TAG = os.getenv("AMAZON_ASSOCIATE_TAG", "amazingcool-20")
 # ─── CONFIGURATION ───────────────────────────────────────────────
 PRODUCT_TARGETS = [
     {"category": "Tech", "keywords": "premium tech gadgets 2026", "commission": "4%"},
-    {"category": "Lifestyle", "keywords": "luxury skincare beauty essentials", "commission": "10%"},
-    {"category": "Home", "keywords": "modern home decor luxury office", "commission": "3%"},
-    {"category": "Auto", "keywords": "premium car accessories 2026", "commission": "4%"},
+    {"category": "Life & Style", "keywords": "luxury skincare beauty essentials", "commission": "10%"},
+    {"category": "Home & Auto", "keywords": "modern home decor luxury office equipment", "commission": "4%"},
 ]
 
 # ─── ENHANCED FUNCTIONS ─────────────────────────────────────
@@ -260,6 +263,15 @@ def get_high_performance_products(count_candidates=15, select_top=3, min_price=6
                 
                 # Merge details back, preserving selection metadata
                 p.update(details)
+                
+                # AI Re-categorization (Robust alignment)
+                try:
+                    log.info(f"🧠 AI Re-categorizing {p['asin']}...")
+                    p['category'] = selector.classify_product(p)
+                    log.info(f"📌 Final Category: {p['category']}")
+                except Exception as e:
+                    log.warning(f"⚠️ AI re-categorization failed: {e}. Keeping original: {p['category']}")
+
                 p['website_link'] = get_enhanced_website_link(p)
                 p['affiliate_url'] = f"https://www.amazon.com/dp/{p['asin']}?tag={AFFILIATE_TAG}"
                 p['processed_at'] = datetime.now().isoformat()
@@ -430,50 +442,44 @@ def run_enhanced_pipeline():
         for product in selected_products:
             try:
                 # 2. Scripting
-                log.info("🎤 Generating script...")
+                log.info("🎤 Generating script (Strictly Gemini)...")
                 gemini_key = os.getenv("GEMINI_API_KEY", "").strip()
-                groq_key = os.getenv("GROQ_API_KEY", "").strip()
                 script = None
                 
-                # Try Gemini first (Better reasoning)
-                if gemini_key:
-                    try:
-                        from gemini_generators import GeminiScriptGenerator
-                        gpt_gen = GeminiScriptGenerator(gemini_key)
-                        script = gpt_gen.generate_script(product)
-                    except Exception as e:
-                        log.warning(f"💎 Gemini Scripting failed: {e}. Trying Groq...")
+                if not gemini_key:
+                    raise CriticalPipelineError("❌ GEMINI_API_KEY is missing. Cannot generate script.")
                 
-                # Fallback to Groq
-                if not script and groq_key:
-                    try:
-                        from groq_generators import GroqScriptGenerator
-                        gpt_gen = GroqScriptGenerator(groq_key)
-                        script = gpt_gen.generate_script(product)
-                    except GroqQuotaExceeded:
-                        raise # Halt if quota empty
-                    except Exception as e:
-                        log.error(f"🧠 Groq Scripting failed: {e}")
+                try:
+                    from gemini_generators import GeminiScriptGenerator
+                    gpt_gen = GeminiScriptGenerator(gemini_key)
+                    script = gpt_gen.generate_script(product)
+                except Exception as e:
+                    log.error(f"💎 Gemini Scripting failed: {e}")
+                    raise CriticalPipelineError(f"Script generation failed for {product['asin']} using Gemini.")
                 
                 if not script:
-                    log.error(f"❌ All script generation attempts failed for {product['asin']}")
-                    failure_count += 1
-                    continue
+                    log.error(f"❌ Gemini returned empty script for {product['asin']}")
+                    raise CriticalPipelineError(f"Empty script from Gemini for {product['asin']}.")
+                
                 product['script'] = script
                 
-                # 3. Voiceover (Neural Groq Diana)
-                log.info("🗣️  Generating voiceover...")
+                # 3. Voiceover (Strictly Groq Diana)
+                log.info("🗣️  Generating voiceover (Strictly Groq)...")
                 if not voice_gen:
-                    log.error(f"⚠️ Voice generator not initialized. Skipping {product['asin']}.")
-                    failure_count += 1
-                    continue
+                    raise CriticalPipelineError("❌ Voice generator (Groq) not initialized.")
 
-                voice_path = voice_gen.generate(script['narration'], product['asin'])
+                try:
+                    voice_path = voice_gen.generate(script['narration'], product['asin'])
+                except GroqQuotaExceeded:
+                    raise
+                except Exception as e:
+                    log.error(f"🧠 Groq Voiceover failed: {e}")
+                    raise CriticalPipelineError(f"Voiceover generation failed for {product['asin']} using Groq.")
                 
                 if not voice_path:
-                    log.error(f"⚠️ Voiceover failed for {product['asin']}. Skipping.")
-                    failure_count += 1
-                    continue
+                    log.error(f"⚠️ Voiceover returned None for {product['asin']}")
+                    raise CriticalPipelineError(f"Empty voiceover from Groq for {product['asin']}.")
+                
                 product['voice_path'] = voice_path
                 
                 # 4. Video production
@@ -493,7 +499,12 @@ def run_enhanced_pipeline():
                     log.info("📹 Uploading to YouTube...")
                     try:
                         desc = f"{script['narration']}\n\n🔥 Check it out: {product['website_link']['link']}\n\n" + " ".join(script.get('hashtags', []))
-                        yt_up.upload_video(video_path, script['title'], desc, script.get('hashtags', []), affiliate_link=product['affiliate_url'])
+                        video_id = yt_up.upload_video(video_path, script['title'], desc, script.get('hashtags', []), affiliate_link=product['affiliate_url'])
+                        if video_id:
+                            product['youtube_uploaded'] = True
+                            product['youtube_video_id'] = video_id
+                            product['youtube_url'] = f"https://youtube.com/watch?v={video_id}"
+                            log.info(f"✅ YouTube metadata saved for {product['asin']}")
                     except Exception as e:
                         log.warning(f"⚠️ YouTube upload failed: {e}")
 
@@ -532,6 +543,9 @@ def run_enhanced_pipeline():
                     "website_link": product.get("website_link", {}).get("link") if isinstance(product.get("website_link"), dict) else None,
                     "script_title": product.get("script", {}).get("title") if isinstance(product.get("script"), dict) else None,
                     "video_path": str(product.get("video_path")) if product.get("video_path") else None,
+                    "youtube_uploaded": product.get("youtube_uploaded", False),
+                    "youtube_video_id": product.get("youtube_video_id"),
+                    "youtube_url": product.get("youtube_url"),
                     "processed_at": product.get("processed_at")
                 })
 
@@ -539,6 +553,10 @@ def run_enhanced_pipeline():
                 log.info(f"✅ Finished production & distribution for {product['asin']}!")
                 time.sleep(5) # Give APIs a breather
 
+            except CriticalPipelineError as e:
+                log.error(f"🛑 CRITICAL FAILURE: {e}. Stopping pipeline to retry later.")
+                # We stop the entire pipeline as per user requirement
+                raise e 
             except GroqQuotaExceeded as e:
                 log.error(f"🛑 STOPPING PIPELINE: Groq Quota hit. Will retry in next scheduled run. Error: {e}")
                 # We stop processing more products to save quota and wait for refresh
@@ -577,6 +595,9 @@ def run_enhanced_pipeline():
             log.error("❌ Pipeline finished with 0 successes.")
             return False
         
+    except CriticalPipelineError as e:
+        log.error(f"❌ Pipeline halted due to critical AI failure: {e}")
+        return False
     except Exception as e:
         log.error(f"❌ Enhanced pipeline failed: {e}")
         return False

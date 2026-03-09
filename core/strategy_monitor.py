@@ -18,9 +18,8 @@ class StrategyMonitor:
         # Commission rates by category
         self.commissions = {
             "Tech": 0.04,
-            "Lifestyle": 0.10,
-            "Home": 0.03,
-            "Auto": 0.04,
+            "Life & Style": 0.10,
+            "Home & Auto": 0.04,
             "Electronics": 0.04,
             "Beauty": 0.10,
             "Toys": 0.03
@@ -31,7 +30,7 @@ class StrategyMonitor:
         Analyzes the current product database and returns targets prioritized 
         by which category has fewer items to ensure balanced growth.
         """
-        counts = {"Tech": 0, "Lifestyle": 0, "Home": 0, "Auto": 0}
+        counts = {"Tech": 0, "Life & Style": 0, "Home & Auto": 0}
         
         # Load current product counts
         if self.products_file.exists():
@@ -46,17 +45,15 @@ class StrategyMonitor:
                 log.warning(f"Error counting products for balance: {e}")
 
         # Define high-intent, targeted keywords for realistic Amazon searches
-        lifestyle_keywords = ["luxury skincare set", "premium espresso machine maker", "shiatsu massage gun", "designer sunglasses polarized", "high end blender smoothie"]
+        lifestyle_keywords = ["luxury skincare set", "designer sunglasses polarized", "aromatherapy diffuser kit", "premium yoga mat eco-friendly", "silk pillowcase set luxury"]
         tech_keywords = ["4k gaming monitor", "premium mechanical keyboard OLED", "smart noise cancelling headphones", "VR headset advanced", "portable power station 1000w"]
-        home_keywords = ["smart air purifier HEPA", "robot vacuum mop combo", "luxury automated curtains", "premium memory foam mattress topper", "smart security camera system 4k"]
-        auto_keywords = ["4k dual dash cam", "portable car jump starter 2000A", "wireless apple carplay adapter", "premium car detailing kit professional", "portable tire inflator air compressor digital"]
+        home_auto_keywords = ["smart air purifier HEPA", "robot vacuum mop combo", "premium espresso machine maker", "high end blender smoothie", "4k dual dash cam", "portable car jump starter 2000A", "wireless apple carplay adapter"]
 
         # Mix the targets
         targets = [
-            {"category": "Lifestyle", "keywords": random.choice(lifestyle_keywords), "count": counts["Lifestyle"]},
+            {"category": "Life & Style", "keywords": random.choice(lifestyle_keywords), "count": counts["Life & Style"]},
             {"category": "Tech", "keywords": random.choice(tech_keywords), "count": counts["Tech"]},
-            {"category": "Home", "keywords": random.choice(home_keywords), "count": counts["Home"]},
-            {"category": "Auto", "keywords": random.choice(auto_keywords), "count": counts["Auto"]}
+            {"category": "Home & Auto", "keywords": random.choice(home_auto_keywords), "count": counts["Home & Auto"]}
         ]
 
         # Sort by count (ascending) to prioritize the least populated category

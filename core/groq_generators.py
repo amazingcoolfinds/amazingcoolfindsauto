@@ -52,7 +52,8 @@ class GroqScriptGenerator:
             f"CATEGORY: {category}\n"
             f"KEY FEATURES: {bullet_text}\n\n"
             "SCRIPT REQUIREMENTS:\n"
-            "1. START by mentioning the brand/product name naturally (e.g., 'Check out this [Brand] [Product]' or 'You need to see the [Brand Name]')\n"
+            "1. START with a viral hook that VARY across runs (e.g., 'POV: You just found...', 'I wasn't expecting this level of quality...', 'Does your [problem] drive you crazy?', 'The {brand} {product_title} is a total game changer')\n"
+
             "2. USE the product features to create a compelling, viral narrative (2-3 sentences max)\n"
             "3. HIGHLIGHT what makes it special or solves a problem\n"
             "4. END with: 'Link is in the first comment!' (MANDATORY)\n"
@@ -79,7 +80,7 @@ class GroqScriptGenerator:
                 res = json.loads(chat_completion.choices[0].message.content)
                 return {
                     "title": res.get("title", f"Check out this {brand}!"),
-                    "narration": res.get("narration", f"You have to see this! The {brand} is a game changer at only {price}. Link is in the first comment!"),
+                    "narration": res.get("narration", f"I was not expecting this level of quality! The {brand} is amazing and at only {price}, it's a steal. Link is in the first comment!"),
                     "hashtags": res.get("hashtags", ["#amazonfinds", "#coolgadgets", "#musthaves", "#viral"])
                 }
 
@@ -101,13 +102,9 @@ class GroqScriptGenerator:
                     log.error(f"❌ Unexpected Groq Script error: {e}")
                     break
 
-        # If all retries fail, return a safe fallback script
-        log.warning("⚠️ Using fallback script due to API failures")
-        return {
-            "title": f"Must Have: {brand}",
-            "narration": f"Check out this {brand}! It's absolutely amazing at only {price}. You need to see this. Link is in the first comment!",
-            "hashtags": ["#amazonfinds", "#shopping", "#viral", "#musthave"]
-        }
+        # If all retries fail, return None so the pipeline can halt
+        log.error("❌ Failed to generate Groq script after all retries.")
+        return None
 
 class GroqVoiceGenerator:
     def __init__(self, api_key):
@@ -252,3 +249,35 @@ class GroqProductSelector:
             log.error(f"Groq Selection failed: {e}")
             # Fallback: simple heuristic selection if AI fails
             return products[:3]
+
+    def classify_product(self, product: dict) -> str:
+        """Classifies a product into one of the three consolidated categories."""
+        product_title = product.get('title', '')
+        bullets = ". ".join(product.get('bullets', []))
+        
+        prompt = (
+            "Classify this Amazon product into EXACTLY one of these three categories:\n"
+            "1. 'Tech' (Laptops, smartphones, headphones, gaming consoles, smart home hubs, cameras)\n"
+            "2. 'Life & Style' (Skincare, makeup, fashion, jewelry, watches, yoga/fitness, fragrance, wellness)\n"
+            "3. 'Home & Auto' (Kitchen appliances, blenders, coffee makers, home furniture, car accessories, power tools, decor)\n\n"
+            "EXAMPLES:\n"
+            "- 'Ninja Blender' -> 'Home & Auto'\n"
+            "- 'Face Serum' -> 'Life & Style'\n"
+            "- 'Wireless Mouse' -> 'Tech'\n"
+            "- 'Car Dash Cam' -> 'Home & Auto'\n\n"
+            f"PRODUCT TITLE: {product_title}\n"
+            f"KEY FEATURES: {bullets}\n\n"
+            "Return JSON with key 'category'."
+        )
+
+        try:
+            chat_completion = self.client.chat.completions.create(
+                messages=[{"role": "user", "content": prompt}],
+                model=self.model,
+                response_format={"type": "json_object"},
+                temperature=0.1,
+            )
+            res = json.loads(chat_completion.choices[0].message.content)
+            return res.get("category", "Life & Style")
+        except:
+            return "Life & Style"

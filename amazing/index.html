@@ -797,6 +797,30 @@
             30% { box-shadow: 0 0 30px 10px rgba(255, 215, 0, 0.6); border-color: var(--yellow); }
             100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); border-color: var(--border-grey); }
         }
+        .tag--new-arrival {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--hot-pink);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            z-index: 10;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px var(--pink-glow);
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% { transform: scale(1); box-shadow: 0 4px 15px var(--pink-glow); }
+            50% { transform: scale(1.05); box-shadow: 0 4px 25px var(--pink-glow); }
+            100% { transform: scale(1); box-shadow: 0 4px 15px var(--pink-glow); }
+        }
+
+        /* Legacy highlight jump */
         .highlight-jump {
             animation: highlightPulse 2.5s cubic-bezier(0.23, 1, 0.32, 1);
             z-index: 100;
@@ -1039,13 +1063,7 @@
 
     <section class="products" id="deals">
         <div class="section-header">
-            <h2 class="section-header__title">Elite Trending Finds</h2>
-            <div class="filters">
-                <button class="filter-btn cat-btn active" onclick="filterProducts('all')">All</button>
-                <button class="filter-btn cat-btn" onclick="filterProducts('Tech')">Tech & Gaming 🎮</button>
-                <button class="filter-btn cat-btn" onclick="filterProducts('Lifestyle')">Beauty & Style ✨</button>
-                <button class="filter-btn cat-btn" onclick="filterProducts('Home')">Home & Auto 🏠</button>
-            </div>
+            <h2 class="section-header__title">New & Elite Trending Finds</h2>
         </div>
 
         <div class="product-grid" id="productGrid">
@@ -1262,20 +1280,44 @@
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
 
-            const filtered = (activeFilter === 'all' 
-                ? allProducts 
-                : allProducts.filter(p => {
-                    // Check if the product's Amazon category maps to the current website filter
-                    const mainCat = categoryMap[p.category] || 'Other';
-                    return mainCat === activeFilter;
-                })).slice(0, 6);
+            const filtered = [...allProducts];
 
-            if (filtered.length === 0) {
+            // Determine "New" threshold (e.g., 3 days)
+            const now = new Date();
+            const threeDaysInMs = 3 * 24 * 60 * 60 * 1000;
+
+            const isNew = (p) => {
+                const processed = new Date(p.processed_at || 0);
+                return (now - processed) < threeDaysInMs;
+            };
+
+            // Sorting: "New" items first, then YouTube, then by date
+            filtered.sort((a, b) => {
+                const aNew = isNew(a);
+                const bNew = isNew(b);
+                
+                if (aNew && !bNew) return -1;
+                if (!aNew && bNew) return 1;
+
+                // If both are same "newness", prioritize YouTube
+                if (a.youtube_uploaded && !b.youtube_uploaded) return -1;
+                if (!a.youtube_uploaded && b.youtube_uploaded) return 1;
+                
+                // Finally, newest first
+                const dateA = new Date(a.processed_at || 0);
+                const dateB = new Date(b.processed_at || 0);
+                return dateB - dateA;
+            });
+
+            // Fixed at 8 items (2 rows of 4 on desktop)
+            const displayList = filtered.slice(0, 8);
+
+            if (displayList.length === 0) {
                 grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">New trending finds arriving soon...</p>';
                 return;
             }
             
-            grid.innerHTML = filtered.map(p => {
+            grid.innerHTML = displayList.map(p => {
                 const images = p.images && p.images.length > 0 ? p.images : [p.image_url];
                 const discount = p.discount || 'LIMITED DEAL';
                 const displayPrice = p.price === 'Check Price' ? 'VIEW DEAL' : p.price;
@@ -1288,10 +1330,19 @@
                 ];
                 // Use selection_score if available, otherwise fallback to index/rating
                 const tag = p.selection_score > 90 ? tags[0] : (p.rating > 4.7 ? tags[1] : tags[2]);
+                
+                // Check if it's a New Arrival
+                const isNewArrival = isNew(p);
 
                 return `
                 <div class="card" id="${p.asin}">
+                    ${isNewArrival ? '<div class="tag--new-arrival">NEW ARRIVAL</div>' : ''}
                     <div class="card__badge">${discount}</div>
+                    ${p.youtube_uploaded ? `
+                        <div class="card__badge" style="top: 48px; background: rgba(255, 0, 0, 0.9); border-left-color: #ff0000; cursor: pointer;" onclick="window.open('${p.youtube_url}', '_blank')">
+                            📺 WATCH REVIEW
+                        </div>
+                    ` : ''}
                     ${tag}
                     <div class="card__img-wrap">
                         <div class="card__slideshow">
@@ -1416,21 +1467,7 @@
             }
         }
 
-        // Filter buttons
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Update active state
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                // Update filter and re-render
-                activeFilter = btn.innerText.includes('Tech') ? 'Tech' 
-                             : btn.innerText.includes('Beauty') ? 'Lifestyle'
-                             : btn.innerText.includes('Home') ? 'Home'
-                             : 'all';
-                renderProducts();
-            });
-        });
+        // Removed Filter buttons logic
 
         // ─── SMART ARCHIVE REDIRECTION ───────────────────────
         function handleAnchorNavigation() {
