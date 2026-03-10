@@ -43,6 +43,7 @@ class GeminiScriptGenerator:
             "   - Gift Idea: 'If you're looking for the perfect gift for a [Category] lover, stop scrolling.'\n"
             "   - Life Hack: 'Here's a [Category] hack that actually works, thanks to [Brand].'\n"
             "   - POV: 'POV: You just found the missing piece for your [Category] setup.'\n"
+            "   - Shock Value: 'Wait — this [Product] costs HOW MUCH? And it still sold out?'\n"
 
             "2. THE NARRATIVE (Brand & Utility Focus): Focus on the MOST impressive feature and how it actually changes the user's life. Use evocative, high-sensory language (e.g., 'silky smooth', 'obsessively designed', 'industrial-grade').\n"
             "3. PRICE POLICY: Only mention the price if it is an absolute steal (e.g., 'At just {price}, it's a no-brainer'). Otherwise, focus entirely on the VALUE and quality of {brand}.\n"
