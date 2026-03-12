@@ -1,16 +1,15 @@
-Sigue estos pasos para activar a **Sentinel** y poder hablar con él directamente por Telegram o por los Issues de GitHub.
+# Guía de Configuración: Sentinel + Telegram 🤖📱
 
-## Opción A: Sentinel vive en GitHub (Gratis y sin Servidor) 🐙
-Esta es la opción más sencilla si quieres que Sentinel viva 100% en GitHub.
-1. Ve a la pestaña **Issues** de tu repositorio.
-2. Crea un nuevo Issue o comenta en uno existente.
-3. Empieza tu comentario con **"Sentinel,"** o etiqueta a **"@sentinel"**.
-   - Ejemplo: *"Sentinel, dime cómo fue el pipeline de hoy"*
-4. GitHub Actions se activará automáticamente y Sentinel te responderá en unos segundos como un comentario.
-   - **Nota**: Asegúrate de que el secreto `NVIDIA_API_KEY` esté configurado en `Settings > Secrets and variables > Actions`.
+Sigue estos pasos para activar a **Sentinel** y poder hablar con él directamente por Telegram usando OpenClaw.
 
-## Opción B: Sentinel en Telegram (24/7 con Servidor) 🤖📱
-Si prefieres Telegram por comodidad, sigue estos pasos:
+## Paso 1: Crear tu Bot en Telegram
+1. Abre Telegram y busca a **@BotFather**.
+2. Envía el comando `/newbot`.
+3. Dale un nombre (ej. `SentinelamazingBot`).
+4. Elige un nombre de usuario (debe terminar en `bot`).
+5. **Copia el API Token** que te dará (se ve algo como `123456:ABC-DEF...`). **No lo compartas con nadie.**
+
+## Paso 2: Configurar OpenClaw
 1. Abre tu terminal de OpenClaw o accede a tu servidor.
 2. Ejecuta el comando de configuración:
    ```bash
@@ -24,7 +23,7 @@ Si prefieres Telegram por comodidad, sigue estos pasos:
 Ahora debemos darle su "personalidad" y conocimientos técnicos:
 1. Ve a la configuración de tu agente en el dashboard de OpenClaw.
 2. Busca la sección de **System Prompt** o **Instrucciones**.
-3. Copia TODO el contenido del archivo que creamos: [openclaw_instructions.md](file:///Users/zoomies/Desktop/liveitupdeals/openclaw_instructions.md) y pégalo allí.
+3. Copia TODO el contenido del archivo que creamos: [openclaw_instructions.md](file:///Users/zoomies/Desktop/liveitupdeals/Agent_Sentinel/openclaw_instructions.md) y pégalo allí.
 4. Asegúrate de que la configuración del modelo esté apuntando a tu API de NVIDIA (Kimi k2.5).
 
 ## Paso 4: Emparejar y Probar
@@ -43,5 +42,3 @@ Ahora debemos darle su "personalidad" y conocimientos técnicos:
 - **Ejecución Local**: Si corres `openclaw start` en tu laptop, **sí**, Sentinel se apagará cuando cierres la tapa o apagues la computadora.
 - **Ejecución 24/7 (Recomendado)**: Para que Sentinel esté siempre despierto y te responda por Telegram en cualquier momento, lo ideal es instalar OpenClaw en un pequeño servidor (VPS) como **Amazon Lightsail**, **DigitalOcean** o incluso una **Raspberry Pi** que siempre esté encendida.
 - **El Pipeline**: Tu pipeline de GitHub Actions seguirá funcionando automáticamente cada 12h aunque tu laptop esté apagada.
-- **Sentinel en GitHub Issues**: Esta versión de Sentinel **siempre funciona** (vive en GitHub) sin que tengas que pagar nada ni dejar tu laptop encendida.
-- **Sentinel en Telegram**: Para esta versión, sí necesitas el servidor encendido.
