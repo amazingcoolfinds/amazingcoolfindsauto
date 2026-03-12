@@ -58,6 +58,9 @@ logging.basicConfig(
 )
 log = logging.getLogger("MaintenanceAgent")
 
+# -- AGENT MODE FLAG --
+AGENT_MODE = False
+
 # ─── CONSTANTS ───────────────────────────────────────────────────────────────
 REPO = os.getenv("GITHUB_REPOSITORY", "amazingcoolfinds/amazingcoolfindsauto")
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
@@ -68,6 +71,7 @@ WEBSITE_URL = os.getenv("WEBSITE_URL", "https://amazing-cool-finds.com")
 CF_ACCOUNT_ID = os.getenv("CLOUDFLARE_ACCOUNT_ID", "")
 CF_API_TOKEN = os.getenv("CLOUDFLARE_API_TOKEN", "")
 CF_WORKER_NAME = "article-generator" # Adjust based on real name
+NVIDIA_API_KEY = os.getenv("NVIDIA_API_KEY", "").strip()
 
 GH_HEADERS = {
     "Authorization": f"token {GITHUB_TOKEN}",
@@ -242,8 +246,32 @@ def fetch_cloudflare_worker_health() -> dict:
 
 def call_ai(prompt: str, model_pref: str = "gemini") -> str:
     """Call Gemini (primary) or Groq (fallback) with the given prompt."""
-    # Try Gemini first
-    if GEMINI_API_KEY and model_pref == "gemini":
+    # Try Kimi via NVIDIA (User preferred)
+    if NVIDIA_API_KEY and model_pref == "kimi":
+        try:
+            resp = requests.post(
+                "https://integrate.api.nvidia.com/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {NVIDIA_API_KEY}",
+                    "Content-Type": "application/json"
+                },
+                json={
+                    "model": "deepseek-ai/deepseek-v3", # Kimi k2.5 is often a DeepSeek v3 variant or similar on Nvidia
+                    "messages": [{"role": "user", "content": prompt}],
+                    "temperature": 0.2,
+                    "max_tokens": 1024
+                },
+                timeout=30
+            )
+            if resp.ok:
+                return resp.json()["choices"][0]["message"]["content"]
+            else:
+                log.warning(f"🏔️ Kimi (NVIDIA) failed with status {resp.status_code}. Trying Gemini...")
+        except Exception as e:
+            log.warning(f"🏔️ Kimi (NVIDIA) call failed: {e}. Trying Gemini...")
+
+    # Try Gemini next
+    if GEMINI_API_KEY and (model_pref == "gemini" or model_pref == "kimi"):
         try:
             import google.generativeai as genai
             genai.configure(api_key=GEMINI_API_KEY)
@@ -301,7 +329,9 @@ Provide a concise diagnosis in this EXACT JSON format (no markdown, pure JSON):
   "prevention": "how to prevent this in the future"
 }}"""
 
-    raw = call_ai(prompt)
+    # Prefer Kimi (NVIDIA) for diagnosis if available
+    model_choice = "kimi" if NVIDIA_API_KEY else "gemini"
+    raw = call_ai(prompt, model_pref=model_choice)
     try:
         # Extract JSON from response
         match = re.search(r'\{.*\}', raw, re.DOTALL)
@@ -977,7 +1007,8 @@ def mode_report(health: dict):
     print(report)
     print("=" * 60 + "\n")
 
-    deliver_report(report, today_runs)
+    if not AGENT_MODE:
+        deliver_report(report, today_runs)
 
 
 def mode_full(health: dict, run_id: int = None, conclusion: str = None,
@@ -1019,6 +1050,7 @@ if __name__ == "__main__":
     parser.add_argument("--conclusion", help="Run conclusion (success/failure)")
     parser.add_argument("--run-number", type=int, help="Which daily run this is (1 or 2)")
     parser.add_argument("--dry-run", action="store_true", help="Simulate without writing or committing changes")
+    parser.add_argument("--agent-mode", action="store_true", help="Output results in JSON format for the Sentinel agent")
 
     # Legacy support
     parser.add_argument("--diagnose", action="store_true", help="Alias for --mode diagnose")
@@ -1041,15 +1073,27 @@ if __name__ == "__main__":
     health = load_health()
 
     try:
+        if args.agent_mode:
+            AGENT_MODE = True
+            # Silence regular logging for clean JSON output
+            logging.getLogger().setLevel(logging.ERROR)
+
+        result_data = {}
         if args.mode == "full":
-            mode_full(health, run_id=args.run_id, conclusion=args.conclusion,
-                      run_number=args.run_number, dry_run=args.dry_run)
+            result_data = mode_full(health, run_id=args.run_id, conclusion=args.conclusion,
+                                     run_number=args.run_number, dry_run=args.dry_run)
         elif args.mode == "diagnose":
-            mode_diagnose(health, run_id=args.run_id, conclusion=args.conclusion, dry_run=args.dry_run)
+            result_data = mode_diagnose(health, run_id=args.run_id, conclusion=args.conclusion, dry_run=args.dry_run)
         elif args.mode == "improve":
-            mode_improve(health, dry_run=args.dry_run)
+            result_data = mode_improve(health, dry_run=args.dry_run)
         elif args.mode == "report":
+            result_data = {"report": generate_daily_report(health), "today_runs": get_runs_today(health)}
             mode_report(health)
+
+        if args.agent_mode:
+            print("\n---SENTINEL_JSON_START---")
+            print(json.dumps(result_data, indent=2, default=str))
+            print("---SENTINEL_JSON_END---")
 
         log.info("🏁 Maintenance Agent completed successfully.")
 

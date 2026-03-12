@@ -1,0 +1,118 @@
+name: Sentinel Chat (Interactive)
+
+on:
+  issue_comment:
+    types: [created]
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  sentinel_respond:
+    # Only respond if the comment starts with "Sentinel," or "@sentinel"
+    # and NOT if the comment was made by the bot itself (to avoid loops)
+    if: |
+      (github.event_name == 'issue_comment' && 
+       (startsWith(github.event.comment.body, 'Sentinel,') || startsWith(github.event.comment.body, '@sentinel')) &&
+       github.event.comment.user.login != 'github-actions[bot]') ||
+      (github.event_name == 'issues' && 
+       (startsWith(github.event.issue.title, 'Sentinel,') || startsWith(github.event.issue.body, 'Sentinel,')))
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          pip install requests python-dotenv
+
+      - name: Sentinel Brain (Kimi k2.5)
+        id: sentinel
+        env:
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMENT_BODY: ${{ github.event.comment.body || github.event.issue.body }}
+          USER_NAME: ${{ github.event.sender.login }}
+        run: |
+          python3 << 'EOF'
+          import os
+          import requests
+          import json
+
+          api_key = os.getenv("NVIDIA_API_KEY")
+          comment = os.getenv("COMMENT_BODY")
+          user = os.getenv("USER_NAME")
+          
+          # System Prompt for Sentinel
+          system_prompt = """
+          Eres 'Sentinel', el guardián interactivo de AmazingCoolFinds. 
+          Vives en GitHub y respondes a los comentarios de los usuarios.
+          Tu cerebro es Kimi k2.5. Responde siempre en Español.
+          
+          Tu misión es ayudar a gestionar el pipeline de scraping.
+          Si el usuario te pregunta por el estado, menciónale que puedes analizar logs si te da un ID de run.
+          Sé profesional, proactivo y directo.
+          """
+
+          prompt = f"Usuario {user} dice: {comment}\n\nResponde como Sentinel:"
+
+          resp = requests.post(
+              "https://integrate.api.nvidia.com/v1/chat/completions",
+              headers={
+                  "Authorization": f"Bearer {api_key}",
+                  "Content-Type": "application/json"
+              },
+              json={
+                  "model": "deepseek-ai/deepseek-v3",
+                  "messages": [
+                      {"role": "system", "content": system_prompt},
+                      {"role": "user", "content": prompt}
+                  ],
+                  "temperature": 0.5,
+                  "max_tokens": 1024
+              }
+          )
+          
+          if resp.ok:
+              answer = resp.json()["choices"][0]["message"]["content"]
+              # Escape for GITHUB_OUTPUT
+              with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+                  # Use a delimiter for multi-line output
+                  print(f'answer<<EOF', file=f)
+                  print(answer, file=f)
+                  print('EOF', file=f)
+          else:
+              print(f"::error::Error de Kimi API: {resp.status_code}")
+          EOF
+
+      - name: Post comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `${{ steps.sentinel.outputs.answer }}`;
+            if (context.eventName === 'issue_comment') {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: body
+              });
+            } else {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: body
+              });
+            }
