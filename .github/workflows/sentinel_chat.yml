@@ -17,10 +17,10 @@ jobs:
     # and NOT if the comment was made by the bot itself (to avoid loops)
     if: |
       (github.event_name == 'issue_comment' && 
-       (startsWith(github.event.comment.body, 'Sentinel,') || startsWith(github.event.comment.body, '@sentinel')) &&
+       (startsWith(github.event.comment.body, 'Sentinel') || startsWith(github.event.comment.body, '@sentinel') || startsWith(github.event.comment.body, 'sentinel')) &&
        github.event.comment.user.login != 'github-actions[bot]') ||
       (github.event_name == 'issues' && 
-       (startsWith(github.event.issue.title, 'Sentinel,') || startsWith(github.event.issue.body, 'Sentinel,')))
+       (startsWith(github.event.issue.title, 'Sentinel') || startsWith(github.event.issue.body, 'Sentinel') || startsWith(github.event.issue.title, 'sentinel') || startsWith(github.event.issue.body, 'sentinel')))
 
     runs-on: ubuntu-latest
 
