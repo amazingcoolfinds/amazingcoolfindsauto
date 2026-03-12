@@ -98,9 +98,11 @@ jobs:
 
       - name: Post comment
         uses: actions/github-script@v7
+        env:
+          ANSWER: ${{ steps.sentinel.outputs.answer }}
         with:
           script: |
-            const body = `${{ steps.sentinel.outputs.answer }}`;
+            const body = process.env.ANSWER;
             if (context.eventName === 'issue_comment') {
               github.rest.issues.createComment({
                 issue_number: context.issue.number,
