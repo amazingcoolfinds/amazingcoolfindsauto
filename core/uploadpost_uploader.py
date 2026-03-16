@@ -7,7 +7,7 @@ logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("UploadPostUploader")
 
 class UploadPostUploader:
-    def __init__(self, api_key, user="amazingcool"):
+    def __init__(self, api_key, user="AmazingCoolFinds"):
         self.api_key = api_key
         self.user = user
         self.base_url = "https://api.upload-post.com"
