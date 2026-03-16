@@ -204,3 +204,7 @@ class DeepseekProductSelector:
             return json.loads(content).get("category", "Life & Style")
         except:
             return "Life & Style"
+
+# Aliases for backward compatibility
+GeminiProductSelector = DeepseekProductSelector
+GeminiScriptGenerator = DeepseekScriptGenerator
