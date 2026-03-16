@@ -44,6 +44,11 @@ try:
 except ImportError:
     log.warning("⚠️ Could not import Gemini generators")
 
+try:
+    from openrouter_generators import OpenRouterProductSelector, OpenRouterScriptGenerator
+except ImportError:
+    log.warning("⚠️ Could not import OpenRouter generators")
+
 for d in [LOGS_DIR, DATA_DIR, AMAZING_DATA_DIR]:
     d.mkdir(parents=True, exist_ok=True)
 
@@ -135,18 +140,18 @@ def get_high_performance_products(count_candidates=15, select_top=3, min_price=6
         
         scraper = AdvancedScraper(associate_tag=AFFILIATE_TAG)
         
-        # Use Gemini if key is available, else fallback to Groq
-        gemini_key = os.getenv("GEMINI_API_KEY")
+        # Use OpenRouter if key is available, else fallback to Groq
+        openrouter_key = os.getenv("OPENROUTER_API_KEY")
         groq_key = os.getenv("GROQ_API_KEY")
         
-        if gemini_key:
-            gemini_key = gemini_key.strip()
-            log.info("💎 Using Gemini for product selection")
-            from gemini_generators import GeminiProductSelector
-            selector = GeminiProductSelector(gemini_key)
+        if openrouter_key:
+            openrouter_key = openrouter_key.strip()
+            log.info("🤖 Using OpenRouter (Claude) for product selection")
+            from openrouter_generators import OpenRouterProductSelector
+            selector = OpenRouterProductSelector(openrouter_key)
         elif groq_key:
             groq_key = groq_key.strip()
-            log.info("🧠 Using Groq for product selection (Gemini not available)")
+            log.info("🧠 Using Groq for product selection (OpenRouter not available)")
             from groq_generators import GroqProductSelector
             selector = GroqProductSelector(groq_key)
         else:
@@ -198,20 +203,21 @@ def get_high_performance_products(count_candidates=15, select_top=3, min_price=6
             log.info(f"🧐 Selecting winner for {priority_target['category']}...")
             selections = []
             
-            # Try Gemini first (Better reasoning for selection)
-            if gemini_key:
+            # Try OpenRouter first (Better reasoning for selection)
+            openrouter_key = os.getenv("OPENROUTER_API_KEY", "").strip()
+            if openrouter_key:
                 try:
-                    from gemini_generators import GeminiProductSelector
-                    gemini_selector = GeminiProductSelector(gemini_key)
-                    selections = gemini_selector.analyze_candidates(priority_target['category'], candidates)
+                    from openrouter_generators import OpenRouterProductSelector
+                    openrouter_selector = OpenRouterProductSelector(openrouter_key)
+                    selections = openrouter_selector.analyze_candidates(priority_target['category'], candidates)
                 except Exception as e:
                     error_msg = str(e).lower()
                     if "429" in error_msg or "quota" in error_msg:
-                        log.warning(f"💎 Gemini Quota Exceeded during selection. Falling back to Groq...")
+                        log.warning(f"🤖 OpenRouter Quota Exceeded during selection. Falling back to Groq...")
                     else:
-                        log.warning(f"💎 Gemini selection failed: {e}. Trying Groq...")
+                        log.warning(f"🤖 OpenRouter selection failed: {e}. Trying Groq...")
             
-            # Try Groq if Gemini failed or isn't available
+            # Try Groq if OpenRouter failed or isn't available
             if not selections and groq_key:
                 try:
                     from groq_generators import GroqProductSelector
@@ -441,30 +447,30 @@ def run_enhanced_pipeline():
 
         for product in selected_products:
             try:
-                # 2. Scripting
-                log.info("🎤 Generating script (Strictly Gemini)...")
-                gemini_key = os.getenv("GEMINI_API_KEY", "").strip()
+                # 2. Scripting (OpenRouter)
+                log.info("🎤 Generating script (OpenRouter)...")
+                openrouter_key = os.getenv("OPENROUTER_API_KEY", "").strip()
                 script = None
                 
-                if not gemini_key:
-                    raise CriticalPipelineError("❌ GEMINI_API_KEY is missing. Cannot generate script.")
+                if not openrouter_key:
+                    raise CriticalPipelineError("❌ OPENROUTER_API_KEY is missing. Cannot generate script.")
                 
                 try:
-                    from gemini_generators import GeminiScriptGenerator
-                    gpt_gen = GeminiScriptGenerator(gemini_key)
+                    from openrouter_generators import OpenRouterScriptGenerator
+                    gpt_gen = OpenRouterScriptGenerator(openrouter_key)
                     script = gpt_gen.generate_script(product)
                 except Exception as e:
-                    log.error(f"💎 Gemini Scripting failed: {e}")
-                    raise CriticalPipelineError(f"Script generation failed for {product['asin']} using Gemini.")
+                    log.error(f"🤖 OpenRouter Scripting failed: {e}")
+                    raise CriticalPipelineError(f"Script generation failed for {product['asin']} using OpenRouter.")
                 
                 if not script:
-                    log.error(f"❌ Gemini returned empty script for {product['asin']}")
-                    raise CriticalPipelineError(f"Empty script from Gemini for {product['asin']}.")
+                    log.error(f"❌ OpenRouter returned empty script for {product['asin']}")
+                    raise CriticalPipelineError(f"Empty script from OpenRouter for {product['asin']}.")
                 
                 product['script'] = script
                 
-                # 3. Voiceover (Strictly Groq Diana)
-                log.info("🗣️  Generating voiceover (Strictly Groq)...")
+                # 3. Voiceover (Groq Diana)
+                log.info("🗣️  Generating voiceover (Groq)...")
                 if not voice_gen:
                     raise CriticalPipelineError("❌ Voice generator (Groq) not initialized.")
 
@@ -481,6 +487,20 @@ def run_enhanced_pipeline():
                     raise CriticalPipelineError(f"Empty voiceover from Groq for {product['asin']}.")
                 
                 product['voice_path'] = voice_path
+                
+                # VALIDATION: Check all prerequisites before creating video
+                image_count = len(product.get('images', []))
+                if image_count < 4:
+                    log.error(f"⛔ SKIPPED: {product['asin']} has only {image_count} images (minimum 4 required)")
+                    failure_count += 1
+                    processed_successfully.append({
+                        'asin': product['asin'],
+                        'status': 'skipped',
+                        'reason': f'Insufficient images: {image_count}/4'
+                    })
+                    continue
+                
+                log.info(f"✅ Validation passed: script ✓, voice ✓, images ({image_count}) ✓")
                 
                 # 4. Video production
                 log.info("🎥 Generating video...")

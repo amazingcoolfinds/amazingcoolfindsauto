@@ -5,14 +5,13 @@ import time
 from pathlib import Path
 import requests
 
-# Configure logging
 logging.basicConfig(level=logging.INFO)
-log = logging.getLogger("DeepseekGenerators")
+log = logging.getLogger("OpenRouterGenerators")
 
-class DeepseekScriptGenerator:
+class OpenRouterScriptGenerator:
     def __init__(self, api_key):
         self.api_key = api_key
-        self.model = "deepseek-chat"
+        self.model = "anthropic/claude-3.5-sonnet"
 
     def generate_script(self, product: dict) -> dict:
         product_title = product.get('title', 'Unknown Product')
@@ -57,10 +56,12 @@ class DeepseekScriptGenerator:
 
         for attempt in range(3):
             try:
-                log.info(f"💎 Generating Deepseek script for '{product_title[:50]}...' (Attempt {attempt+1})...")
+                log.info(f"🤖 Generating OpenRouter script for '{product_title[:50]}...' (Attempt {attempt+1})...")
                 headers = {
                     "Authorization": f"Bearer {self.api_key}",
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "HTTP-Referer": "https://github.com/amazingcoolfindsauto",
+                    "X-Title": "AmazingCoolFinds"
                 }
                 data = {
                     "model": self.model,
@@ -69,7 +70,7 @@ class DeepseekScriptGenerator:
                     "temperature": 0.7
                 }
                 response = requests.post(
-                    "https://api.deepseek.com/v1/chat/completions",
+                    "https://openrouter.ai/api/v1/chat/completions",
                     headers=headers,
                     json=data
                 )
@@ -83,15 +84,16 @@ class DeepseekScriptGenerator:
                     "hashtags": script_data.get("hashtags", ["#amazonfinds", "#coolgadgets", "#musthaves", "#viral"])
                 }
             except Exception as e:
-                log.warning(f"⚠️ Deepseek API issue: {e}. Retrying...")
+                log.warning(f"⚠️ OpenRouter API issue: {e}. Retrying...")
                 time.sleep(5)
 
         return None
 
-class DeepseekProductSelector:
+
+class OpenRouterProductSelector:
     def __init__(self, api_key):
         self.api_key = api_key
-        self.model = "deepseek-chat"
+        self.model = "anthropic/claude-3.5-sonnet"
 
     def analyze_candidates(self, category: str, products: list) -> list:
         if not products:
@@ -123,10 +125,12 @@ class DeepseekProductSelector:
         )
 
         try:
-            log.info(f"🧐 Deepseek selecting top products for {category} from {len(products)} candidates...")
+            log.info(f"🤖 OpenRouter selecting top products for {category} from {len(products)} candidates...")
             headers = {
                 "Authorization": f"Bearer {self.api_key}",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "HTTP-Referer": "https://github.com/amazingcoolfindsauto",
+                "X-Title": "AmazingCoolFinds"
             }
             data = {
                 "model": self.model,
@@ -135,7 +139,7 @@ class DeepseekProductSelector:
                 "temperature": 0.3
             }
             response = requests.post(
-                "https://api.deepseek.com/v1/chat/completions",
+                "https://openrouter.ai/api/v1/chat/completions",
                 headers=headers,
                 json=data
             )
@@ -155,11 +159,11 @@ class DeepseekProductSelector:
                         orig_p['selection_reasoning'] = selection.get("reasoning")
                         final_products.append(orig_p)
             
-            log.info(f"✅ Deepseek Selected {len(final_products)} high-performance products.")
+            log.info(f"✅ OpenRouter Selected {len(final_products)} high-performance products.")
             return final_products[:5]
 
         except Exception as e:
-            log.error(f"Deepseek Selection failed: {e}")
+            log.error(f"OpenRouter Selection failed: {e}")
             return products[:3]
 
     def classify_product(self, product: dict) -> str:
@@ -185,7 +189,9 @@ class DeepseekProductSelector:
         try:
             headers = {
                 "Authorization": f"Bearer {self.api_key}",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "HTTP-Referer": "https://github.com/amazingcoolfindsauto",
+                "X-Title": "AmazingCoolFinds"
             }
             data = {
                 "model": self.model,
@@ -194,7 +200,7 @@ class DeepseekProductSelector:
                 "temperature": 0.1
             }
             response = requests.post(
-                "https://api.deepseek.com/v1/chat/completions",
+                "https://openrouter.ai/api/v1/chat/completions",
                 headers=headers,
                 json=data
             )
