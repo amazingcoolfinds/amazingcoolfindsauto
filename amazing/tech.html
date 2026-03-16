@@ -632,6 +632,13 @@
                 
                 const allProducts = Array.from(distinctMap.values());
                 
+                // SORT: Newest products first (by processed_at)
+                allProducts.sort((a, b) => {
+                    const dateA = a.processed_at ? new Date(a.processed_at) : new Date(0);
+                    const dateB = b.processed_at ? new Date(b.processed_at) : new Date(0);
+                    return dateB - dateA; // Descending (newest first)
+                });
+                
                 // Filter only Tech Items
                 const filtered = allProducts.filter(p => {
                     const mainCat = categoryMap[p.category] || 'Other';
