@@ -107,21 +107,15 @@ PRODUCT_TARGETS = [
 ]
 
 # ─── ENHANCED FUNCTIONS ─────────────────────────────────────
-def generate_unique_product_id(product):
-    """Generate unique identifier for each product - simplified to ASIN for user transparency"""
-    return product['asin']
-
 def get_enhanced_website_link(product):
-    """Generate enhanced website link with unique ID and scroll"""
+    """Generate enhanced website link with scroll to product card"""
     base_url = os.getenv("WEBSITE_URL", "https://amazing-cool-finds.com")
-    unique_id = generate_unique_product_id(product)
     
-    # Enhanced link with scroll and product data
-    enhanced_link = f"{base_url}/item/{unique_id}#product-{product['asin']}"
+    # Direct link with hash scroll to product card
+    enhanced_link = f"{base_url}/#product-{product['asin']}"
     
     return {
         'link': enhanced_link,
-        'unique_id': unique_id,
         'scroll_target': f"product-{product['asin']}",
         'full_url': enhanced_link
     }
