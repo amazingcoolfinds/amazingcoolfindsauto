@@ -542,7 +542,7 @@ def run_enhanced_pipeline():
                     log.info("🚀 Uploading to multiple platforms via Upload-Post...")
                     try:
                         desc = f"{script['narration']}\n\n🔥 Check it out: {product['website_link']['link']}\n\n" + " ".join(script.get('hashtags', []))
-                        platforms = ["youtube", "instagram", "facebook", "tiktok", "pinterest"]
+                        platforms = ["instagram", "facebook", "pinterest"]
                         result = uploadpost_up.upload_from_url(
                             video_path=video_path,
                             title=script['title'],
