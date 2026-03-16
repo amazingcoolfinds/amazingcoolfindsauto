@@ -649,6 +649,13 @@ def send_to_make(product):
         import requests
         # Serialize product data to ensure JSON compatibility
         clean_product = serialize_for_json(product)
+        
+        # Ensure images is a proper array
+        images = product.get('images', [])
+        if isinstance(images, list):
+            clean_product['product_images'] = images
+            clean_product['image_count'] = len(images)
+        
         response = requests.post(webhook_url, json=clean_product, timeout=10)
         if response.ok:
             log.info("✓ Webhook sent successfully.")
