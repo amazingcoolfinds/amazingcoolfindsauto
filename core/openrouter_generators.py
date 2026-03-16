@@ -66,7 +66,6 @@ class OpenRouterScriptGenerator:
                 data = {
                     "model": self.model,
                     "messages": [{"role": "user", "content": prompt}],
-                    "response_format": {"type": "json_object"},
                     "temperature": 0.7
                 }
                 response = requests.post(
@@ -77,6 +76,14 @@ class OpenRouterScriptGenerator:
                 response.raise_for_status()
                 res = response.json()
                 content = res["choices"][0]["message"]["content"]
+                content = content.strip()
+                if content.startswith("```json"):
+                    content = content[7:]
+                if content.startswith("```"):
+                    content = content[3:]
+                if content.endswith("```"):
+                    content = content[:-3]
+                content = content.strip()
                 script_data = json.loads(content)
                 return {
                     "title": script_data.get("title", f"Check out this {brand}!"),
@@ -135,7 +142,6 @@ class OpenRouterProductSelector:
             data = {
                 "model": self.model,
                 "messages": [{"role": "user", "content": prompt}],
-                "response_format": {"type": "json_object"},
                 "temperature": 0.3
             }
             response = requests.post(
@@ -146,6 +152,14 @@ class OpenRouterProductSelector:
             response.raise_for_status()
             res = response.json()
             content = res["choices"][0]["message"]["content"]
+            content = content.strip()
+            if content.startswith("```json"):
+                content = content[7:]
+            if content.startswith("```"):
+                content = content[3:]
+            if content.endswith("```"):
+                content = content[:-3]
+            content = content.strip()
             selections = json.loads(content).get("selections", [])
             
             final_products = []
@@ -196,7 +210,6 @@ class OpenRouterProductSelector:
             data = {
                 "model": self.model,
                 "messages": [{"role": "user", "content": prompt}],
-                "response_format": {"type": "json_object"},
                 "temperature": 0.1
             }
             response = requests.post(
@@ -207,6 +220,14 @@ class OpenRouterProductSelector:
             response.raise_for_status()
             res = response.json()
             content = res["choices"][0]["message"]["content"]
+            content = content.strip()
+            if content.startswith("```json"):
+                content = content[7:]
+            if content.startswith("```"):
+                content = content[3:]
+            if content.endswith("```"):
+                content = content[:-3]
+            content = content.strip()
             return json.loads(content).get("category", "Life & Style")
         except:
             return "Life & Style"
