@@ -144,13 +144,15 @@ class AdvancedScraper:
                 final_images = []
                 for img in images:
                     if img not in seen and len(img) > 20:
-                        final_images.append(img)
+                        # Filter out images with PRIME badge overlay
+                        if 'prime' not in img.lower() and 'primes' not in img.lower():
+                            final_images.append(img)
                         seen.add(img)
                 
                 images = final_images[:12]
                 
-                if not images:
-                    log.warning(f"⚠️ No valid images found for {asin}. Skipping.")
+                if len(images) < 4:
+                    log.warning(f"⚠️ Not enough valid images for {asin} (found {len(images)}, need 4+). Skipping.")
                     return None
                 
                 # 4. Rating & Reviews

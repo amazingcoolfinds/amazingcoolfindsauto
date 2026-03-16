@@ -7,6 +7,7 @@ import sys
 import json
 import time
 import logging
+import threading
 from pathlib import Path
 from datetime import datetime
 import random
@@ -525,6 +526,9 @@ def run_enhanced_pipeline():
                             product['youtube_video_id'] = video_id
                             product['youtube_url'] = f"https://youtube.com/watch?v={video_id}"
                             log.info(f"✅ YouTube metadata saved for {product['asin']}")
+                            
+                            # Parallel website update
+                            threading.Thread(target=update_website_parallel, args=(product,), daemon=True).start()
                     except Exception as e:
                         log.warning(f"⚠️ YouTube upload failed: {e}")
 
@@ -692,8 +696,32 @@ def update_website_data(new_products):
         
         log.info(f"✅ Data synchronized to website files ({len(merged_list)} total products)")
         
+        # Trigger parallel deployment
+        threading.Thread(target=deploy_to_site, daemon=True).start()
+        
     except Exception as e:
         log.error(f"❌ Website sync failed: {e}")
+
+def update_website_parallel(product):
+    """Update single product to website immediately in background"""
+    try:
+        # Add to website DB immediately
+        site_db = AMAZING_DATA_DIR / "products.json"
+        if site_db.exists():
+            with open(site_db, 'r') as f:
+                products = json.load(f)
+        else:
+            products = []
+        
+        # Check if already exists
+        asins = [p.get('asin') for p in products]
+        if product.get('asin') not in asins:
+            products.append(product)
+            with open(site_db, 'w') as f:
+                json.dump(products, f, indent=2)
+            log.info(f"🌐 [Parallel] Product {product.get('asin')} added to website")
+    except Exception as e:
+        log.warning(f"⚠️ Parallel website update failed: {e}")
 
 def deploy_to_site():
     """Automates Cloudflare Pages deployment using the shared deploy script"""
