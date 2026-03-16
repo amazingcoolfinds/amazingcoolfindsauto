@@ -705,21 +705,38 @@ def update_website_data(new_products):
 def update_website_parallel(product):
     """Update single product to website immediately in background"""
     try:
-        # Add to website DB immediately
+        import fcntl
         site_db = AMAZING_DATA_DIR / "products.json"
-        if site_db.exists():
-            with open(site_db, 'r') as f:
-                products = json.load(f)
-        else:
-            products = []
+        lock_file = AMAZING_DATA_DIR / "products.json.lock"
         
-        # Check if already exists
-        asins = [p.get('asin') for p in products]
-        if product.get('asin') not in asins:
-            products.append(product)
-            with open(site_db, 'w') as f:
-                json.dump(products, f, indent=2)
-            log.info(f"🌐 [Parallel] Product {product.get('asin')} added to website")
+        # Create lock file
+        lock_file.touch(exist_ok=True)
+        
+        with open(lock_file, 'r+') as lock_f:
+            try:
+                fcntl.flock(lock_f.fileno(), fcntl.LOCK_EX)
+                
+                if site_db.exists():
+                    try:
+                        with open(site_db, 'r') as f:
+                            products = json.load(f)
+                    except json.JSONDecodeError:
+                        log.warning(f"⚠️ Corrupted JSON in website DB, creating new file")
+                        products = []
+                else:
+                    products = []
+                
+                asins = [p.get('asin') for p in products]
+                if product.get('asin') not in asins:
+                    products.append(product)
+                    with open(site_db, 'w') as f:
+                        json.dump(products, f, indent=2)
+                    log.info(f"🌐 [Parallel] Product {product.get('asin')} added to website")
+                
+                fcntl.flock(lock_f.fileno(), fcntl.LOCK_UN)
+            except Exception as e:
+                log.warning(f"⚠️ Lock error in parallel update: {e}")
+                
     except Exception as e:
         log.warning(f"⚠️ Parallel website update failed: {e}")
 
