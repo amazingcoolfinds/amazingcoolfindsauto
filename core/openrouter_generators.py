@@ -11,7 +11,7 @@ log = logging.getLogger("OpenRouterGenerators")
 class OpenRouterScriptGenerator:
     def __init__(self, api_key):
         self.api_key = api_key
-        self.model = "anthropic/claude-3.5-sonnet"
+        self.model = "openai/gpt-4o-mini"
 
     def generate_script(self, product: dict) -> dict:
         product_title = product.get('title', 'Unknown Product')
@@ -108,7 +108,7 @@ class OpenRouterScriptGenerator:
 class OpenRouterProductSelector:
     def __init__(self, api_key):
         self.api_key = api_key
-        self.model = "anthropic/claude-3.5-sonnet"
+        self.model = "openai/gpt-4o-mini"
 
     def analyze_candidates(self, category: str, products: list) -> list:
         if not products:
