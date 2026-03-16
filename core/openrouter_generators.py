@@ -84,7 +84,15 @@ class OpenRouterScriptGenerator:
                 if content.endswith("```"):
                     content = content[:-3]
                 content = content.strip()
-                script_data = json.loads(content)
+                try:
+                    script_data = json.loads(content)
+                except json.JSONDecodeError:
+                    import re
+                    json_match = re.search(r'\{.*\}', content, re.DOTALL)
+                    if json_match:
+                        script_data = json.loads(json_match.group())
+                    else:
+                        raise ValueError("Could not parse JSON from response")
                 return {
                     "title": script_data.get("title", f"Check out this {brand}!"),
                     "narration": script_data.get("narration", f"POV: You just found the ultimate {category} upgrade. The {brand} is a total game changer for your daily routine. Link is in the first comment!"),
@@ -160,7 +168,15 @@ class OpenRouterProductSelector:
             if content.endswith("```"):
                 content = content[:-3]
             content = content.strip()
-            selections = json.loads(content).get("selections", [])
+            try:
+                selections = json.loads(content).get("selections", [])
+            except json.JSONDecodeError:
+                import re
+                json_match = re.search(r'\{.*\}', content, re.DOTALL)
+                if json_match:
+                    selections = json.loads(json_match.group()).get("selections", [])
+                else:
+                    selections = []
             
             final_products = []
             for selection in selections:
@@ -228,6 +244,13 @@ class OpenRouterProductSelector:
             if content.endswith("```"):
                 content = content[:-3]
             content = content.strip()
-            return json.loads(content).get("category", "Life & Style")
+            try:
+                return json.loads(content).get("category", "Life & Style")
+            except json.JSONDecodeError:
+                import re
+                json_match = re.search(r'\{.*\}', content, re.DOTALL)
+                if json_match:
+                    return json.loads(json_match.group()).get("category", "Life & Style")
+                return "Life & Style"
         except:
             return "Life & Style"
