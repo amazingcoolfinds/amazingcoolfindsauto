@@ -27,3 +27,10 @@ output_images/
 # Google Credentials
 google_credentials/
 config/google_credentials/
+
+# Product Data (should not be committed)
+data/
+amazing/data/
+processed_products.json
+*.json
+!package.json
