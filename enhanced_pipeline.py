@@ -544,7 +544,7 @@ def run_enhanced_pipeline():
                         desc = f"{script['narration']}\n\n🔥 Check it out: {product['website_link']['link']}\n\n" + " ".join(script.get('hashtags', []))
                         platforms = ["instagram", "facebook", "pinterest"]
                         result = uploadpost_up.upload_from_url(
-                            video_path=video_path,
+                            video_url=video_path,
                             title=script['title'],
                             description=desc,
                             platforms=platforms,
@@ -785,7 +785,9 @@ def update_website_parallel(product):
                 
                 asins = [p.get('asin') for p in products]
                 if product.get('asin') not in asins:
-                    products.append(product)
+                    # Serialize product to ensure JSON compatibility (convert Path objects, etc.)
+                    clean_product = serialize_for_json(product)
+                    products.append(clean_product)
                     with open(site_db, 'w') as f:
                         json.dump(products, f, indent=2)
                     log.info(f"🌐 [Parallel] Product {product.get('asin')} added to website")
