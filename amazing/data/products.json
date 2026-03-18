@@ -1,246 +1,189 @@
 [
   {
-    "asin": "B08R794ZMX",
-    "title": "LEVOIT Air Purifiers for Home Large Room Up to 1733 Ft\u00b2 With HEPA Sleep Mode, AHAM VERIFIDE, Auto Mode, Air Quality Monitor, Smart WiFi, 3-in-1 Filter For Pet Allergy, Smoke, Dust, Core 400S-P, White",
-    "price": "$181.95",
-    "rating": "4.7",
-    "reviews_count": "16101",
-    "is_prime": true,
-    "image_url": "https://m.media-amazon.com/images/I/71zj41yHChL._AC_SX679_.jpg",
-    "affiliate_url": "https://www.amazon.com/dp/B08R794ZMX?tag=amazingcoolfinds-20",
+    "asin": "B0094B94BM",
+    "title": "Cleanblend Commercial Blender with 5-Year Full Warranty - 1800W, 3HP, 64oz High-Performance Professional Countertop Blender with Stainless Steel Blades",
+    "price": "$179.87",
+    "rating": "4.4",
+    "reviews_count": "2427",
+    "is_prime": false,
+    "image_url": "https://m.media-amazon.com/images/I/51ZK41Ai3xL._AC_SX679_.jpg",
+    "affiliate_url": "https://www.amazon.com/dp/B0094B94BM?tag=amazingcoolfinds-20",
     "category": "Home & Auto",
     "commission": 0.04,
     "selection_score": 75,
-    "selection_reasoning": "This product has a high price of $181.95, which offers significant profit potential. However, it has a low rating of 0.0 and is not Prime eligible, which affects its overall score. Despite this, it has a large number of reviews (16,101), indicating potential popularity.",
+    "selection_reasoning": "This product has a price of $179.87, which is above the $60 threshold. It has a commission rate of 4%, leading to a high absolute commission potential. Although the rating is currently 0.0, it has a significant number of reviews (2427), indicating potential for high conversion once it receives more ratings. However, it does not have Prime availability.",
     "bsr": [
       {
-        "rank": "1800",
-        "category": "Home & Kitchen"
+        "rank": "14771",
+        "category": "Kitchen & Dining"
+      },
+      {
+        "rank": "51",
+        "category": "Countertop Blenders Is Discontinued By Manufacturer No Date First Available September"
+      }
+    ],
+    "images": [
+      "https://m.media-amazon.com/images/I/51ZK41Ai3xL._AC_SX679_.jpg",
+      "https://m.media-amazon.com/images/I/51ZK41Ai3xL._AC_SL1000_.jpg",
+      "https://m.media-amazon.com/images/I/71IB5cwLUmL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/713sKJhGNSL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61zMhGqjYSL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61lazHdYg0L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61TVTTkV21L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71KoL9d5JIL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71fHBS+mJ6L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/715+dFZj-VL._AC_SL1500_.jpg"
+    ],
+    "bullets": [
+      "POWERFUL BLENDING PERFORMANCE \u2013 Features a 3 HP, 1800-watt motor designed to handle a variety of blending tasks. Suitable for crushing ice, preparing sauces, and processing hot or cold ingredients with variable speed control for precision.",
+      "MULTI-USE BLENDER, ALL IN ONE DESIGN: Our Cleanblend Countertop Blenders could replace up to 9 appliances: crush, blend, chop, grind, heat, process, puree, or liquify. Create larger servings of ice blended coffee, dips, sauce, or margaritas! This large blender also makes soups, really what more can you ask for? Say goodbye to unblended bits, chewy chunks, and grainy lumps\u2014for good and say hello to a better, healthier you",
+      "BEST BLENDER FOR LARGE PORTIONS AND COMMERCIAL DEMANDS: When a single serve blender isn't enough, our Cleanblend high performance commercial blender can handle your commercial, or heavy duty cafe or restaurant needs. This bigger and better super blender serves up large batches of smoothies, fresh juice, ice cream, milkshakes, margaritas, cappuccinos, soups, batters, sauces, dressings, salad and more! No need to blend repeatedly, leave the large batches to us while you run your business",
+      "BPA FREE & FOOD GRADE STAINLESS STEEL: Clean eating starts with safe appliances. \u200b\u200bBPA-Free means you get all of the vitamins and nutrients from your food\u2014and none of the chemicals found in other plastics. From soup to smoothies, you\u2019re always safe with Cleanblend. CleanBlend\u2019s high speed blender is made with an 8-blade sealed ball bearing for maximized performance, hardened stainless steel blades, and a BPA free pitcher that's basically unbreakable and easy to clean"
+    ],
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0094B94BM",
+      "scroll_target": "product-B0094B94BM",
+      "full_url": "https://amazing-cool-finds.com/#product-B0094B94BM"
+    },
+    "processed_at": "2026-03-18T13:01:22.899004",
+    "script": {
+      "title": "Unlock Your Kitchen's Potential!",
+      "narration": "Does your blender leave you with chunky soups and lumpy smoothies? Meet the Cleanblend Commercial Blender! With a powerhouse 3 HP motor, it transforms your ingredients into silky perfection. Say goodbye to kitchen chaos and hello to effortless meals! Link is in the first comment!",
+      "hashtags": [
+        "#KitchenHacks",
+        "#SmoothieGoals",
+        "#HealthyLiving",
+        "#BlenderMagic",
+        "#MealPrep"
+      ]
+    },
+    "voice_path": "assets/B0094B94BM_voice.wav",
+    "youtube_uploaded": true,
+    "youtube_video_id": "zIEtLVxedjU",
+    "youtube_url": "https://youtube.com/watch?v=zIEtLVxedjU"
+  },
+  {
+    "asin": "B0GGP4WZPS",
+    "title": "Aeitto Blenders for Kitchen 1800W Professional Countertop Blender, 68Oz Large Capacity Smoothie Blender with 3 Programs & 7 Speeds for Smoothies, Ice Crush, Frozen Drinks, Black",
+    "price": "$89.99",
+    "rating": "4.5",
+    "reviews_count": "44",
+    "is_prime": false,
+    "image_url": "https://m.media-amazon.com/images/I/81LhWuNpj3L._AC_SX679_.jpg",
+    "affiliate_url": "https://www.amazon.com/dp/B0GGP4WZPS?tag=amazingcoolfinds-20",
+    "category": "Home & Auto",
+    "commission": 0.04,
+    "selection_score": 72,
+    "selection_reasoning": "This blender is priced at $89.99, meeting the profit potential criteria. It has a commission rate of 4%, contributing to a good commission potential. The product has a low number of reviews (44) and a rating of 0.0, but the price and category make it a reasonable candidate. It also lacks Prime availability.",
+    "bsr": [
+      {
+        "rank": "51544",
+        "category": "Kitchen & Dining"
+      },
+      {
+        "rank": "116",
+        "category": "Countertop Blenders Date First Available January"
+      }
+    ],
+    "images": [
+      "https://m.media-amazon.com/images/I/81LhWuNpj3L._AC_SX679_.jpg",
+      "https://m.media-amazon.com/images/I/81nmXmKtF8L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81LhWuNpj3L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81LhWuNpj3L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71QpoG5XeAL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71UomIjz6dL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71CCTtB0HsL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81DK8iRvhlL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71NeBu-rZWL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41d9CF0yMSL._SL1500_.jpg"
+    ],
+    "bullets": [
+      "1800W Maximum Power: Aeitto blender with the 1800W peak power delivers high performance. It effortlessly handles professional tasks\u2014from smoothies and soups to nut butters\u2014in seconds, minimizing wait time while preserving ingredients' nutrients. The blenders for kitchen is sturdy and durable, easily conquering the daily challenges of intense cooking.",
+      "68Oz. BPA -free Jar: Enjoy our 68oz. large capacity jar made of food-safe materials that are 100% BPA-free. Prepare up to 6 cups per batch\u2014ideal for family meals or entertaining guests. The blender for smoothies of large capacity is designed for personal use as well - whether it's for a quick breakfast or refreshing beverages.",
+      "Smart 3+7 Programs Control:The smoothie blender simplifies operation, preset smoothies, juices, crushed ice, one button directly. Seven adjustable speeds allow seamless task switching and precise texture control, empowering you to create diverse flavors. These versatile functions support endless culinary experiments, making meal preparation effortless.",
+      "Auto-Clean & Dishwasher Safe: Cleaning has never been easier! Activate the one-touch self-cleaning mode\u2014just add water and detergent for a thorough rinse in 30 seconds. All detachable parts except the motor base are dishwasher-safe, saving you time. Enjoy worry-free hygiene and consistent cleanliness with every use.",
+      "LED Display Panel: The countertop blender clear interface provides real-time monitoring of speed, time, and program status for intuitive operation. Its user-friendly design ensures precise control at every step, guaranteeing optimal blending results."
+    ],
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0GGP4WZPS",
+      "scroll_target": "product-B0GGP4WZPS",
+      "full_url": "https://amazing-cool-finds.com/#product-B0GGP4WZPS"
+    },
+    "processed_at": "2026-03-18T13:01:37.811078",
+    "script": {
+      "title": "Unlock Your Kitchen's Potential!",
+      "narration": "Does blending feel like a chore? This Aeitto Blender transforms meal prep into a breeze! With its 1800W power and 68oz capacity, whip up silky smoothies or crushed ice in seconds. Plus, it cleans itself! Link is in the first comment!",
+      "hashtags": [
+        "#KitchenGadgets",
+        "#SmoothieGoals",
+        "#AeittoBlender",
+        "#HomeCooking",
+        "#MealPrep"
+      ]
+    },
+    "voice_path": "assets/B0GGP4WZPS_voice.wav",
+    "youtube_uploaded": true,
+    "youtube_video_id": "t8BrHU2Dm4M",
+    "youtube_url": "https://youtube.com/watch?v=t8BrHU2Dm4M"
+  },
+  {
+    "asin": "B0BRDJ28B7",
+    "title": "nutribullet Full-Size Blender Combo 1200W \u2013 NBF50500 - Dark Gray",
+    "price": "$114.99",
+    "rating": "4.6",
+    "reviews_count": "17444",
+    "is_prime": true,
+    "image_url": "https://m.media-amazon.com/images/I/71GI5y6LYSL._AC_SX679_.jpg",
+    "affiliate_url": "https://www.amazon.com/dp/B0BRDJ28B7?tag=amazingcoolfinds-20",
+    "category": "Home & Auto",
+    "commission": 0.04,
+    "selection_score": 70,
+    "selection_reasoning": "Priced at $114.99, this product meets the profit potential criteria and has a commission rate of 4%. It has a substantial number of reviews (17444), which suggests a good conversion potential, although it currently has a rating of 0.0. It does not have Prime availability.",
+    "bsr": [
+      {
+        "rank": "1242",
+        "category": "Kitchen & Dining"
       },
       {
         "rank": "12",
-        "category": "HEPA Filter Air Purifiers Care instructions Follow the instruction Assembly required No Number of pieces"
+        "category": "Countertop Blenders Date First Available December"
       }
     ],
     "images": [
-      "https://m.media-amazon.com/images/I/71zj41yHChL._AC_SX679_.jpg",
-      "https://m.media-amazon.com/images/I/71xUzGIF+BL._AC_SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/71XA8DKVYAL._AC_SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/71zj41yHChL._AC_SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/71VdM3R0RjL._AC_SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/71ReidLo08L._AC_SL1500_.jpg"
+      "https://m.media-amazon.com/images/I/71GI5y6LYSL._AC_SX679_.jpg",
+      "https://m.media-amazon.com/images/I/61NTNHcK3fL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71P05MnlksL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71GI5y6LYSL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71TLDierBbL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/710ONRQMl8L._AC_SL1500_.jpg"
     ],
     "bullets": [
-      "\ud835\udc16\ud835\udc07\ud835\udc18 \ud835\udc02\ud835\udc07\ud835\udc0e\ud835\udc0e\ud835\udc12\ud835\udc04 \ud835\udc00\ud835\udc07\ud835\udc00\ud835\udc0c \ud835\udc15\ud835\udc04\ud835\udc11\ud835\udc08\ud835\udc05\ud835\udc08\ud835\udc03\ud835\udc04 \ud835\udc00\ud835\udc08\ud835\udc11 \ud835\udc0f\ud835\udc14\ud835\udc11\ud835\udc08\ud835\udc05\ud835\udc08\ud835\udc04\ud835\udc11\ud835\udc12: AHAM (Association of Home Appliance Manufacturers) is an ANSI-accredited organization that sets strict standards for appliance performance. Air purifiers with the AHAM VERIFIDE seal have been independently tested for air cleaning performance, safety, and energy efficiency. When you choose an AHAM certified air purifier, you're choosing a product trusted for reliable and effective indoor air quality improvement.",
-      "\ud835\udc00\ud835\udc07\ud835\udc00\ud835\udc0c \ud835\udc15\ud835\udc04\ud835\udc11\ud835\udc08\ud835\udc05\ud835\udc08\ud835\udc03\ud835\udc04 & \ud835\udc13\ud835\udc11\ud835\udc14\ud835\udc12\ud835\udc13\ud835\udc04\ud835\udc03 \ud835\udc01\ud835\udc18 \ud835\udc04\ud835\udc17\ud835\udc0f\ud835\udc04\ud835\udc11\ud835\udc13\ud835\udc12: Certified by the Association of Home Appliance Manufacturers (AHAM), the Core 400S-P has been independently tested for performance, efficiency, and safety. Verified CADR ratings: Smoke: 231 CFM Dust: 240 CFM Pollen: 259 CFM",
-      "\ud835\udc07\ud835\udc08\ud835\udc06\ud835\udc07-\ud835\udc04\ud835\udc05\ud835\udc05\ud835\udc08\ud835\udc02\ud835\udc08\ud835\udc04\ud835\udc0d\ud835\udc02\ud835\udc18 \ud835\udc00\ud835\udc08\ud835\udc11 \ud835\udc0f\ud835\udc14\ud835\udc11\ud835\udc08\ud835\udc05\ud835\udc08\ud835\udc02\ud835\udc00\ud835\udc13\ud835\udc08\ud835\udc0e\ud835\udc0d \ud835\udc05\ud835\udc0e\ud835\udc11 \ud835\udc0b\ud835\udc00\ud835\udc11\ud835\udc06\ud835\udc04 \ud835\udc11\ud835\udc0e\ud835\udc0e\ud835\udc0c\ud835\udc12: The LEVOIT Core 400S-P Air Purifier is designed for powerful whole-room purification. With a smoke CADR of 231 CFM, it can clean air in spaces up to 1,733 sq ft in just one hour\u2014perfect for bedrooms, living rooms, and open floor plans.",
-      "\ud835\udfd1-\ud835\udc12\ud835\udc13\ud835\udc00\ud835\udc06\ud835\udc04 \ud835\udc07\ud835\udc08\ud835\udc06\ud835\udc07 \ud835\udc0f\ud835\udc04\ud835\udc11\ud835\udc05\ud835\udc0e\ud835\udc11\ud835\udc0c\ud835\udc00\ud835\udc0d\ud835\udc02\ud835\udc04 \ud835\udc05\ud835\udc08\ud835\udc0b\ud835\udc13\ud835\udc11\ud835\udc00\ud835\udc13\ud835\udc08\ud835\udc0e\ud835\udc0d: 3-in-1 filter has a strong filtration performance of ultra fine particles. 99.97 percent filtration efficiency for 0.1-0.3 \u03bcm airborne particulates, including pollen, dust, and animal dander. Disclaimer: Tested by an independent lab.",
-      "\ud835\udc01\ud835\udc04\ud835\udc03\ud835\udc11\ud835\udc0e\ud835\udc0e\ud835\udc0c \ud835\udc05\ud835\udc11\ud835\udc04\ud835\udc12\ud835\udc07\ud835\udc0d\ud835\udc04\ud835\udc12\ud835\udc12 \ud835\udc0e\ud835\udc0d \ud835\udc03\ud835\udc08\ud835\udc12\ud835\udc0f\ud835\udc0b\ud835\udc00\ud835\udc18: Don't worry about dust and pollen when you stay in the bedroom where bedding, furniture and potted plants are. Thanks to the AirSight Plus technology, the laser dust sensor scans the surrounding air for airborne particles, continuously updating the PM2.5 display."
+      "nutribullet Blender Combo will take your nutrition extraction to the next level with the versatility of both a multi-serving pitcher and a single serve cup.",
+      "Three precision speeds, a pulse function and the Extract program offer full control at the press of a button. 1200 Watts of power let you make an endless array of smoothies, soups, sauces, nut butters and beyond.",
+      "Includes: (1) 1200 Watt Motor Base, (1) 64 oz (1.8L) Blender Pitcher with Lid and Vented Lid Cap, (1) Tamper, (1) 32 oz (900ml) Cup, (1) 24 oz (700ml) Handled Cup, (2) To-Go Lids, (1) Easy-Twist Extractor Blade, and Recipe Book",
+      "The Easy-Twist Extractor Blade is made of powerful stainless steel and designed with cyclonic action. Our super-durable BPA-Free pitcher and cups are made of high-performance plastic. Unit Dimensions: 7.75 Lx 8.07 W x 16.97 H",
+      "Hassle-free cleaning - simply place pitcher and cups in the dishwasher and rinse the easy twist extractor blades with soap and water. This item includes a 1 year limited warranty."
     ],
     "website_link": {
-      "link": "https://amazing-cool-finds.com/#product-B08R794ZMX",
-      "scroll_target": "product-B08R794ZMX",
-      "full_url": "https://amazing-cool-finds.com/#product-B08R794ZMX"
+      "link": "https://amazing-cool-finds.com/#product-B0BRDJ28B7",
+      "scroll_target": "product-B0BRDJ28B7",
+      "full_url": "https://amazing-cool-finds.com/#product-B0BRDJ28B7"
     },
-    "processed_at": "2026-03-18T01:49:11.964832",
+    "processed_at": "2026-03-18T13:01:52.629085",
     "script": {
-      "title": "Transform Your Air Quality Instantly!",
-      "narration": "Does pet dander and dust drive you crazy? Meet the LEVOIT Core 400S-P! With 99.97% filtration efficiency, it cleans large rooms up to 1,733 sq ft in just an hour! Breathe easy and enjoy fresh air effortlessly. Link is in the first comment!",
+      "title": "Unlock Your Kitchen's Potential!",
+      "narration": "Does your morning smoothie routine drive you crazy? Meet the nutribullet Blender Combo! With 1200 watts of power and a secret weapon \u2013 the Easy-Twist Extractor Blade \u2013 you\u2019ll create silky smooth soups, sauces, and nut butters in seconds. Link is in the first comment!",
       "hashtags": [
-        "#AirQuality",
-        "#HomeHacks",
-        "#LEVOIT",
-        "#CleanAir",
-        "#HealthyHome"
+        "#SmoothieGoals",
+        "#NutriBullet",
+        "#KitchenHacks",
+        "#HealthyLiving",
+        "#BlenderMagic"
       ]
     },
-    "voice_path": "assets/B08R794ZMX_voice.wav",
+    "voice_path": "assets/B0BRDJ28B7_voice.wav",
     "youtube_uploaded": true,
-    "youtube_video_id": "FVzxK7rZMHg",
-    "youtube_url": "https://youtube.com/watch?v=FVzxK7rZMHg"
-  },
-  {
-    "asin": "B0D45ZHYZJ",
-    "title": "ASUS ROG Azoth Extreme Wireless Mechanical Gaming Keyboard \u2013 75% TKL, ROG NX Snow Linear Switches, PBT Keycaps, Aluminum Chassis, Carbon Fiber, Gasket Mount, Color OLED Screen, PC/Mac Support - Black",
-    "price": "$399.99",
-    "rating": "4.3",
-    "reviews_count": "92",
-    "is_prime": true,
-    "image_url": "https://m.media-amazon.com/images/I/81UvrysuL4L._AC_SX679_.jpg",
-    "affiliate_url": "https://www.amazon.com/dp/B0D45ZHYZJ?tag=amazingcoolfinds-20",
-    "category": "Tech",
-    "commission": 0.04,
-    "selection_score": 75,
-    "selection_reasoning": "The ASUS ROG Azoth Extreme Wireless Mechanical Gaming Keyboard has a high price of $399.99, which offers significant profit potential despite not having a rating or BSR available. It is a premium product likely to attract serious gamers.",
-    "bsr": [
-      {
-        "rank": "5721",
-        "category": "Video Games"
-      },
-      {
-        "rank": "449",
-        "category": "PC Gaming Keyboards Warranty & Support Amazon"
-      }
-    ],
-    "images": [
-      "https://m.media-amazon.com/images/I/81UvrysuL4L._AC_SX679_.jpg",
-      "https://m.media-amazon.com/images/I/81UvrysuL4L._AC_SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/41j2mMxaICL._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/616gH-vvH-L._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/51t1QxcoTPL._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/51clacUZ6xL._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/41kTavI2TsL._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/51cTaivNvfL._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/41L8-3V9egL._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/81UvrysuL4L._SL1500_.jpg"
-    ],
-    "bullets": [
-      "Tri-Mode Connectivity: Connect via 2.4 GHz RF wireless with ROG SpeedNova, Bluetooth (up to 3 devices), and wired USB-C mode. Enjoy ultra-low-latency and up to 1600 hours of battery life with RGB and OLED off, ideal for gaming and everyday productivity",
-      "Premium Aluminum Build & 75% Layout: Durable and refined design crafted from a solid aluminum-alloy chassis and metal frame with 12-step CNC process. Compact 75 percent layout saves space while maintaining full functionality for gaming and productivity",
-      "Speed Tap Mode for Competitive Gaming: Speed Tap Mode enables instant directional changes in FPS and esports titles, eliminating input delays for precise aim and fluid counter-strafing. Perfect for players who demand maximum responsiveness",
-      "ROG Polling Rate Booster & Omni Receiver: Achieve 8K Hz polling rate in both wired and wireless modes with the ROG Polling Rate Booster. Pair keyboard and mouse simultaneously via the ROG Omni Receiver for a cleaner, more efficient setup",
-      "Carbon-Fiber Plate & Three-Layer Dampening: Carbon-fiber positioning plate offers crisp yet controlled keystrokes. Dual PORON foams and a silicone pad absorb vibrations for a refined sound profile and smooth feel"
-    ],
-    "website_link": {
-      "link": "https://amazing-cool-finds.com/#product-B0D45ZHYZJ",
-      "scroll_target": "product-B0D45ZHYZJ",
-      "full_url": "https://amazing-cool-finds.com/#product-B0D45ZHYZJ"
-    },
-    "processed_at": "2026-03-18T01:49:39.565996",
-    "script": {
-      "title": "Unlock Your Gaming Potential!",
-      "narration": "Does your keyboard hold you back in epic battles? The ASUS ROG Azoth Extreme is here to change that! With ultra-responsive 8K polling and a sleek aluminum build, every game feels like a dream. Elevate your setup today! Link is in the first comment!",
-      "hashtags": [
-        "#GamingGear",
-        "#TechSavvy",
-        "#ASUSROG",
-        "#MechanicalKeyboard",
-        "#GamerLife"
-      ]
-    },
-    "voice_path": "assets/B0D45ZHYZJ_voice.wav",
-    "youtube_uploaded": true,
-    "youtube_video_id": "bKwbxS1ozDc",
-    "youtube_url": "https://youtube.com/watch?v=bKwbxS1ozDc"
-  },
-  {
-    "asin": "B09LK1P1RD",
-    "title": "Logitech MX Mechanical Wireless Illuminated Performance Keyboard, Tactile Quiet Switches, Backlit Keys, Bluetooth, USB-C, macOS, Windows, Linux, iOS, Android, Metal, \u200eGraphite",
-    "price": "$167.99",
-    "rating": "4.2",
-    "reviews_count": "2147",
-    "is_prime": true,
-    "image_url": "https://m.media-amazon.com/images/I/61++ok6AqtL._AC_SX679_.jpg",
-    "affiliate_url": "https://www.amazon.com/dp/B09LK1P1RD?tag=amazingcoolfinds-20",
-    "category": "Tech",
-    "commission": 0.04,
-    "selection_score": 70,
-    "selection_reasoning": "The Logitech MX Mechanical Wireless Illuminated Performance Keyboard is priced at $167.99, providing good profit potential. However, it lacks a rating and BSR data. Given its brand reputation, it may still convert well.",
-    "bsr": [
-      {
-        "rank": "23",
-        "category": "Computer Keyboards Warranty & Support Amazon"
-      }
-    ],
-    "images": [
-      "https://m.media-amazon.com/images/I/61++ok6AqtL._AC_SX679_.jpg",
-      "https://m.media-amazon.com/images/I/71H9sz4XUiL._AC_SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/61ge3d+MQwL._AC_SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/61++ok6AqtL._AC_SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/71Mu4xHDmPL._AC_SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/61xWnxfZe1L._AC_SL1500_.jpg"
-    ],
-    "bullets": [
-      "Tactile Quiet mechanical key switches with a satisfying tactile bump you feel - for precise feedback, reactive key reset, and less noise so your typing doesn't disturb those around you",
-      "Low-profile keys, more comfort: A keyboard layout designed for effortless precision, with a full-size form factor and low-profile mechanical switches for better ergonomics",
-      "Smart illumination: Backlit keys light up the moment your hands approach the cordless keyboard and automatically adjust to suit changing lighting conditions",
-      "Faster workflow, more customization: Customize Fn keys, assign backlighting effects, enable Flow cross-computer, multi-device control, and more in the improved Logi Options+ (1)",
-      "Multi-device, multi-OS: Pair MX Mechanical Bluetooth wireless keyboard with up to 3 devices on nearly any operating system via Bluetooth Low Energy or included Logi Bolt receiver(2)"
-    ],
-    "website_link": {
-      "link": "https://amazing-cool-finds.com/#product-B09LK1P1RD",
-      "scroll_target": "product-B09LK1P1RD",
-      "full_url": "https://amazing-cool-finds.com/#product-B09LK1P1RD"
-    },
-    "processed_at": "2026-03-18T01:49:51.665233",
-    "script": {
-      "title": "The Keyboard Upgrade You Didn't Know You Needed!",
-      "narration": "Does your typing drive you crazy? Meet the Logitech MX Mechanical Keyboard! With tactile quiet switches and smart illumination, it transforms your workspace into a serene haven. Effortlessly switch between devices and enjoy precise feedback. Time to level up your typing game! Link is in the first comment!",
-      "hashtags": [
-        "#TechUpgrade",
-        "#LogitechMX",
-        "#KeyboardGoals",
-        "#WorkFromHome",
-        "#GadgetLovers"
-      ]
-    },
-    "voice_path": "assets/B09LK1P1RD_voice.wav",
-    "youtube_uploaded": true,
-    "youtube_video_id": "7-hxl5eC2Oo",
-    "youtube_url": "https://youtube.com/watch?v=7-hxl5eC2Oo"
-  },
-  {
-    "asin": "B0DWMX5TXV",
-    "title": "RK ROYAL KLUDGE R98 Pro Wired Mechanical Keyboard, 96% Creamy Gaming Keyboard RGB Backlit with Number Pad and Volume Knob, Gasket Mount, MDA Profile PBT Keycaps, Hot Swappable Pre-lubed Linear Switch",
-    "price": "$69.99",
-    "rating": "4.6",
-    "reviews_count": "695",
-    "is_prime": true,
-    "image_url": "https://m.media-amazon.com/images/I/718cb2135RL._AC_SX679_.jpg",
-    "affiliate_url": "https://www.amazon.com/dp/B0DWMX5TXV?tag=amazingcoolfinds-20",
-    "category": "Tech",
-    "commission": 0.04,
-    "selection_score": 70,
-    "selection_reasoning": "The RK ROYAL KLUDGE R98 Pro Wired Mechanical Keyboard is priced at $69.99, which meets the profit potential criteria. While it has no rating or BSR data, it has a decent number of reviews, suggesting potential interest.",
-    "bsr": [
-      {
-        "rank": "680",
-        "category": "Video Games"
-      },
-      {
-        "rank": "61",
-        "category": "PC Gaming Keyboards Date First Available May"
-      }
-    ],
-    "images": [
-      "https://m.media-amazon.com/images/I/718cb2135RL._AC_SX679_.jpg",
-      "https://m.media-amazon.com/images/I/718cb2135RL._AC_SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/61kEPM967kL._AC_SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/41azAfde5SL._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/51pxaKsVLwL._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/41zzVZXodTL._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/51yCDdIv+HL._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/513szQqCuQL._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/51PaABm2tYL._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/91Z60EqqTxL.SS40_BG85,85,85_BR-120_PKdp-play-icon-overlay__.jpg"
-    ],
-    "bullets": [
-      "\u3010Gasket Mount Gaming Keyboard with Number Pad\u3011: Computer keyboard adopts 98 keys layout design, retaining numpad, arrow keys and most functions, saving your desktop space and making it more suitable for gaming and work. Five layers sound-absorbing foam to ensure thocky feeling and creamy sounding for you",
-      "\u3010Hot Swappable & Pre-lubed Cream Switches\u3011: Hot swappable mechanical keyboard supports 3/5-pin switches. Pre-lubed linear cream switch has received a lot of love for its unique look, creamy sound and excellent smooth keystroke feel. The sound of creamy gives you a pleasant typing experience",
-      "\u3010MDA Profile & Premium PBT Keycaps\u3011: MDA profile is a popular choice among mechanical keyboard enthusiasts because it fits fingers better, provides a stronger sense of wrapping when typing. PBT keycaps are made of double shot, with a matte surface, non-fading, durability and longer service life",
-      "\u3010Detachable Volume Knob & Indicator Lights\u3011: PC gaming keyboards equipped with detachable high-quality aluminum CNC metal knob. You can quickly adjust the volume by the knob. Four indicator lights respectively show Num Lock, Caps Lock, Win Lock and Mac Mode, making the full size keyboard status clear at a glance",
-      "\u3010Programmable Online Driver Support\u3011Functions such as redefine keys, macro settings and custom RGB can be easily set up in the RK online driver, allowing you to quickly customize your keyboard on Windows and Mac"
-    ],
-    "website_link": {
-      "link": "https://amazing-cool-finds.com/#product-B0DWMX5TXV",
-      "scroll_target": "product-B0DWMX5TXV",
-      "full_url": "https://amazing-cool-finds.com/#product-B0DWMX5TXV"
-    },
-    "processed_at": "2026-03-18T01:50:06.562508",
-    "script": {
-      "title": "Unlock Your Ultimate Gaming Experience!",
-      "narration": "POV: You just found the missing piece for your gaming setup. The RK Royal Kludge R98 Pro keyboard combines creamy sound with a sleek design, enhancing every keystroke. With a detachable volume knob and hot-swappable switches, it's a game-changer! Link is in the first comment!",
-      "hashtags": [
-        "#GamingKeyboard",
-        "#MechanicalKeyboard",
-        "#TechGadgets",
-        "#DesktopSetup",
-        "#RKRoyalKludge"
-      ]
-    },
-    "voice_path": "assets/B0DWMX5TXV_voice.wav",
-    "youtube_uploaded": true,
-    "youtube_video_id": "d00TSXkP4X0",
-    "youtube_url": "https://youtube.com/watch?v=d00TSXkP4X0"
+    "youtube_video_id": "JjqwVETATrw",
+    "youtube_url": "https://youtube.com/watch?v=JjqwVETATrw"
   }
 ]
