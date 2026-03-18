@@ -43,27 +43,25 @@ def post_to_social(article):
 #blog #lifestyle #gadgets #amazonfinds
     """.strip()
     
-    data = {
-        "user": USER,
-        "platform[]": ["reddit", "x", "facebook"],
-        "title": title,
-        "message": content,
-        "link_url": article_url,
-    }
-    
     headers = {"Authorization": f"Apikey {API_KEY}"}
     
+    # Try X (Twitter) first - simplest platform
     try:
-        resp = requests.post(UPLOAD_POST_API, data=data, headers=headers, timeout=30)
+        data = {
+            "user": USER,
+            "platform[]": ["x"],
+            "title": f"{title}\n\n🔗 {article_url}",
+        }
+        resp = requests.post(UPLOAD_POST_API, data=data, headers=headers, timeout=60)
         result = resp.json()
         
         if result.get('success'):
-            print(f"✅ Posted: {title[:50]}...")
+            print(f"✅ Posted to X: {title[:50]}...")
             for platform, info in result.get('results', {}).items():
                 if info.get('success'):
                     print(f"   ✅ {platform}: {info.get('url', 'OK')}")
                 else:
-                    print(f"   ❌ {platform}: {info.get('error', 'Failed')}")
+                    print(f"   ⚠️ {platform}: {info.get('error', 'Failed')}")
             return True
         else:
             print(f"❌ Failed: {result.get('message')}")
