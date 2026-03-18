@@ -10,7 +10,7 @@ import requests
 from datetime import datetime
 
 BLOG_URL = "https://article-generator.amazingcoolfinds.workers.dev/api/articles"
-UPLOAD_POST_API = "https://api.upload-post.com/api/upload"
+UPLOAD_POST_API = "https://api.upload-post.com/api/upload_text"
 API_KEY = os.getenv("UPLOADPOST_API_KEY")
 USER = "AmazingCoolFinds"
 
@@ -36,7 +36,7 @@ def post_to_social(article):
     article_url = f"https://amazing-cool-finds.com/articles?id={slug}"
     
     # Create post content
-    description = f"""
+    content = f"""
 {article.get('excerpt', article.get('metaDescription', '')[:300])}...
 
 🔗 Read more: {article_url}
@@ -47,8 +47,8 @@ def post_to_social(article):
         "user": USER,
         "platform[]": ["reddit", "x", "facebook"],
         "title": title,
-        "description": description,
-        "first_comment": f"📖 Full article: {article_url}"
+        "message": content,
+        "link_url": article_url,
     }
     
     headers = {"Authorization": f"Apikey {API_KEY}"}
@@ -67,6 +67,7 @@ def post_to_social(article):
             return True
         else:
             print(f"❌ Failed: {result.get('message')}")
+            print(f"   Response: {result}")
     except Exception as e:
         print(f"❌ Error posting: {e}")
     
