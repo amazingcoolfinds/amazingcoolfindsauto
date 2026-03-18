@@ -265,7 +265,36 @@ async function autonomousGeneration(env) {
     const articleId = `article-${article.slug}-${Date.now()}`;
     await env.ARTICLES.put(articleId, JSON.stringify(article));
 
-    // 3. AUTOMATE REDDIT POST
+    // 3. Send to Make.com Webhook (if configured)
+    if (env.MAKE_WEBHOOK_URL) {
+      try {
+        const makePayload = {
+          event: 'new_article',
+          article: {
+            title: article.title,
+            slug: article.slug,
+            excerpt: article.excerpt || article.metaDescription,
+            content: article.content,
+            category: article.category,
+            image_url: article.image,
+            article_url: `${env.WEBSITE_URL || 'https://amazing-cool-finds.com'}/articles?id=${article.slug}`,
+            created_at: article.createdAt || new Date().toISOString()
+          }
+        };
+        
+        const webhookRes = await fetch(env.MAKE_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(makePayload)
+        });
+        
+        debug.logs.push(`Make Webhook: ${webhookRes.ok ? '✅ Sent' : '❌ Status: ' + webhookRes.status}`);
+      } catch(e) {
+        debug.logs.push(`Make Webhook Error: ${e.message}`);
+      }
+    }
+
+    // 4. AUTOMATE REDDIT POST
     try {
       const redditRes = await postToReddit(env, article);
       debug.logs.push(`Reddit Status: ${redditRes.success ? '✅ Posted' : '❌ Failed: ' + redditRes.error}`);
