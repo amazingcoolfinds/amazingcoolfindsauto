@@ -717,17 +717,21 @@ def update_website_data(new_products):
             except Exception as e:
                 log.warning(f"⚠️ Could not load existing products.json: {e}")
         
-        # Protect existing products - never lose them
-        if len(existing_products) < 3 and new_products:
-            log.error(f"❌ Refusing to overwrite! Existing: {len(existing_products)}, New: {len(new_products)}")
-            # Try to restore from processed_products.json
+        # If website has very few products, try to restore from processed_products.json as base
+        if len(existing_products) < 5:
             processed_file = DATA_DIR / "processed_products.json"
             if processed_file.exists():
                 try:
                     with open(processed_file, 'r') as f:
-                        existing_products = json.load(f)
-                    log.info(f"✅ Restored {len(existing_products)} products from processed history")
+                        backup_products = json.load(f)
+                    if len(backup_products) > len(existing_products):
+                        log.info(f"🔄 Restoring {len(backup_products)} products from processed history as base")
+                        existing_products = backup_products
                 except: pass
+        
+        # Protect existing products - never lose them if we have enough
+        if len(existing_products) >= 50 and new_products and len(new_products) < 3:
+            log.warning(f"⚠️ Refusing to overwrite {len(existing_products)} products with only {len(new_products)} new. Keeping existing.")
             return  # Don't save if we might lose data
         
         # Serialize new products to ensure JSON compatibility
