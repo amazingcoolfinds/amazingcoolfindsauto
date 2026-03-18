@@ -352,7 +352,7 @@ def save_processed_product(product):
         # Clean and serialize product for JSON (handles Path objects, etc.)
         clean_product = serialize_for_json(product)
         
-        # ALWAYS save COMPLETE product data including images, price, etc.
+        # ALWAYS save COMPLETE product data including images, price, script, etc.
         full_product_data = {
             'asin': clean_product.get('asin'),
             'title': clean_product.get('title'),
@@ -366,6 +366,10 @@ def save_processed_product(product):
             'affiliate_url': clean_product.get('affiliate_url'),
             'processed_at': clean_product.get('processed_at'),
             'website_link': clean_product.get('website_link'),
+            # Script data for Maintenance Agent analysis
+            'script': clean_product.get('script'),
+            'youtube_video_id': clean_product.get('youtube_video_id'),
+            'youtube_url': clean_product.get('youtube_url'),
         }
         
         # Check if product already exists (update) or is new (append)
