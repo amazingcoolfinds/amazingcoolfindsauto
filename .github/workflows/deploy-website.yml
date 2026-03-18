@@ -16,19 +16,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          
       - name: Install Wrangler
         run: npm install -g wrangler
         
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: amazing-cool-finds
-          directory: amazing
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npx wrangler pages deploy amazing --project-name amazing-cool-finds --commit-dirty=true
