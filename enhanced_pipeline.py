@@ -717,8 +717,21 @@ def update_website_data(new_products):
             except Exception as e:
                 log.warning(f"⚠️ Could not load existing products.json: {e}")
         
+        # Protect existing products - never lose them
+        if len(existing_products) < 3 and new_products:
+            log.error(f"❌ Refusing to overwrite! Existing: {len(existing_products)}, New: {len(new_products)}")
+            # Try to restore from processed_products.json
+            processed_file = DATA_DIR / "processed_products.json"
+            if processed_file.exists():
+                try:
+                    with open(processed_file, 'r') as f:
+                        existing_products = json.load(f)
+                    log.info(f"✅ Restored {len(existing_products)} products from processed history")
+                except: pass
+            return  # Don't save if we might lose data
+        
         # Serialize new products to ensure JSON compatibility
-        clean_new_products = [serialize_for_json(p) for p in new_products]
+        clean_new_products = [serialize_for_json(p) for p in new_products] if new_products else []
         
         # Merge products by ASIN (new ones overwrite old ones if duplicated)
         product_dict = {p['asin']: p for p in existing_products}
@@ -727,6 +740,11 @@ def update_website_data(new_products):
             
         merged_list = list(product_dict.values())
         
+        # Safety check
+        if len(merged_list) < len(existing_products):
+            log.error(f"❌ Merge would lose products! Existing: {len(existing_products)}, Merged: {len(merged_list)}")
+            return
+            
         # Save to both locations
         with open(DATA_DIR / "products.json", 'w') as f:
             json.dump(merged_list, f, indent=2)
