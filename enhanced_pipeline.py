@@ -335,21 +335,47 @@ def get_recent_asins():
     return []
 
 def save_processed_product(product):
-    """Save product to processed history"""
+    """Save COMPLETE product data to processed history (not just minimal data)"""
     try:
         history_file = DATA_DIR / "processed_products.json"
         processed = []
         
         if history_file.exists():
-            with open(history_file, 'r') as f:
-                processed = json.load(f)
+            try:
+                with open(history_file, 'r') as f:
+                    processed = json.load(f)
+                if not isinstance(processed, list):
+                    processed = []
+            except:
+                processed = []
         
-        # Add new product
-        processed.append({
-            'asin': product['asin'],
-            'title': product['title'],
-            'processed_at': product['processed_at']
-        })
+        # Clean and serialize product for JSON (handles Path objects, etc.)
+        clean_product = serialize_for_json(product)
+        
+        # ALWAYS save COMPLETE product data including images, price, etc.
+        full_product_data = {
+            'asin': clean_product.get('asin'),
+            'title': clean_product.get('title'),
+            'price': clean_product.get('price'),
+            'rating': clean_product.get('rating'),
+            'reviews_count': clean_product.get('reviews_count'),
+            'category': clean_product.get('category'),
+            'images': clean_product.get('images', []),
+            'image_url': clean_product.get('image_url'),
+            'bullets': clean_product.get('bullets', []),
+            'affiliate_url': clean_product.get('affiliate_url'),
+            'processed_at': clean_product.get('processed_at'),
+            'website_link': clean_product.get('website_link'),
+        }
+        
+        # Check if product already exists (update) or is new (append)
+        asins = [p.get('asin') for p in processed]
+        existing_idx = asins.index(full_product_data['asin']) if full_product_data['asin'] in asins else -1
+        
+        if existing_idx >= 0:
+            processed[existing_idx] = full_product_data
+        else:
+            processed.append(full_product_data)
         
         # Keep only last 100 processed products
         processed = processed[-100:]
@@ -741,8 +767,21 @@ def update_website_data(new_products):
         product_dict = {p['asin']: p for p in existing_products}
         for p in clean_new_products:
             product_dict[p['asin']] = p
-            
-        merged_list = list(product_dict.values())
+        
+        # CRITICAL: Remove any products without images (they're useless for the website)
+        merged_list = [p for p in product_dict.values() if p.get('images') and len(p.get('images', [])) > 0]
+        
+        # If filtering removed all products, restore from processed_products.json
+        if len(merged_list) == 0 and len(product_dict) > 0:
+            log.error(f"❌ ALL products missing images! Restoring from processed_products.json...")
+            processed_file = DATA_DIR / "processed_products.json"
+            if processed_file.exists():
+                try:
+                    with open(processed_file, 'r') as f:
+                        merged_list = json.load(f)
+                    merged_list = [p for p in merged_list if p.get('images') and len(p.get('images', [])) > 0]
+                    log.info(f"✅ Restored {len(merged_list)} products with images")
+                except: pass
         
         # Safety check
         if len(merged_list) < len(existing_products):
