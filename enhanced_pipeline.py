@@ -807,6 +807,19 @@ def update_website_data(new_products):
         
         merged_list = list(product_dict.values())
         
+        # ALWAYS ensure all products have images and links
+        for p in merged_list:
+            asin = p.get('asin', '')
+            if asin:
+                # Add fallback image if missing
+                if not p.get('image_url'):
+                    p['image_url'] = f"https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN={asin}&MarketPlace=US&ID=AsinImage&WS=1"
+                if not p.get('images'):
+                    p['images'] = [p['image_url']]
+                # Add affiliate link if missing
+                if not p.get('affiliate_url'):
+                    p['affiliate_url'] = f"https://www.amazon.com/dp/{asin}?tag={AFFILIATE_TAG}"
+        
         # Fix missing categories for all products
         no_cat_count = 0
         for p in merged_list:
