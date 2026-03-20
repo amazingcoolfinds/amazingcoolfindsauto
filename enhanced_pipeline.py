@@ -17,6 +17,73 @@ BASE_DIR = Path(__file__).parent
 AMAZING_DATA_DIR = BASE_DIR / "amazing" / "data"
 LOGS_DIR = BASE_DIR / "logs"
 DATA_DIR = BASE_DIR / "data"
+IMAGES_DIR = BASE_DIR / "images"
+
+# ─── CLOUDFLARE IMAGES ───────────────────────────────────────────
+CF_ACCOUNT_ID = os.environ.get("CLOUDFLARE_ACCOUNT_ID", "")
+CF_API_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "")
+
+def upload_to_cloudflare_images(image_path: Path, asin: str, index: int) -> str:
+    """Upload image to Cloudflare Images and return the URL"""
+    if not CF_ACCOUNT_ID or not CF_API_TOKEN:
+        log.warning("⚠️ Cloudflare credentials not configured for image upload")
+        return None
+    
+    try:
+        import httpx
+        with httpx.Client(timeout=60.0) as client:
+            with open(image_path, 'rb') as f:
+                files = {'file': (f.name, f, 'image/jpeg')}
+                response = client.post(
+                    f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/images/v1",
+                    headers={"Authorization": f"Bearer {CF_API_TOKEN}"},
+                    files=files
+                )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if data.get('success'):
+                    image_url = data['result']['variants'][0]
+                    log.info(f"✅ Uploaded image to Cloudflare: {image_url}")
+                    return image_url
+            log.error(f"❌ Cloudflare upload failed: {response.text}")
+            return None
+    except Exception as e:
+        log.error(f"❌ Image upload error: {e}")
+        return None
+
+def download_and_upload_images(product: dict, asin: str) -> list:
+    """Download product images and upload to Cloudflare Images"""
+    uploaded_urls = []
+    image_urls = product.get('images', [])
+    
+    if not image_urls:
+        image_url = product.get('image_url', '')
+        if image_url:
+            image_urls = [image_url]
+    
+    for i, url in enumerate(image_urls[:10]):
+        try:
+            import httpx
+            temp_path = IMAGES_DIR / f"{asin}_img_{i}.jpg"
+            IMAGES_DIR.mkdir(exist_ok=True)
+            
+            with httpx.Client(timeout=30.0) as client:
+                response = client.get(url)
+                if response.status_code == 200:
+                    with open(temp_path, 'wb') as f:
+                        f.write(response.content)
+                    
+                    uploaded_url = upload_to_cloudflare_images(temp_path, asin, i)
+                    if uploaded_url:
+                        uploaded_urls.append(uploaded_url)
+                    
+                    temp_path.unlink(missing_ok=True)
+        except Exception as e:
+            log.warning(f"⚠️ Failed to download/upload image {i}: {e}")
+            continue
+    
+    return uploaded_urls
 
 # Add core and tools to path for easy imports
 sys.path.append(str(BASE_DIR))
@@ -335,7 +402,7 @@ def get_recent_asins():
     return []
 
 def save_processed_product(product):
-    """Save COMPLETE product data to processed history (not just minimal data)"""
+    """Save COMPLETE product data to processed history with uploaded images"""
     try:
         history_file = DATA_DIR / "processed_products.json"
         processed = []
@@ -349,11 +416,8 @@ def save_processed_product(product):
             except:
                 processed = []
         
-        # Clean and serialize product for JSON (handles Path objects, etc.)
         clean_product = serialize_for_json(product)
         
-        # ALWAYS save COMPLETE product data including images, price, script, category, etc.
-        # If category is missing, try to derive from title or use 'Life & Style' as default
         product_category = clean_product.get('category')
         if not product_category or product_category == 'unknown':
             title = clean_product.get('title', '').lower()
@@ -366,8 +430,20 @@ def save_processed_product(product):
             log.info(f"🔄 Derived category for {clean_product.get('asin')}: {product_category}")
         
         asin = clean_product.get('asin', '')
+        
+        # Upload images to Cloudflare if we have original URLs (not already uploaded)
         images = clean_product.get('images', [])
         image_url = clean_product.get('image_url', '')
+        
+        # Check if images are already Cloudflare URLs
+        existing_images = clean_product.get('images', [])
+        if existing_images and existing_images[0] and 'cloudflare' not in str(existing_images[0]):
+            log.info(f"📤 Uploading {len(existing_images)} images to Cloudflare for {asin}...")
+            uploaded_urls = download_and_upload_images(clean_product, asin)
+            if uploaded_urls:
+                images = uploaded_urls
+                image_url = uploaded_urls[0] if uploaded_urls else image_url
+                log.info(f"✅ Uploaded {len(uploaded_urls)} images for {asin}")
         
         if not images and asin:
             image_url = f"https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN={asin}&MarketPlace=US&ID=AsinImage&WS=1"
@@ -391,7 +467,6 @@ def save_processed_product(product):
             'youtube_url': clean_product.get('youtube_url'),
         }
         
-        # Check if product already exists (update) or is new (append)
         asins = [p.get('asin') for p in processed]
         existing_idx = asins.index(full_product_data['asin']) if full_product_data['asin'] in asins else -1
         
