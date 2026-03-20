@@ -76,6 +76,9 @@ jobs:
           TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
           TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
           TIKTOK_TOKEN_BASE64: ${{ secrets.TIKTOK_TOKEN_BASE64 }}
+          # ElevenLabs Fallback
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          ELEVENLABS_VOICE_ID: ${{ secrets.ELEVENLABS_VOICE_ID }}
         run: python enhanced_pipeline.py --run
 
       - name: Commit Updated Data
