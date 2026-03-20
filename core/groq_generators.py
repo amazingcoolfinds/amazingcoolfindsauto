@@ -116,19 +116,64 @@ class GroqVoiceGenerator:
             max_retries=5
         )
         self.model = "canopylabs/orpheus-v1-english"
-        self.voice = "diana" # Changed to Diana voice
+        self.voice = "diana"
+        self.elevenlabs_api_key = os.environ.get("ELEVENLABS_API_KEY", "").strip()
+        self.elevenlabs_voice_id = os.environ.get("ELEVENLABS_VOICE_ID", "").strip()
+        if self.elevenlabs_api_key:
+            log.info("✅ ElevenLabs fallback configured")
+        else:
+            log.warning("⚠️ ElevenLabs API key not found - no fallback available")
+
+    def _generate_elevenlabs(self, text: str, asin: str):
+        """Generate voiceover using ElevenLabs as fallback."""
+        if not self.elevenlabs_api_key or not self.elevenlabs_voice_id:
+            log.error("❌ ElevenLabs credentials not configured")
+            return None
+        
+        assets_dir = Path("assets")
+        assets_dir.mkdir(parents=True, exist_ok=True)
+        output_path = assets_dir / f"{asin}_voice.wav"
+        
+        try:
+            import httpx
+            with httpx.Client(timeout=60.0) as client:
+                response = client.post(
+                    f"https://api.elevenlabs.io/v1/text-to-speech/{self.elevenlabs_voice_id}",
+                    headers={
+                        "xi-api-key": self.elevenlabs_api_key,
+                        "Content-Type": "application/json",
+                        "Accept": "audio/wav"
+                    },
+                    json={
+                        "text": text,
+                        "model_id": "eleven_turbo_v2",
+                        "voice_settings": {
+                            "stability": 0.5,
+                            "similarity_boost": 0.75
+                        }
+                    }
+                )
+                if response.status_code == 200:
+                    with open(output_path, 'wb') as f:
+                        f.write(response.content)
+                    log.info(f"✅ ElevenLabs Voiceover saved to {output_path}")
+                    return output_path
+                else:
+                    log.error(f"❌ ElevenLabs API error: {response.status_code} - {response.text}")
+                    return None
+        except Exception as e:
+            log.error(f"❌ ElevenLabs generation failed: {e}")
+            return None
 
     def generate(self, text: str, asin: str):
         """
-        Generates voiceover audio using Groq (Diana) only.
-        Fails fast if Groq API is not available.
+        Generates voiceover audio. Tries Groq first, falls back to ElevenLabs on quota/rate limit.
         """
-        # Only use Groq Neural Voice (Diana)
         assets_dir = Path("assets")
         assets_dir.mkdir(parents=True, exist_ok=True)
         neural_path = assets_dir / f"{asin}_voice.wav"
         
-        for attempt in range(3):  # Increased from 2 to 3 attempts
+        for attempt in range(3):
             try:
                 log.info(f"🗣️  Generating Groq Neural Voiceover (Diana) for {asin} (Attempt {attempt+1})...")
                 response = self.client.audio.speech.create(
@@ -136,7 +181,7 @@ class GroqVoiceGenerator:
                     voice=self.voice,
                     response_format="wav",
                     input=text,
-                    timeout=60.0  # Add timeout
+                    timeout=60.0
                 )
                 with open(neural_path, 'wb') as f:
                     if hasattr(response, 'iter_bytes'):
@@ -149,21 +194,34 @@ class GroqVoiceGenerator:
             except RateLimitError as e:
                 log.error(f"🛑 Groq Audio Rate Limit hit: {e}")
                 if "quota" in str(e).lower() or "insufficient" in str(e).lower():
-                   raise GroqQuotaExceeded("Groq API Limit Reached - Pausing to save quota.")
+                    log.info("🔄 Attempting ElevenLabs fallback...")
+                    elevenlabs_result = self._generate_elevenlabs(text, asin)
+                    if elevenlabs_result:
+                        return elevenlabs_result
+                    raise GroqQuotaExceeded("Groq API Limit Reached - Pausing to save quota.")
                 time.sleep(10)
             except Exception as e:
                 error_msg = str(e).lower()
                 if "connection" in error_msg or "timeout" in error_msg or "network" in error_msg:
-                    wait_time = 2 ** attempt  # Exponential backoff
+                    wait_time = 2 ** attempt
                     log.warning(f"🌐 Voice API connection error on attempt {attempt+1}/3: {e}. Waiting {wait_time}s...")
                     time.sleep(wait_time)
                 else:
                     log.error(f"❌ Groq Voice API failed: {e}")
                     if "insufficient" in error_msg or "quota" in error_msg:
+                        log.info("🔄 Attempting ElevenLabs fallback...")
+                        elevenlabs_result = self._generate_elevenlabs(text, asin)
+                        if elevenlabs_result:
+                            return elevenlabs_result
                         raise GroqQuotaExceeded("Quota exhausted")
                     time.sleep(2)
         
-        log.warning(f"⚠️ Failed to generate voice for {asin} after retries.")
+        log.warning(f"⚠️ Groq failed, trying ElevenLabs fallback for {asin}...")
+        elevenlabs_result = self._generate_elevenlabs(text, asin)
+        if elevenlabs_result:
+            return elevenlabs_result
+        
+        log.warning(f"⚠️ Failed to generate voice for {asin} after all attempts.")
         return None
 
 class GroqProductSelector:
