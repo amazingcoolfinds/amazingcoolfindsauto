@@ -663,13 +663,10 @@
             try {
                 let cloudArticles = [];
                 try {
-                let cloudArticles = [];
-                try {
                     const cloudRes = await fetch(`${WORKER_URL}/api/articles`);
                     if (cloudRes.ok) cloudArticles = await cloudRes.json();
                 } catch(e) {}
 
-                // 2. Fetch Local Articles
                 let localArticles = [];
                 try {
                     const localRes = await fetch(`data/articles.json?v=${new Date().getTime()}`);

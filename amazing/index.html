@@ -1239,21 +1239,6 @@
             }
         }
 
-        function filterProducts(category) {
-            activeFilter = category;
-            
-            // Update active button state
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                if (btn.innerText.includes(category) || (category === 'all' && btn.innerText === 'All')) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-
-            renderProducts();
-        }
-
         async function loadData() {
             const isLocal = window.location.protocol === 'file:';
             
@@ -1267,12 +1252,29 @@
                 if (rRes.ok) {
                     reviewsData = await rRes.json();
                     renderReviews(); // Now only renders reviews
-                }
-            } catch (e) {
-                console.warn("Reviews data load warning/error:", e);
-                if (isLocal && (e instanceof TypeError || e.message.includes('CORS'))) {
-                    showLocalNotice();
-                }
+            }
+
+            await Promise.allSettled([productsPromise, articlesPromise]);
+            initSearch();
+        }
+
+        function renderProducts() {
+            // Products shown with images when ready
+            // For now, hide the section
+            const grid = document.getElementById('productGrid');
+            if (!grid) return;
+            grid.style.display = 'none';
+            const section = grid.closest('.products-section');
+            if (section) {
+                section.innerHTML = `
+                    <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
+                        <h2 style="color: var(--text); margin-bottom: 20px;">🔥 New Products Coming Soon</h2>
+                        <p style="font-size: 1.1rem;">We're curating amazing products with photos and videos.</p>
+                        <p style="font-size: 0.9rem; margin-top: 10px;">Check back soon!</p>
+                    </div>
+                `;
+            }
+        }
             }
 
             await Promise.allSettled([productsPromise, articlesPromise]);
@@ -1333,92 +1335,6 @@
                 const dateB = new Date(b.processed_at || 0);
                 return dateB - dateA;
             });
-
-            // Fixed at 8 items (2 rows of 4 on desktop)
-            const displayList = filtered.slice(0, 8);
-
-            if (displayList.length === 0) {
-                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">New trending finds arriving soon...</p>';
-                return;
-            }
-            
-            grid.innerHTML = displayList.map(p => {
-                const images = (p.images && p.images.length > 0 && p.images[0]) ? p.images : null;
-                const discount = p.discount || 'LIMITED DEAL';
-                const displayPrice = (p.price && p.price !== 'undefined') ? p.price : 'VIEW DEAL';
-                const affiliateUrl = p.affiliate_url || `https://www.amazon.com/dp/${p.asin}?tag=amazingcool-20`;
-                
-                const tags = [
-                    '<span class="trust-tag tag--hot">🔥 HOT TODAY</span>',
-                    '<span class="trust-tag tag--trending">📱 TRENDING</span>',
-                    '<span class="trust-tag tag--stock">📦 READY TO SHIP</span>'
-                ];
-                const tag = p.selection_score > 90 ? tags[0] : (p.rating > 4.7 ? tags[1] : tags[2]);
-                const isNewArrival = isNew(p);
-
-                return `
-                <div class="card ${isNewArrival ? 'is-new' : ''}" id="${p.asin}">
-                    ${isNewArrival ? '<div class="tag--new-arrival">NEW ARRIVAL</div>' : ''}
-                    <div class="card__badge">${discount}</div>
-                    ${p.youtube_uploaded ? `
-                        <div class="card__badge" style="top: 48px; background: rgba(255, 0, 0, 0.9); border-left-color: #ff0000; cursor: pointer;" onclick="window.open('${p.youtube_url}', '_blank')">
-                            📺 WATCH REVIEW
-                        </div>
-                    ` : ''}
-                    ${tag}
-                    <div class="card__img-wrap">
-                        <div class="card__slideshow">
-                            ${images ? images.map((img, idx) => `
-                                <img src="${img}" 
-                                     class="card__img ${idx === 0 ? 'active' : ''}" 
-                                     alt="${p.title || 'Product'}" 
-                                     onerror="this.style.display='none'">
-                            `).join('') : `<div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); height: 100%; display: flex; align-items: center; justify-content: center; color: #666; font-size: 14px; padding: 20px; text-align: center;">${p.title ? p.title.substring(0, 40) + '...' : 'Product'}</div>`}
-                        </div>
-                    </div>
-                    <div class="card__body">
-                        <h3 class="card__title">${p.title || 'Product'}</h3>
-                        <div class="card__footer">
-                            <span class="card__price">${displayPrice}</span>
-                            <a href="${affiliateUrl}" target="_blank" class="card__cta">Shop Now</a>
-                        </div>
-                    </div>
-                </div>
-            `}).join('');
-            
-            // Initialize hover carousels
-            initCarousels();
-        }
-
-        function initCarousels() {
-            document.querySelectorAll('.card').forEach(card => {
-                const imgs = card.querySelectorAll('.card__img');
-                if (imgs.length <= 1) return;
-
-                let current = 0;
-                let interval = null;
-
-                card.addEventListener('mouseenter', () => {
-                    interval = setInterval(() => {
-                        imgs[current].classList.remove('active');
-                        current = (current + 1) % imgs.length;
-                        imgs[current].classList.add('active');
-                    }, 1200); // 1.2s per image
-                });
-
-                card.addEventListener('mouseleave', () => {
-                    clearInterval(interval);
-                    // Reset to first image
-                    imgs.forEach(img => img.classList.remove('active'));
-                    current = 0;
-                    imgs[0].classList.add('active');
-                });
-            });
-        }
-
-        function renderReviews() {
-            // This would render reviews if we had a reviews UI section
-            console.log("Reviews data ready:", reviewsData.length);
         }
 
         async function loadArticles() {

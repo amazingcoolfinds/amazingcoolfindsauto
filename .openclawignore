@@ -1,0 +1,13 @@
+output_videos/
+temp/
+assets/
+antigravity_skills/
+logs/
+.git/
+node_modules/
+__pycache__/
+*.mp4
+*.jpg
+*.png
+*.wav
+*.mp3
