@@ -117,17 +117,16 @@ class GroqVoiceGenerator:
         )
         self.model = "canopylabs/orpheus-v1-english"
         self.voice = "diana"
-        self.elevenlabs_api_key = os.environ.get("ELEVENLABS_API_KEY", "").strip()
-        self.elevenlabs_voice_id = os.environ.get("ELEVENLABS_VOICE_ID", "").strip()
-        if self.elevenlabs_api_key:
-            log.info("✅ ElevenLabs fallback configured")
+        self.openai_api_key = os.environ.get("OPENAI_API_KEY", "").strip()
+        if self.openai_api_key:
+            log.info("✅ OpenAI TTS fallback configured")
         else:
-            log.warning("⚠️ ElevenLabs API key not found - no fallback available")
+            log.warning("⚠️ OpenAI API key not found - no fallback available")
 
-    def _generate_elevenlabs(self, text: str, asin: str):
-        """Generate voiceover using ElevenLabs as fallback."""
-        if not self.elevenlabs_api_key or not self.elevenlabs_voice_id:
-            log.error("❌ ElevenLabs credentials not configured")
+    def _generate_openai(self, text: str, asin: str):
+        """Generate voiceover using OpenAI TTS as fallback."""
+        if not self.openai_api_key:
+            log.error("❌ OpenAI credentials not configured")
             return None
         
         assets_dir = Path("assets")
@@ -138,32 +137,29 @@ class GroqVoiceGenerator:
             import httpx
             with httpx.Client(timeout=60.0) as client:
                 response = client.post(
-                    f"https://api.elevenlabs.io/v1/text-to-speech/{self.elevenlabs_voice_id}",
+                    "https://api.openai.com/v1/audio/speech",
                     headers={
-                        "xi-api-key": self.elevenlabs_api_key,
-                        "Content-Type": "application/json",
-                        "Accept": "audio/wav"
+                        "Authorization": f"Bearer {self.openai_api_key}",
+                        "Content-Type": "application/json"
                     },
                     json={
-                        "text": text,
-                        "model_id": "eleven_turbo_v2",
-                        "voice_settings": {
-                            "stability": 0.5,
-                            "similarity_boost": 0.75
-                        }
+                        "model": "tts-1",
+                        "input": text,
+                        "voice": "alloy",
+                        "response_format": "wav"
                     }
                 )
                 if response.status_code == 200:
                     with open(output_path, 'wb') as f:
                         f.write(response.content)
-                    log.info(f"✅ ElevenLabs Voiceover saved to {output_path}")
-                    log.info(f"🔄 Voice fallback: ElevenLabs used for {asin}")
+                    log.info(f"✅ OpenAI TTS Voiceover saved to {output_path}")
+                    log.info(f"🔄 Voice fallback: OpenAI used for {asin}")
                     return output_path
                 else:
-                    log.error(f"❌ ElevenLabs API error: {response.status_code} - {response.text}")
+                    log.error(f"❌ OpenAI API error: {response.status_code} - {response.text[:200]}")
                     return None
         except Exception as e:
-            log.error(f"❌ ElevenLabs generation failed: {e}")
+            log.error(f"❌ OpenAI TTS generation failed: {e}")
             return None
 
     def generate(self, text: str, asin: str):
@@ -195,10 +191,10 @@ class GroqVoiceGenerator:
             except RateLimitError as e:
                 log.error(f"🛑 Groq Audio Rate Limit hit: {e}")
                 if "quota" in str(e).lower() or "insufficient" in str(e).lower():
-                    log.info("🔄 Attempting ElevenLabs fallback...")
-                    elevenlabs_result = self._generate_elevenlabs(text, asin)
-                    if elevenlabs_result:
-                        return elevenlabs_result
+                    log.info("🔄 Attempting OpenAI TTS fallback...")
+                    openai_result = self._generate_openai(text, asin)
+                    if openai_result:
+                        return openai_result
                     raise GroqQuotaExceeded("Groq API Limit Reached - Pausing to save quota.")
                 time.sleep(10)
             except Exception as e:
@@ -210,17 +206,17 @@ class GroqVoiceGenerator:
                 else:
                     log.error(f"❌ Groq Voice API failed: {e}")
                     if "insufficient" in error_msg or "quota" in error_msg:
-                        log.info("🔄 Attempting ElevenLabs fallback...")
-                        elevenlabs_result = self._generate_elevenlabs(text, asin)
-                        if elevenlabs_result:
-                            return elevenlabs_result
+                        log.info("🔄 Attempting OpenAI TTS fallback...")
+                        openai_result = self._generate_openai(text, asin)
+                        if openai_result:
+                            return openai_result
                         raise GroqQuotaExceeded("Quota exhausted")
                     time.sleep(2)
         
-        log.warning(f"⚠️ Groq failed, trying ElevenLabs fallback for {asin}...")
-        elevenlabs_result = self._generate_elevenlabs(text, asin)
-        if elevenlabs_result:
-            return elevenlabs_result
+        log.warning(f"⚠️ Groq failed, trying OpenAI TTS fallback for {asin}...")
+        openai_result = self._generate_openai(text, asin)
+        if openai_result:
+            return openai_result
         
         log.warning(f"⚠️ Failed to generate voice for {asin} after all attempts.")
         return None
