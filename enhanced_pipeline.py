@@ -767,22 +767,25 @@ def update_website_data(new_products):
         # Serialize new products to ensure JSON compatibility
         clean_new_products = [serialize_for_json(p) for p in new_products] if new_products else []
         
-        # Filter ONLY new products that don't have images (existing products keep their state)
-        clean_new_products = [p for p in clean_new_products if p.get('images') and len(p.get('images', [])) > 0]
+        # Filter NEW products without images (can't create video without images)
+        valid_new_products = [p for p in clean_new_products if p.get('images') and len(p.get('images', [])) > 0]
+        invalid_new_count = len(clean_new_products) - len(valid_new_products)
+        if invalid_new_count > 0:
+            log.warning(f"⚠️ {invalid_new_count} new products skipped - no images (can't create video)")
         
-        # Merge: existing products stay, new products add or update
+        # Merge ALL products for website (existing + new, with or without images)
         product_dict = {p['asin']: p for p in existing_products}
-        for p in clean_new_products:
+        for p in valid_new_products:
             product_dict[p['asin']] = p
         
         merged_list = list(product_dict.values())
         
-        log.info(f"🔄 Merged: {len(existing_products)} existing + {len(clean_new_products)} new = {len(merged_list)} total")
+        log.info(f"🔄 Website: {len(existing_products)} existing + {len(valid_new_products)} new valid = {len(merged_list)} total")
         
-        # If existing products are very few and we have new valid products, replace with new
-        if len(existing_products) < 10 and len(clean_new_products) > 0:
-            log.info(f"🔄 Replacing {len(existing_products)} old products with {len(clean_new_products)} new valid products")
-            merged_list = clean_new_products
+        # If existing products are very few and we have new valid products, use only new
+        if len(existing_products) < 10 and len(valid_new_products) > 0:
+            log.info(f"🔄 Replacing {len(existing_products)} old products with {len(valid_new_products)} new valid products")
+            merged_list = valid_new_products
             
         # Save to both locations
         with open(DATA_DIR / "products.json", 'w') as f:
