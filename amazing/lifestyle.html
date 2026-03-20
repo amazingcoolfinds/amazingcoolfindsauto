@@ -543,15 +543,14 @@
 
         async function loadProducts() {
             try {
-                // Fetch local products FIRST (priority)
                 let localProducts = [];
+                let cloudProducts = [];
+                
                 try {
                     const localRes = await fetch(`data/products.json?v=${new Date().getTime()}`);
                     if (localRes.ok) localProducts = await localRes.json();
                 } catch(e) {}
 
-                // Fetch autonomous products from Worker
-                let cloudProducts = [];
                 try {
                     const response = await fetch(`${WORKER_URL}/api/products`);
                     if (response.ok) cloudProducts = await response.json();
@@ -564,14 +563,12 @@
                 
                 const allProducts = Array.from(distinctMap.values());
                 
-                // SORT: Newest products first (by processed_at)
                 allProducts.sort((a, b) => {
                     const dateA = a.processed_at ? new Date(a.processed_at) : new Date(0);
                     const dateB = b.processed_at ? new Date(b.processed_at) : new Date(0);
-                    return dateB - dateA; // Descending (newest first)
+                    return dateB - dateA;
                 });
                 
-                // Filter only Lifestyle Items
                 const filtered = allProducts.filter(p => {
                     const mainCat = categoryMap[p.category] || 'Other';
                     return mainCat === PAGE_CATEGORY;
@@ -579,13 +576,13 @@
 
                 renderProducts(filtered);
             } catch (e) {
-                console.error("Error:", e);
-                document.getElementById('productGrid').innerHTML = '<p style="text-align: center; grid-column: 1/-1;">New lifestyle trending finds arriving soon...</p>';
+                console.error("Product load error:", e);
             }
         }
 
         function renderProducts(products) {
             const grid = document.getElementById('productGrid');
+            if (!grid) return;
             grid.style.display = 'none';
             grid.outerHTML = `
                 <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
@@ -593,7 +590,6 @@
                     <p style="font-size: 1.1rem;">We're curating amazing products with photos and videos.</p>
                 </div>
             `;
-            return;
         }
 
         async function loadArticles() {
