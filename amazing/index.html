@@ -1213,13 +1213,7 @@
                 // LOCAL PRODUCTS FIRST, then cloud products
                 let distinctMap = new Map();
                 [...localProducts, ...cloudProducts].forEach(p => {
-                    // Strict Image Check
-                    const hasImg = p.image_url && !p.image_url.includes('placehold.co') && !p.image_url.includes('pollinations.ai');
-                    const hasGallery = p.images && p.images.length > 0 && !p.images[0].includes('placehold.co');
-                    
-                    if (hasImg || hasGallery) {
-                        distinctMap.set(p.asin, p);
-                    }
+                    distinctMap.set(p.asin, p);
                 });
                 
                 allProducts = Array.from(distinctMap.values());
@@ -1336,7 +1330,7 @@
             }
             
             grid.innerHTML = displayList.map(p => {
-                const images = p.images && p.images.length > 0 ? p.images : [p.image_url];
+                const images = (p.images && p.images.length > 0) ? p.images : (p.image_url ? [p.image_url] : ['https://placehold.co/400x400/1a1a2e/white?text=No+Image']);
                 const discount = p.discount || 'LIMITED DEAL';
                 const displayPrice = p.price === 'Check Price' ? 'VIEW DEAL' : p.price;
                 
@@ -1590,15 +1584,17 @@
                 ).slice(0, 5);
 
                 if (matches.length > 0) {
-                    results.innerHTML = matches.map(p => `
+                    results.innerHTML = matches.map(p => {
+                        const img = p.image_url || 'https://placehold.co/100x100/1a1a2e/white?text=📦';
+                        return `
                         <div class="search-item" onclick="window.location.hash='${p.asin}'; handleAnchorNavigation(); document.getElementById('searchResults').classList.remove('active');">
-                            <img src="${p.image_url}" alt="">
+                            <img src="${img}" alt="" onerror="this.src='https://placehold.co/100x100/1a1a2e/white?text=📦'">
                             <div class="search-item__info">
                                 <div class="search-item__title">${p.title}</div>
                                 <div class="search-item__price">${p.price}</div>
                             </div>
                         </div>
-                    `).join('');
+                    `}).join('');
                     results.classList.add('active');
                 } else {
                     results.classList.remove('active');

@@ -619,15 +619,9 @@
                 // Combine with local first (so local overrides or appears first if desired, 
                 // but usually we want latest cloud. However, user asked for local priority in index.html, 
                 // so we stick to that: local + cloud)
-                // Combine with local first, ensuring valid images and no duplicates
                 let distinctMap = new Map();
                 [...localProducts, ...cloudProducts].forEach(p => {
-                    const hasImg = p.image_url && !p.image_url.includes('placehold.co') && !p.image_url.includes('pollinations.ai');
-                    const hasGallery = p.images && p.images.length > 0 && !p.images[0].includes('placehold.co');
-                    
-                    if (hasImg || hasGallery) {
-                        distinctMap.set(p.asin, p);
-                    }
+                    distinctMap.set(p.asin, p);
                 });
                 
                 const allProducts = Array.from(distinctMap.values());
@@ -661,7 +655,7 @@
             }
 
             grid.innerHTML = products.map(p => {
-                const images = p.images && p.images.length > 0 ? p.images : [p.image_url];
+                const images = (p.images && p.images.length > 0) ? p.images : (p.image_url ? [p.image_url] : ['https://placehold.co/400x400/1a1a2e/white?text=No+Image']);
                 const displayPrice = p.price === 'Check Price' ? 'VIEW DEAL' : p.price;
                 const discount = p.discount || 'LIMITED DEAL';
                 
