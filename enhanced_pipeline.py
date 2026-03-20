@@ -365,20 +365,27 @@ def save_processed_product(product):
                 product_category = 'Life & Style'
             log.info(f"🔄 Derived category for {clean_product.get('asin')}: {product_category}")
         
+        asin = clean_product.get('asin', '')
+        images = clean_product.get('images', [])
+        image_url = clean_product.get('image_url', '')
+        
+        if not images and asin:
+            image_url = f"https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN={asin}&MarketPlace=US&ID=AsinImage&WS=1"
+            images = [image_url]
+        
         full_product_data = {
-            'asin': clean_product.get('asin'),
+            'asin': asin,
             'title': clean_product.get('title'),
             'price': clean_product.get('price'),
             'rating': clean_product.get('rating'),
             'reviews_count': clean_product.get('reviews_count'),
             'category': product_category,
-            'images': clean_product.get('images', []),
-            'image_url': clean_product.get('image_url'),
+            'images': images,
+            'image_url': image_url,
             'bullets': clean_product.get('bullets', []),
             'affiliate_url': clean_product.get('affiliate_url'),
             'processed_at': clean_product.get('processed_at'),
             'website_link': clean_product.get('website_link'),
-            # Script data for Maintenance Agent analysis
             'script': clean_product.get('script'),
             'youtube_video_id': clean_product.get('youtube_video_id'),
             'youtube_url': clean_product.get('youtube_url'),
