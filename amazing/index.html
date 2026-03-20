@@ -1290,8 +1290,21 @@
 
         function renderProducts() {
             const grid = document.getElementById('productGrid');
-            grid.innerHTML = '';
-
+            // Hide product grid - products coming soon with images
+            grid.style.display = 'none';
+            const section = grid.closest('.products-section');
+            if (section) {
+                section.innerHTML = `
+                    <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
+                        <h2 style="color: var(--text); margin-bottom: 20px;">🔥 New Products Coming Soon</h2>
+                        <p style="font-size: 1.1rem;">We're curating amazing products with photos and videos.</p>
+                        <p style="font-size: 0.9rem; margin-top: 10px;">Check back soon!</p>
+                    </div>
+                `;
+            }
+            return;
+            
+            // Old code preserved for when products are ready
             const filtered = [...allProducts];
 
             // Determine "New" threshold (e.g., 3 days)
@@ -1307,7 +1320,7 @@
             filtered.sort((a, b) => {
                 const aNew = isNew(a);
                 const bNew = isNew(b);
-                
+
                 if (aNew && !bNew) return -1;
                 if (!aNew && bNew) return 1;
 
