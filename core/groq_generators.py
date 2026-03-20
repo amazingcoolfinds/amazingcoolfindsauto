@@ -157,6 +157,7 @@ class GroqVoiceGenerator:
                     with open(output_path, 'wb') as f:
                         f.write(response.content)
                     log.info(f"✅ ElevenLabs Voiceover saved to {output_path}")
+                    log.info(f"🔄 Voice fallback: ElevenLabs used for {asin}")
                     return output_path
                 else:
                     log.error(f"❌ ElevenLabs API error: {response.status_code} - {response.text}")
