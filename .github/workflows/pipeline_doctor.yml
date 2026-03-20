@@ -3,7 +3,7 @@ name: Pipeline Maintenance Agent
 on:
   workflow_run:
     workflows: ["Daily Product Pipeline"]
-    types: [completed]  # Triggers after EVERY run (success AND failure)
+    types: [completed]
   workflow_dispatch:
     inputs:
       mode:
@@ -15,71 +15,49 @@ on:
         required: false
         default: 'false'
 
+# Prevent concurrent runs
+concurrency:
+  group: maintenance-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
-  contents: write   # Needed to commit auto-fixes
-  issues: write     # Needed to create report issues
+  contents: write
+  issues: write
 
 jobs:
   maintenance:
     runs-on: ubuntu-latest
-
+    timeout-minutes: 30
+    
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          cache: 'pip'
 
       - name: Install Agent Dependencies
         run: |
-          pip install --no-cache-dir \
-            requests \
-            python-dotenv \
-            google-generativeai \
-            google-genai \
-            groq \
-            pyyaml
+          pip install --no-cache-dir requests python-dotenv google-generativeai google-genai groq pyyaml
 
       - name: Determine Run Context
         id: context
         run: |
-          # For workflow_run triggers, pass the triggering run's data
           if [ "${{ github.event_name }}" == "workflow_run" ]; then
             echo "RUN_ID=${{ github.event.workflow_run.id }}" >> $GITHUB_OUTPUT
             echo "CONCLUSION=${{ github.event.workflow_run.conclusion }}" >> $GITHUB_OUTPUT
             echo "MODE=full" >> $GITHUB_OUTPUT
           else
-            # Manual dispatch — use most recent run
             echo "RUN_ID=" >> $GITHUB_OUTPUT
             echo "CONCLUSION=" >> $GITHUB_OUTPUT
             echo "MODE=${{ github.event.inputs.mode || 'full' }}" >> $GITHUB_OUTPUT
           fi
-
-      - name: Determine Daily Run Number
-        id: run_number
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Count how many pipeline runs happened today
-          TODAY=$(date -u +%Y-%m-%d)
-          COUNT=$(curl -s \
-            -H "Authorization: token $GITHUB_TOKEN" \
-            "https://api.github.com/repos/${{ github.repository }}/actions/runs?per_page=20" \
-            | python3 -c "
-          import sys, json
-          from datetime import datetime, timezone
-          runs = json.load(sys.stdin).get('workflow_runs', [])
-          today = '$(date -u +%Y-%m-%d)'
-          daily = [r for r in runs if r.get('name') == 'Daily Product Pipeline' and r.get('created_at', '')[:10] == today]
-          print(len(daily))
-          ")
-          echo "RUN_NUMBER=$COUNT" >> $GITHUB_OUTPUT
-          echo "🗓️ Run #$COUNT for today detected"
 
       - name: Run Maintenance Agent
         env:
@@ -88,11 +66,6 @@ jobs:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
           WEBSITE_URL: ${{ secrets.WEBSITE_URL }}
-          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
-          REDDIT_SECRET: ${{ secrets.REDDIT_SECRET }}
-          REDDIT_USERNAME: ${{ secrets.REDDIT_USERNAME }}
-          REDDIT_PASSWORD: ${{ secrets.REDDIT_PASSWORD }}
-          REDDIT_SUBREDDIT: ${{ secrets.REDDIT_SUBREDDIT }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           DRY_FLAG=""
@@ -104,10 +77,10 @@ jobs:
             --mode ${{ steps.context.outputs.MODE }} \
             ${{ steps.context.outputs.RUN_ID && format('--run-id {0}', steps.context.outputs.RUN_ID) || '' }} \
             ${{ steps.context.outputs.CONCLUSION && format('--conclusion {0}', steps.context.outputs.CONCLUSION) || '' }} \
-            --run-number ${{ steps.run_number.outputs.RUN_NUMBER }} \
+            --run-number 0 \
             $DRY_FLAG
 
-      - name: Commit Auto-Fixes (if any)
+      - name: Commit Auto-Fixes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "🤖 Maintenance Agent: auto-fixes applied [skip ci]"
@@ -119,3 +92,4 @@ jobs:
             core/gemini_generators.py
             core/advanced_scraper.py
             data/pipeline_health.json
+          skip_dirty_check: true
