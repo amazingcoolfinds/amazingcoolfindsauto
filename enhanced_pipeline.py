@@ -683,9 +683,17 @@ def run_enhanced_pipeline():
         
     except CriticalPipelineError as e:
         log.error(f"❌ Pipeline halted due to critical AI failure: {e}")
+        # CRITICAL: Save any successful products even if pipeline fails
+        if processed_successfully:
+            log.warning(f"💾 Saving {len(processed_successfully)} successful products before exit...")
+            update_website_data(processed_successfully)
         return False
     except Exception as e:
         log.error(f"❌ Enhanced pipeline failed: {e}")
+        # CRITICAL: Save any successful products even if pipeline fails
+        if processed_successfully:
+            log.warning(f"💾 Saving {len(processed_successfully)} successful products before exit...")
+            update_website_data(processed_successfully)
         return False
 
 # Keep existing functions
