@@ -352,14 +352,26 @@ def save_processed_product(product):
         # Clean and serialize product for JSON (handles Path objects, etc.)
         clean_product = serialize_for_json(product)
         
-        # ALWAYS save COMPLETE product data including images, price, script, etc.
+        # ALWAYS save COMPLETE product data including images, price, script, category, etc.
+        # If category is missing, try to derive from title or use 'Life & Style' as default
+        product_category = clean_product.get('category')
+        if not product_category or product_category == 'unknown':
+            title = clean_product.get('title', '').lower()
+            if any(w in title for w in ['laptop', 'phone', 'tablet', 'headphone', 'camera', 'gaming', 'monitor', 'keyboard', 'mouse', 'smart', 'tech', 'electronic']):
+                product_category = 'Tech'
+            elif any(w in title for w in ['dash', 'car', 'auto', 'vehicle']):
+                product_category = 'Home & Auto'
+            else:
+                product_category = 'Life & Style'
+            log.info(f"🔄 Derived category for {clean_product.get('asin')}: {product_category}")
+        
         full_product_data = {
             'asin': clean_product.get('asin'),
             'title': clean_product.get('title'),
             'price': clean_product.get('price'),
             'rating': clean_product.get('rating'),
             'reviews_count': clean_product.get('reviews_count'),
-            'category': clean_product.get('category'),
+            'category': product_category,
             'images': clean_product.get('images', []),
             'image_url': clean_product.get('image_url'),
             'bullets': clean_product.get('bullets', []),
@@ -787,6 +799,22 @@ def update_website_data(new_products):
             product_dict[p['asin']] = p
         
         merged_list = list(product_dict.values())
+        
+        # Fix missing categories for all products
+        no_cat_count = 0
+        for p in merged_list:
+            if not p.get('category') or p.get('category') == 'unknown':
+                title = p.get('title', '').lower()
+                if any(w in title for w in ['laptop', 'phone', 'tablet', 'headphone', 'camera', 'gaming', 'monitor', 'keyboard', 'mouse', 'smart', 'tech', 'electronic']):
+                    p['category'] = 'Tech'
+                elif any(w in title for w in ['dash', 'car', 'auto', 'vehicle']):
+                    p['category'] = 'Home & Auto'
+                else:
+                    p['category'] = 'Life & Style'
+                no_cat_count += 1
+        
+        if no_cat_count > 0:
+            log.warning(f"🔄 Fixed {no_cat_count} products with missing category")
         
         log.info(f"🔄 Website: {len(existing_products)} existing + {len(valid_new_products)} new valid = {len(merged_list)} total")
         
