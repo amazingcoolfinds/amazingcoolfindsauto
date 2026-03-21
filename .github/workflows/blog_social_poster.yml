@@ -35,7 +35,7 @@ jobs:
           cache: 'pip'
           
       - name: Install dependencies
-        run: pip install --no-cache-dir requests
+        run: pip install requests
         
       - name: Post blog articles to social media
         run: python tools/blog_social_poster.py
