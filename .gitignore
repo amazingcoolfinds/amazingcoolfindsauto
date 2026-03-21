@@ -29,8 +29,13 @@ google_credentials/
 config/google_credentials/
 
 # Product Data (should not be committed)
-data/
-amazing/data/
+data/products.json
+data/processed_products.json
+amazing/data/products.json
 processed_products.json
-*.json
-!package.json
+
+# Agent memory files (MUST be committed for Sentinel)
+!data/pipeline_health.json
+!data/sentinel_memory.json
+!data/improvement_queue.json
+!data/telegram_question.txt
