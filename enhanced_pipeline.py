@@ -462,17 +462,6 @@ def run_enhanced_pipeline():
             tt_up = TikTokUploader()
         except: tt_up = None
         
-        # Upload-Post (multi-platform uploader)
-        uploadpost_up = None
-        uploadpost_key = os.getenv("UPLOADPOST_API_KEY")
-        if uploadpost_key:
-            try:
-                from uploadpost_uploader import UploadPostUploader
-                uploadpost_up = UploadPostUploader(uploadpost_key)
-                log.info("🚀 Upload-Post multi-platform uploader activated!")
-            except Exception as e:
-                log.warning(f"⚠️ Upload-Post activation failed: {e}")
-        
         try:
             from groq_generators import GroqVoiceGenerator
             voice_gen = GroqVoiceGenerator(os.getenv("GROQ_API_KEY"))
@@ -594,33 +583,6 @@ def run_enhanced_pipeline():
                             threading.Thread(target=update_website_parallel, args=(product,), daemon=True).start()
                     except Exception as e:
                         log.warning(f"⚠️ YouTube upload failed: {e}")
-
-                # 5.1b Upload-Post (Multi-platform)
-                if uploadpost_up:
-                    log.info("🚀 Uploading to multiple platforms via Upload-Post...")
-                    try:
-                        desc = f"{script['narration']}\n\n🔥 Check it out: {product['website_link']['link']}\n\n" + " ".join(script.get('hashtags', []))
-                        platforms = ["instagram", "facebook", "pinterest"]
-                        result = uploadpost_up.upload_from_url(
-                            video_url=video_path,
-                            title=script['title'],
-                            description=desc,
-                            platforms=platforms,
-                            affiliate_link=product['affiliate_url']
-                        )
-                        if result and result.get('success'):
-                            results = result.get('results', {})
-                            for platform, data in results.items():
-                                if data.get('success'):
-                                    log.info(f"✅ Upload-Post: {platform} - {data.get('url', 'OK')}")
-                                    if platform == 'youtube':
-                                        product['youtube_uploaded'] = True
-                                        product['youtube_url'] = data.get('url')
-                            log.info(f"🚀 Upload-Post completed: {len([r for r in results.values() if r.get('success')])}/{len(platforms)} platforms")
-                        else:
-                            log.warning(f"⚠️ Upload-Post failed: {result}")
-                    except Exception as e:
-                        log.warning(f"⚠️ Upload-Post error: {e}")
 
                 # 5.2 Meta (Facebook & Instagram)
                 if meta_up:

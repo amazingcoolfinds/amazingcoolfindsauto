@@ -71,7 +71,6 @@ jobs:
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          UPLOADPOST_API_KEY: ${{ secrets.UPLOADPOST_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           AMAZON_ASSOCIATE_TAG: ${{ secrets.AMAZON_ASSOCIATE_TAG }}
           MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
@@ -89,10 +88,3 @@ jobs:
           TIKTOK_TOKEN_BASE64: ${{ secrets.TIKTOK_TOKEN_BASE64 }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: python enhanced_pipeline.py --run
-
-      - name: Commit Updated Data
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "🤖 Auto-update products.json [skip ci]"
-          file_pattern: 'data/*.json amazing/data/*.json'
-          skip_dirty_check: true

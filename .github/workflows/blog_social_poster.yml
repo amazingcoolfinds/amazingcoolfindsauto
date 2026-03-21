@@ -15,7 +15,6 @@ on:
   schedule:
     - cron: '0 8,20 * * *' # 8 AM and 8 PM daily
 
-# Prevent concurrent runs
 concurrency:
   group: blog-poster
   cancel-in-progress: true
@@ -39,6 +38,4 @@ jobs:
         run: pip install --no-cache-dir requests
         
       - name: Post blog articles to social media
-        env:
-          UPLOADPOST_API_KEY: ${{ secrets.UPLOADPOST_API_KEY }}
         run: python tools/blog_social_poster.py
