@@ -4,22 +4,19 @@
  */
 
 const TELEGRAM_API = 'https://api.telegram.org';
+const GH_API = 'https://api.github.com/repos/amazingcoolfinds/amazingcoolfindsauto';
 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     
-    // Health check
     if (url.pathname === '/health') {
       return new Response(JSON.stringify({ 
         status: 'ok',
-        service: 'Telegram-Sentinel Bridge',
-        github_connected: !!env.GITHUB_TOKEN,
-        telegram_connected: !!env.TELEGRAM_BOT_TOKEN
+        service: 'Telegram-Sentinel Bridge'
       }), { headers: { 'Content-Type': 'application/json' } });
     }
     
-    // Telegram webhook
     if (request.method === 'POST') {
       try {
         const update = await request.json();
@@ -40,10 +37,8 @@ async function handleUpdate(update, env) {
   
   const chatId = message.chat.id;
   const text = message.text || '';
-  
   let response = '';
   
-  // Parse command
   if (text === '/start' || text === '/help') {
     response = `🧠 *Sentinel Agent*
 
@@ -54,7 +49,7 @@ Hola! Soy el agente de AmazingCoolFinds.
 • /sentinel [pregunta] - Pregúntame lo que sea
 • /run - Disparar pipeline
 
-Powered by Gemini AI`;
+Powered by GitHub Models`;
   }
   else if (text === '/status') {
     response = await getStatus(env);
@@ -64,14 +59,13 @@ Powered by Gemini AI`;
   }
   else if (text.startsWith('/sentinel ')) {
     const question = text.replace('/sentinel ', '');
-    response = await askSentinel(question, env, chatId);
+    response = await askSentinel(question, chatId, env);
   }
   else if (text.startsWith('/sentinel')) {
     response = 'Usa: /sentinel [tu pregunta]\n\nEjemplo: /sentinel cómo está el pipeline?';
   }
   else {
-    // Treat as a question to Sentinel
-    response = await askSentinel(text, env, chatId);
+    response = await askSentinel(text, chatId, env);
   }
   
   await sendReply(chatId, response, env);
@@ -79,42 +73,40 @@ Powered by Gemini AI`;
 
 async function sendReply(chatId, text, env) {
   const token = env.TELEGRAM_BOT_TOKEN;
-  if (!token) {
-    console.error('No TELEGRAM_BOT_TOKEN');
-    return false;
-  }
+  if (!token) return;
   
   const msg = (text || '').replace(/[*_`#]/g, '');
   
   try {
-    const resp = await fetch(`${TELEGRAM_API}/bot${token}/sendMessage`, {
+    await fetch(`${TELEGRAM_API}/bot${token}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: chatId, text: msg.substring(0, 4000) })
     });
-    if (!resp.ok) {
-      console.error('Telegram error:', resp.status, await resp.text());
-    }
-    return resp.ok;
   } catch (e) {
     console.error('Send error:', e);
-    return false;
   }
+}
+
+async function ghFetch(env, path, options = {}) {
+  const resp = await fetch(`${GH_API}${path}`, {
+    ...options,
+    headers: {
+      'Authorization': `Bearer ${env.GITHUB_TOKEN}`,
+      'Accept': 'application/vnd.github.v3+json',
+      'User-Agent': 'telegram-sentinel-worker/1.0',
+      ...(options.headers || {})
+    }
+  });
+  return resp;
 }
 
 async function getStatus(env) {
   try {
-    const GH_API = `https://api.github.com/repos/${env.GITHUB_REPO}`;
-    
-    const resp = await fetch(`${GH_API}/actions/runs?per_page=1`, {
-      headers: {
-        'Authorization': `Bearer ${env.GITHUB_TOKEN}`,
-        'Accept': 'application/vnd.github.v3+json'
-      }
-    });
+    const resp = await ghFetch(env, '/actions/runs?per_page=1');
     
     if (!resp.ok) {
-      return '⚠️ No puedo conectar con GitHub. El pipeline puede estar funcionando.';
+      return `⚠️ GitHub error ${resp.status}`;
     }
     
     const data = await resp.json();
@@ -140,13 +132,9 @@ async function getStatus(env) {
 
 async function triggerPipeline(env) {
   try {
-    const GH_API = `https://api.github.com/repos/${env.GITHUB_REPO}`;
-    
-    const resp = await fetch(`${GH_API}/actions/workflows/daily_pipeline.yml/dispatches`, {
+    const resp = await ghFetch(env, '/actions/workflows/daily_pipeline.yml/dispatches', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${env.GITHUB_TOKEN}`,
-        'Accept': 'application/vnd.github.v3+json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ ref: 'main' })
@@ -156,23 +144,18 @@ async function triggerPipeline(env) {
       return '🚀 Pipeline activado!\n\nSe ejecutará en 2-3 minutos.';
     }
     
-    const err = await resp.text();
-    return `⚠️ Error ${resp.status}: ${err.substring(0, 100)}`;
+    return `⚠️ Error ${resp.status}`;
     
   } catch (e) {
     return `⚠️ Error: ${e.message}`;
   }
 }
 
-async function askSentinel(question, env, chatId) {
+async function askSentinel(question, chatId, env) {
   try {
-    const GH_API = `https://api.github.com/repos/${env.GITHUB_REPO}`;
-    
-    const resp = await fetch(`${GH_API}/actions/workflows/agent_sentinel.yml/dispatches`, {
+    const resp = await ghFetch(env, '/actions/workflows/agent_sentinel.yml/dispatches', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${env.GITHUB_TOKEN}`,
-        'Accept': 'application/vnd.github.v3+json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -186,7 +169,7 @@ async function askSentinel(question, env, chatId) {
     });
     
     if (resp.status === 204 || resp.status === 200) {
-      return '🧠 Pregunta enviada a Sentinel...\n\nSentinel la procesará con Gemini AI y te responderá aquí en ~1-2 minutos.';
+      return '🧠 Pregunta enviada a Sentinel...\n\nSentinel la procesará con GitHub Models y te responderá aquí en ~1-2 minutos.';
     }
     
     return `⚠️ No pude conectar con Sentinel. Código: ${resp.status}`;
