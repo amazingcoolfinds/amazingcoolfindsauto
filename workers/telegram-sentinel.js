@@ -74,24 +74,31 @@ Powered by Gemini AI`;
     response = await askSentinel(text, env, chatId);
   }
   
-  await sendReply(chatId, response);
+  await sendReply(chatId, response, env);
 }
 
-async function sendReply(chatId, text) {
+async function sendReply(chatId, text, env) {
   const token = env.TELEGRAM_BOT_TOKEN;
-  if (!token) return;
+  if (!token) {
+    console.error('No TELEGRAM_BOT_TOKEN');
+    return false;
+  }
   
-  // Simple text, no markdown
-  const msg = text.replace(/[*_`#]/g, '');
+  const msg = (text || '').replace(/[*_`#]/g, '');
   
   try {
-    await fetch(`${TELEGRAM_API}/bot${token}/sendMessage`, {
+    const resp = await fetch(`${TELEGRAM_API}/bot${token}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: chatId, text: msg.substring(0, 4000) })
     });
+    if (!resp.ok) {
+      console.error('Telegram error:', resp.status, await resp.text());
+    }
+    return resp.ok;
   } catch (e) {
     console.error('Send error:', e);
+    return false;
   }
 }
 
