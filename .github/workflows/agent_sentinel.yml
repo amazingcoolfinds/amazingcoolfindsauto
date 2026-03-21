@@ -65,15 +65,8 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" == "workflow_run" ]; then
             echo "MODE=full" >> $GITHUB_OUTPUT
-            echo "CONCLUSION=${{ github.event.workflow_run.conclusion }}" >> $GITHUB_OUTPUT
           else
             echo "MODE=${{ github.event.inputs.mode || 'full' }}" >> $GITHUB_OUTPUT
-            echo "CONCLUSION=" >> $GITHUB_OUTPUT
-          fi
-          
-          # Save question to file if provided
-          if [ -n "${{ github.event.inputs.question }}" ]; then
-            echo "${{ github.event.inputs.question }}" > data/telegram_question.txt
           fi
 
       - name: Initialize Sentinel Memory
@@ -98,7 +91,6 @@ jobs:
           python Agent_Sentinel/sentinel_github.py \
             --mode "${{ steps.ctx.outputs.MODE }}" \
             --question "${{ github.event.inputs.question }}" \
-            --conclusion "${{ steps.ctx.outputs.CONCLUSION }}" \
             $DRY_FLAG
 
       - name: Update Sentinel Memory
