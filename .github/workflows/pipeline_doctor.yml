@@ -15,10 +15,10 @@ on:
         required: false
         default: 'false'
 
-# Prevent concurrent runs
+# Allow concurrent runs - agent writes to repo, must finish first
 concurrency:
   group: maintenance-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -43,8 +43,7 @@ jobs:
           cache: 'pip'
 
       - name: Install Agent Dependencies
-        run: |
-          pip install --no-cache-dir requests python-dotenv google-generativeai google-genai groq pyyaml
+        run: pip install requests python-dotenv google-generativeai google-genai groq pyyaml
 
       - name: Determine Run Context
         id: context
@@ -73,11 +72,21 @@ jobs:
             DRY_FLAG="--dry-run"
           fi
           
+          RUN_ID_FLAG=""
+          if [ -n "${{ steps.context.outputs.RUN_ID }}" ]; then
+            RUN_ID_FLAG="--run-id ${{ steps.context.outputs.RUN_ID }}"
+          fi
+          
+          CONCLUSION_FLAG=""
+          if [ -n "${{ steps.context.outputs.CONCLUSION }}" ]; then
+            CONCLUSION_FLAG="--conclusion ${{ steps.context.outputs.CONCLUSION }}"
+          fi
+          
           python tools/pipeline_doctor.py \
             --mode ${{ steps.context.outputs.MODE }} \
-            ${{ steps.context.outputs.RUN_ID && format('--run-id {0}', steps.context.outputs.RUN_ID) || '' }} \
-            ${{ steps.context.outputs.CONCLUSION && format('--conclusion {0}', steps.context.outputs.CONCLUSION) || '' }} \
-            --run-number 0 \
+            $RUN_ID_FLAG \
+            $CONCLUSION_FLAG \
+            --run-number ${{ github.run_number }} \
             $DRY_FLAG
 
       - name: Commit Auto-Fixes
@@ -92,4 +101,3 @@ jobs:
             core/gemini_generators.py
             core/advanced_scraper.py
             data/pipeline_health.json
-          skip_dirty_check: true
