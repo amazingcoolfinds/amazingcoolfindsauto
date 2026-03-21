@@ -1,0 +1,114 @@
+name: Agent Sentinel
+
+on:
+  workflow_run:
+    workflows: ["Pipeline Maintenance Agent"]
+    types: [completed]
+
+  schedule:
+    - cron: '0 */6 * * *'
+
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'think | dispatch | full'
+        required: false
+        default: 'full'
+      dry_run:
+        description: 'No commits, no dispatches'
+        required: false
+        default: 'false'
+
+concurrency:
+  group: sentinel-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+  issues: write
+
+jobs:
+  sentinel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 10
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Determine mode
+        id: ctx
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_run" ]; then
+            echo "MODE=full" >> $GITHUB_OUTPUT
+            echo "CONCLUSION=${{ github.event.workflow_run.conclusion }}" >> $GITHUB_OUTPUT
+          else
+            echo "MODE=${{ github.event.inputs.mode || 'full' }}" >> $GITHUB_OUTPUT
+            echo "CONCLUSION=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Initialize Sentinel Memory
+        run: |
+          mkdir -p data
+          if [ ! -f "data/sentinel_memory.json" ]; then
+            echo '{"last_heartbeat": null, "health_trends": {}, "issues_tracked": [], "improvements_queued": []}' > data/sentinel_memory.json
+          fi
+
+      - name: Run Agent Sentinel
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GITHUB_RUN_NUMBER: ${{ github.run_number }}
+        run: |
+          DRY_FLAG=""
+          [ "${{ github.event.inputs.dry_run }}" == "true" ] && DRY_FLAG="--dry-run"
+
+          python Agent_Sentinel/sentinel_github.py \
+            --mode ${{ steps.ctx.outputs.MODE }} \
+            --conclusion "${{ steps.ctx.outputs.CONCLUSION }}" \
+            $DRY_FLAG
+
+      - name: Update Sentinel Memory
+        run: |
+          python3 << 'PYEOF'
+          import json
+          from datetime import datetime, timezone
+          
+          memory_file = "data/sentinel_memory.json"
+          try:
+              with open(memory_file) as f:
+                  memory = json.load(f)
+          except:
+              memory = {}
+          
+          memory["last_heartbeat"] = datetime.now(timezone.utc).isoformat()
+          
+          with open(memory_file, "w") as f:
+              json.dump(memory, f, indent=2)
+          print("✅ Sentinel memory updated")
+          PYEOF
+
+      - name: Commit Sentinel Output
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "🧠 Sentinel: reasoning cycle complete [skip ci]"
+          commit_user_name: "Agent Sentinel"
+          commit_user_email: "sentinel@amazingcoolfinds.bot"
+          file_pattern: |
+            data/improvement_queue.json
+            data/sentinel_memory.json
+            data/pipeline_health.json

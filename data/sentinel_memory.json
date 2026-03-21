@@ -1,0 +1,14 @@
+{
+  "last_heartbeat": null,
+  "health_trends": {},
+  "issues_tracked": [],
+  "improvements_queued": [],
+  "last_run_summary": null,
+  "api_status": {
+    "groq": "unknown",
+    "openrouter": "unknown",
+    "openai": "unknown",
+    "youtube": "unknown",
+    "cloudflare": "unknown"
+  }
+}
