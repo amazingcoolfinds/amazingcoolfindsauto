@@ -25,7 +25,6 @@ IMPROVEMENT_FILE = DATA_DIR / "improvement_queue.json"
 QUESTION_FILE = DATA_DIR / "telegram_question.txt"
 
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 MAKE_WEBHOOK_URL = os.getenv("MAKE_WEBHOOK_URL", "")
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
@@ -71,14 +70,11 @@ def get_pipeline_runs():
     return []
 
 def think_with_gemini(question, memory, health):
-    """Use Gemini AI to reason about the pipeline and answer questions."""
-    if not GEMINI_API_KEY:
+    """Use GitHub Models (Azure Inference) to reason about the pipeline."""
+    if not GITHUB_TOKEN:
         return think_fallback(question, memory, health)
     
     try:
-        from google import genai
-        client = genai.Client(api_key=GEMINI_API_KEY)
-        
         runs = get_pipeline_runs()
         latest_run = runs[0] if runs else {}
         
@@ -87,12 +83,12 @@ def think_with_gemini(question, memory, health):
         fail_count = len(recent_runs) - success_count
         total_products = sum(r.get("products_processed", 0) for r in recent_runs)
         
-        context = f"""Sentinel Agent - AmazingCoolFinds Pipeline
+        prompt = f"""Sentinel Agent - AmazingCoolFinds Pipeline
 
 CURRENT PIPELINE STATUS:
 - Latest Run: {latest_run.get('conclusion', 'unknown')} ({latest_run.get('created_at', 'N/A')[:10]})
 - Run #{latest_run.get('run_number', '?')}
-- Last 10 runs: {success_count} ✅, {fail_count} ❌
+- Last 10 runs: {success_count} success, {fail_count} failures
 - Total products processed (recent): {total_products}
 
 PIPELINE HEALTH:
@@ -109,11 +105,28 @@ QUESTION FROM USER:
 
 Respond in Spanish. Be concise but insightful. If the pipeline has issues, suggest specific fixes."""
 
-        response = client.models.generate_content(model="gemini-2.5-flash", contents=context)
-        return response.text
+        resp = requests.post(
+            "https://models.inference.ai.azure.com/chat/completions",
+            headers={
+                "Authorization": f"Bearer {GITHUB_TOKEN}",
+                "Content-Type": "application/json"
+            },
+            json={
+                "model": "gpt-4o-mini",
+                "messages": [{"role": "user", "content": prompt}],
+                "max_tokens": 800
+            },
+            timeout=30
+        )
+        
+        if resp.ok:
+            return resp.json()["choices"][0]["message"]["content"]
+        else:
+            log.error(f"GitHub Models error: {resp.status_code} - {resp.text}")
+            return think_fallback(question, memory, health)
         
     except Exception as e:
-        log.error(f"Gemini error: {e}")
+        log.error(f"GitHub Models error: {e}")
         return think_fallback(question, memory, health)
 
 def think_fallback(question, memory, health):

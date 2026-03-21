@@ -79,7 +79,6 @@ jobs:
       - name: Run Agent Sentinel
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GITHUB_RUN_NUMBER: ${{ github.run_number }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
