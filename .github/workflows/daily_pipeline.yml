@@ -80,3 +80,16 @@ jobs:
           TIKTOK_TOKEN_BASE64: ${{ secrets.TIKTOK_TOKEN_BASE64 }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: python enhanced_pipeline.py --run
+
+      - name: Commit Product Data
+        run: |
+          # Check if products.json has content
+          if [ -f "data/products.json" ] && [ -s "data/products.json" ]; then
+            git add -f data/products.json amazing/data/products.json data/processed_products.json 2>/dev/null || true
+            if git diff --cached --quiet; then
+              echo "No changes to commit"
+            else
+              git -c user.name="Pipeline Bot" -c user.email="bot@pipeline.local" commit -m "📦 Update products from pipeline run [skip ci]"
+              git push
+            fi
+          fi
