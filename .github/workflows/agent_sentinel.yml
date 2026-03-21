@@ -8,6 +8,9 @@ on:
   schedule:
     - cron: '0 */6 * * *'
 
+  repository_dispatch:
+    types: [telegram-command]
+
   workflow_dispatch:
     inputs:
       mode:

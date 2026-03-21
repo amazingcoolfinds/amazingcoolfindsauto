@@ -136,13 +136,14 @@ async function getPipelineStatus(env) {
     const GH_API = `https://api.github.com/repos/${env.GITHUB_REPO}`;
     const runsResponse = await fetch(`${GH_API}/actions/runs?per_page=3`, {
       headers: {
-        'Authorization': `Bearer ${env.GH_PAT}`,
+        'Authorization': `Bearer ${env.GH_PAT || 'NO_TOKEN'}`,
         'Accept': 'application/vnd.github.v3+json'
       }
     });
     
     if (!runsResponse.ok) {
-      return '❌ No pude conectar con GitHub';
+      const errorText = await runsResponse.text();
+      return `❌ Error GitHub: ${runsResponse.status} - ${errorText.substring(0, 100)}`;
     }
     
     const runs = await runsResponse.json();
@@ -203,42 +204,77 @@ ${status} Estado: ${lastRun.conclusion || 'desconocido'}
 
 async function checkHealth(env) {
   try {
-    // Check GitHub API rate limit
     const ghResponse = await fetch('https://api.github.com/rate_limit', {
       headers: { 'Authorization': `Bearer ${env.GH_PAT}` }
     });
-    const ghData = await ghResponse.json();
-    const remaining = ghData.rate?.remaining || 0;
     
-    return `*Health Check*
+    if (ghResponse.ok) {
+      const ghData = await ghResponse.json();
+      const remaining = ghData.rate?.remaining || 0;
+      return `*Health Check*
 
 🟢 GitHub API: ${remaining} requests restantes
 🟢 Cloudflare: Conectado
-🟢 Sentinel: Activo`;
+🟢 Sentinel: Activo
+🔑 GitHub Token: ${env.GH_PAT ? '✅ Configurado' : '❌ Faltando'}`;
+    } else {
+      return `*Health Check*
+
+🟢 Cloudflare: Conectado
+🟢 Sentinel: Activo
+🔑 GitHub Token: ${env.GH_PAT ? '✅ Configurado' : '❌ Faltando'}
+⚠️ GitHub API error: ${ghResponse.status}`;
+    }
     
   } catch (error) {
-    return `❌ Error en health check: ${error.message}`;
+    return `*Health Check*
+
+🟢 Cloudflare: Conectado
+🟢 Sentinel: Activo
+🔑 GitHub Token: ${env.GH_PAT ? '✅' : '❌'}
+❌ Error: ${error.message}`;
   }
 }
 
 async function triggerPipeline(env) {
   try {
-    const GH_API = `https://api.github.com/repos/${env.GITHUB_REPO}`;
-    const response = await fetch(`${GH_API}/actions/workflows/daily_pipeline.yml/dispatches`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${env.GH_PAT}`,
-        'Accept': 'application/vnd.github.v3+json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ ref: 'main' })
-    });
-    
-    if (response.status === 204) {
-      return '🚀 *Pipeline disparado!*\n\nEl pipeline se ejecutará en ~2-3 minutos. Usa /status para ver el progreso.';
-    } else {
-      return `❌ No pude disparar el pipeline. Código: ${response.status}`;
+    // Use Make.com webhook to trigger pipeline
+    const makeUrl = env.MAKE_WEBHOOK_URL;
+    if (makeUrl) {
+      await fetch(makeUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          source: 'telegram',
+          command: 'run-pipeline',
+          timestamp: new Date().toISOString()
+        })
+      });
+      return '🚀 *Pipeline disparado!*\n\nSe ejecutará en ~2-3 minutos. Usa /status para ver el progreso.';
     }
+    
+    // Fallback: GitHub API (if token works)
+    if (env.GH_PAT) {
+      const GH_API = `https://api.github.com/repos/${env.GITHUB_REPO}`;
+      const response = await fetch(`${GH_API}/dispatches`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${env.GH_PAT}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+          event_type: 'telegram-command',
+          client_payload: { command: 'run-pipeline' }
+        })
+      });
+      
+      if (response.status === 204) {
+        return '🚀 *Pipeline disparado!*\n\nEl pipeline se ejecutará en ~2-3 minutos. Usa /status para ver el progreso.';
+      }
+    }
+    
+    return '⚠️ No hay forma de disparar el pipeline automáticamente.\n\nPuedes dispararlo manualmente desde GitHub Actions.';
     
   } catch (error) {
     return `❌ Error: ${error.message}`;
@@ -247,38 +283,23 @@ async function triggerPipeline(env) {
 
 async function askSentinel(question, env) {
   try {
-    // Dispatch Sentinel workflow with the question
-    const GH_API = `https://api.github.com/repos/${env.GITHUB_REPO}`;
+    // Use Make.com webhook
+    const makeUrl = env.MAKE_WEBHOOK_URL;
+    if (makeUrl) {
+      await fetch(makeUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          source: 'telegram',
+          command: 'sentinel',
+          question: question,
+          timestamp: new Date().toISOString()
+        })
+      });
+      return `🧠 *Pregunta enviada a Sentinel*\n\nSentinel la procesará y te responderá. Espera ~1-2 minutos.`;
+    }
     
-    // Store question for Sentinel to pick up
-    const questionData = {
-      question,
-      timestamp: new Date().toISOString(),
-      user: 'telegram'
-    };
-    
-    // Write question to a file in the repo via the dispatch payload
-    await fetch(`${GH_API}/actions/workflows/agent_sentinel.yml/dispatches`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${env.GH_PAT}`,
-        'Accept': 'application/vnd.github.v3+json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        ref: 'main',
-        inputs: {
-          mode: 'full',
-          question: question
-        }
-      })
-    });
-    
-    return `🧠 *Pregunta recibida\!*
-
-La estoy procesando con Sentinel... se ejecutará en ~1-2 minutos.
-
-Usa /report en un momento para ver el resultado.`;
+    return '⚠️ Función no disponible temporalmente.';
     
   } catch (error) {
     return `❌ Error: ${error.message}`;
