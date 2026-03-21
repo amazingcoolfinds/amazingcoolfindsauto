@@ -1242,40 +1242,16 @@
         async function loadData() {
             const isLocal = window.location.protocol === 'file:';
             
-            // Start loading all content
             const productsPromise = loadProducts();
             const articlesPromise = loadArticles();
             
-            // Try to load reviews (legacy support)
             try {
                 const rRes = await fetch('data/reviews.json');
                 if (rRes.ok) {
                     reviewsData = await rRes.json();
-                    renderReviews(); // Now only renders reviews
-            }
-
-            await Promise.allSettled([productsPromise, articlesPromise]);
-            initSearch();
-        }
-
-        function renderProducts() {
-            // Products shown with images when ready
-            // For now, hide the section
-            const grid = document.getElementById('productGrid');
-            if (!grid) return;
-            grid.style.display = 'none';
-            const section = grid.closest('.products-section');
-            if (section) {
-                section.innerHTML = `
-                    <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
-                        <h2 style="color: var(--text); margin-bottom: 20px;">🔥 New Products Coming Soon</h2>
-                        <p style="font-size: 1.1rem;">We're curating amazing products with photos and videos.</p>
-                        <p style="font-size: 0.9rem; margin-top: 10px;">Check back soon!</p>
-                    </div>
-                `;
-            }
-        }
-            }
+                    renderReviews();
+                }
+            } catch(e) {}
 
             await Promise.allSettled([productsPromise, articlesPromise]);
             initSearch();
@@ -1292,48 +1268,62 @@
 
         function renderProducts() {
             const grid = document.getElementById('productGrid');
-            // Hide product grid - products coming soon with images
-            grid.style.display = 'none';
-            const section = grid.closest('.products-section');
-            if (section) {
-                section.innerHTML = `
-                    <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
-                        <h2 style="color: var(--text); margin-bottom: 20px;">🔥 New Products Coming Soon</h2>
-                        <p style="font-size: 1.1rem;">We're curating amazing products with photos and videos.</p>
-                        <p style="font-size: 0.9rem; margin-top: 10px;">Check back soon!</p>
-                    </div>
-                `;
-            }
-            return;
+            if (!grid) return;
             
-            // Old code preserved for when products are ready
             const filtered = [...allProducts];
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="empty-state">No products yet. Check back soon!</div>';
+                return;
+            }
 
-            // Determine "New" threshold (e.g., 3 days)
-            const now = new Date();
-            const threeDaysInMs = 3 * 24 * 60 * 60 * 1000;
+            grid.innerHTML = filtered.map(p => {
+                const images = p.images && p.images.length > 0 ? p.images : [p.image_url];
+                return `
+            <div class="card reveal" id="${p.asin}" data-asin="${p.asin}">
+                <div class="card__img-wrap">
+                    <div class="card__slideshow">
+                        ${images.map((img, idx) => `
+                            <img class="card__img ${idx === 0 ? 'active' : ''}" 
+                                 src="${img}" alt="${p.title}" 
+                                 loading="lazy" 
+                                 onerror="this.style.display='none'">
+                        `).join('')}
+                    </div>
+                </div>
+                <div class="card__body">
+                    <h3 class="card__title">${p.title}</h3>
+                    <div class="card__rating">
+                        <span class="stars">★★★★☆</span> ${p.rating || '4.5'} stars
+                    </div>
+                    <div class="card__footer">
+                        <span class="card__price">${p.price || 'Check Price'}</span>
+                        <a href="${p.affiliate_url}" target="_blank" rel="noopener noreferrer" class="card__cta">
+                            Shop Now →
+                        </a>
+                    </div>
+                    ${p.youtube_url ? `
+                    <a href="${p.youtube_url}" target="_blank" rel="noopener noreferrer" class="card__yt">
+                        Watch on YouTube Shorts
+                    </a>` : ''}
+                </div>
+            </div>
+                `;
+            }).join('');
 
-            const isNew = (p) => {
-                const processed = new Date(p.processed_at || 0);
-                return (now - processed) < threeDaysInMs;
-            };
-
-            // Sorting: "New" items first, then YouTube, then by date
-            filtered.sort((a, b) => {
-                const aNew = isNew(a);
-                const bNew = isNew(b);
-
-                if (aNew && !bNew) return -1;
-                if (!aNew && bNew) return 1;
-
-                // If both are same "newness", prioritize YouTube
-                if (a.youtube_uploaded && !b.youtube_uploaded) return -1;
-                if (!a.youtube_uploaded && b.youtube_uploaded) return 1;
-                
-                // Finally, newest first
-                const dateA = new Date(a.processed_at || 0);
-                const dateB = new Date(b.processed_at || 0);
-                return dateB - dateA;
+            initSlideshows();
+        }
+        
+        function initSlideshows() {
+            document.querySelectorAll('.card__slideshow').forEach(slideshow => {
+                const imgs = slideshow.querySelectorAll('.card__img');
+                if (imgs.length <= 1) return;
+                let current = 0;
+                setInterval(() => {
+                    imgs[current].classList.remove('active');
+                    current = (current + 1) % imgs.length;
+                    imgs[current].classList.add('active');
+                }, 2200);
             });
         }
 
