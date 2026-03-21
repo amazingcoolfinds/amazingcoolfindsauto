@@ -1218,6 +1218,11 @@
                 
                 allProducts = Array.from(distinctMap.values());
                 
+                // Only products with real images
+                allProducts = allProducts.filter(p => 
+                    p.image_url && (p.image_url.includes('m.media-amazon.com') || p.images)
+                );
+                
                 // SORT: Newest products first (by processed_at)
                 allProducts.sort((a, b) => {
                     const dateA = a.processed_at ? new Date(a.processed_at) : new Date(0);

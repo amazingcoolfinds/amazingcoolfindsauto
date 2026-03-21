@@ -632,13 +632,18 @@
                 
                 const allProducts = Array.from(distinctMap.values());
                 
-                allProducts.sort((a, b) => {
+                // Only products with real images
+                const withImages = allProducts.filter(p => 
+                    p.image_url && (p.image_url.includes('m.media-amazon.com') || p.images)
+                );
+                
+                withImages.sort((a, b) => {
                     const dateA = a.processed_at ? new Date(a.processed_at) : new Date(0);
                     const dateB = b.processed_at ? new Date(b.processed_at) : new Date(0);
                     return dateB - dateA;
                 });
                 
-                const filtered = allProducts.filter(p => {
+                const filtered = withImages.filter(p => {
                     const mainCat = categoryMap[p.category] || 'Other';
                     return mainCat === PAGE_CATEGORY;
                 });
