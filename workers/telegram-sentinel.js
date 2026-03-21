@@ -136,7 +136,7 @@ async function getPipelineStatus(env) {
     const GH_API = `https://api.github.com/repos/${env.GITHUB_REPO}`;
     const runsResponse = await fetch(`${GH_API}/actions/runs?per_page=3`, {
       headers: {
-        'Authorization': `Bearer ${env.GITHUB_TOKEN}`,
+        'Authorization': `Bearer ${env.GH_PAT}`,
         'Accept': 'application/vnd.github.v3+json'
       }
     });
@@ -205,7 +205,7 @@ async function checkHealth(env) {
   try {
     // Check GitHub API rate limit
     const ghResponse = await fetch('https://api.github.com/rate_limit', {
-      headers: { 'Authorization': `Bearer ${env.GITHUB_TOKEN}` }
+      headers: { 'Authorization': `Bearer ${env.GH_PAT}` }
     });
     const ghData = await ghResponse.json();
     const remaining = ghData.rate?.remaining || 0;
@@ -227,7 +227,7 @@ async function triggerPipeline(env) {
     const response = await fetch(`${GH_API}/actions/workflows/daily_pipeline.yml/dispatches`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${env.GITHUB_TOKEN}`,
+        'Authorization': `Bearer ${env.GH_PAT}`,
         'Accept': 'application/vnd.github.v3+json',
         'Content-Type': 'application/json'
       },
@@ -261,7 +261,7 @@ async function askSentinel(question, env) {
     await fetch(`${GH_API}/actions/workflows/agent_sentinel.yml/dispatches`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${env.GITHUB_TOKEN}`,
+        'Authorization': `Bearer ${env.GH_PAT}`,
         'Accept': 'application/vnd.github.v3+json',
         'Content-Type': 'application/json'
       },
