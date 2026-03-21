@@ -158,7 +158,6 @@ async function triggerPipeline(env) {
 }
 
 async function askSentinel(question, env, chatId) {
-  // Dispatch Sentinel workflow with the question
   try {
     const GH_API = `https://api.github.com/repos/${env.GITHUB_REPO}`;
     
@@ -173,7 +172,8 @@ async function askSentinel(question, env, chatId) {
         ref: 'main',
         inputs: {
           mode: 'think',
-          question: question
+          question: question,
+          chat_id: chatId.toString()
         }
       })
     });

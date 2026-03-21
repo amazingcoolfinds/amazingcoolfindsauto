@@ -25,6 +25,10 @@ on:
         description: 'Question for Sentinel (via Telegram)'
         required: false
         default: ''
+      chat_id:
+        description: 'Telegram chat ID to reply to'
+        required: false
+        default: ''
 
 concurrency:
   group: sentinel-${{ github.ref }}
@@ -85,13 +89,21 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GITHUB_RUN_NUMBER: ${{ github.run_number }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ github.event.inputs.chat_id || secrets.TELEGRAM_CHAT_ID }}
         run: |
           DRY_FLAG=""
           [ "${{ github.event.inputs.dry_run }}" == "true" ] && DRY_FLAG="--dry-run"
+          
+          QUESTION_FLAG=""
+          if [ -n "${{ github.event.inputs.question }}" ]; then
+            QUESTION_FLAG="--question '${{ github.event.inputs.question }}'"
+          fi
 
           python Agent_Sentinel/sentinel_github.py \
             --mode ${{ steps.ctx.outputs.MODE }} \
             --conclusion "${{ steps.ctx.outputs.CONCLUSION }}" \
+            $QUESTION_FLAG \
             $DRY_FLAG
 
       - name: Update Sentinel Memory

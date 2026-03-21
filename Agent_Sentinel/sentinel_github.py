@@ -29,7 +29,7 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 MAKE_WEBHOOK_URL = os.getenv("MAKE_WEBHOOK_URL", "")
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "8591494770")
+TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
 REPO = os.getenv("GITHUB_REPOSITORY", "amazingcoolfinds/amazingcoolfindsauto")
 
 GH_API = f"https://api.github.com/repos/{REPO}"
@@ -183,6 +183,10 @@ def mode_full(dry_run=False, question=None, mode="full"):
 def send_telegram(message):
     if not TELEGRAM_BOT_TOKEN:
         log.warning("No TELEGRAM_BOT_TOKEN")
+        return
+    
+    if not TELEGRAM_CHAT_ID:
+        log.warning("No TELEGRAM_CHAT_ID — cannot send Telegram message")
         return
     
     try:
