@@ -13,7 +13,6 @@ on:
       - 'tools/**'
       - '.github/workflows/daily_pipeline.yml'
 
-# Prevent concurrent runs
 concurrency:
   group: pipeline-${{ github.ref }}
   cancel-in-progress: true
@@ -24,7 +23,7 @@ permissions:
 jobs:
   run-pipeline:
     runs-on: ubuntu-latest
-    timeout-minutes: 60 # Prevent runaway jobs
+    timeout-minutes: 60
     
     steps:
       - name: Checkout Repository
@@ -50,22 +49,13 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps chromium
 
-      - name: Cache FFmpeg
-        uses: actions/cache@v4
-        id: ffmpeg-cache
-        with:
-          path: /usr/bin/ffmpeg
-          key: ffmpeg-ubuntu-22.04
-
       - name: Install FFmpeg
-        if: steps.ffmpeg-cache.outputs.cache-hit != 'true'
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends ffmpeg
+          sudo apt-get install -y ffmpeg
 
       - name: Install Dependencies
-        run: |
-          pip install --no-cache-dir -r requirements.txt
+        run: pip install -r requirements.txt
 
       - name: Run Enhanced Pipeline
         env:
