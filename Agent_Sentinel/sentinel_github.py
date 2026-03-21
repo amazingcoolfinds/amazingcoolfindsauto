@@ -76,15 +76,12 @@ def think_with_gemini(question, memory, health):
         return think_fallback(question, memory, health)
     
     try:
-        import google.generativeai as genai
-        genai.configure(api_key=GEMINI_API_KEY)
-        model = genai.GenerativeModel("gemini-2.0-flash")
+        from google import genai
+        client = genai.Client(api_key=GEMINI_API_KEY)
         
-        # Build context
         runs = get_pipeline_runs()
         latest_run = runs[0] if runs else {}
         
-        # Get trends from health
         recent_runs = health.get("runs", [])[-10:]
         success_count = sum(1 for r in recent_runs if r.get("conclusion") == "success")
         fail_count = len(recent_runs) - success_count
@@ -112,7 +109,7 @@ QUESTION FROM USER:
 
 Respond in Spanish. Be concise but insightful. If the pipeline has issues, suggest specific fixes."""
 
-        response = model.generate_content(context)
+        response = client.models.generate_content(model="gemini-2.5-flash", contents=context)
         return response.text
         
     except Exception as e:
