@@ -75,26 +75,53 @@ def think_with_gemini(question, memory, health):
         return think_fallback(question, memory, health)
     
     try:
-        runs = get_pipeline_runs()
-        latest_run = runs[0] if runs else {}
+        # Get ALL recent runs from GitHub API (not just 5)
+        try:
+            resp = requests.get(
+                f"{GH_API}/actions/runs?per_page=20",
+                headers={**GH_HEADERS, "User-Agent": "sentinel-agent/1.0"},
+                timeout=15
+            )
+            all_runs = resp.json().get("workflow_runs", []) if resp.ok else []
+        except:
+            all_runs = []
         
-        recent_runs = health.get("runs", [])[-10:]
-        success_count = sum(1 for r in recent_runs if r.get("conclusion") == "success")
-        fail_count = len(recent_runs) - success_count
-        total_products = sum(r.get("products_processed", 0) for r in recent_runs)
+        # Get daily pipeline runs specifically
+        try:
+            resp2 = requests.get(
+                f"{GH_API}/actions/workflows/daily_pipeline.yml/runs?per_page=10",
+                headers={**GH_HEADERS, "User-Agent": "sentinel-agent/1.0"},
+                timeout=15
+            )
+            pipeline_runs = resp2.json().get("workflow_runs", []) if resp2.ok else []
+        except:
+            pipeline_runs = []
+        
+        latest_run = pipeline_runs[0] if pipeline_runs else all_runs[0] if all_runs else {}
+        
+        success_runs = [r for r in pipeline_runs if r.get("conclusion") == "success"]
+        failed_runs = [r for r in pipeline_runs if r.get("conclusion") == "failure"]
         
         prompt = f"""Sentinel Agent - AmazingCoolFinds Pipeline
 
-CURRENT PIPELINE STATUS:
-- Latest Run: {latest_run.get('conclusion', 'unknown')} ({latest_run.get('created_at', 'N/A')[:10]})
-- Run #{latest_run.get('run_number', '?')}
-- Last 10 runs: {success_count} success, {fail_count} failures
-- Total products processed (recent): {total_products}
+PIPELINE RUNS (from GitHub Actions):
+- Latest Run: {latest_run.get('conclusion', 'unknown')} (Run #{latest_run.get('run_number', '?')}, {latest_run.get('created_at', 'N/A')[:10] if latest_run else 'N/A'})
+- Total pipeline runs: {len(pipeline_runs)}
+- Successful: {len(success_runs)}
+- Failed: {len(failed_runs)}
+- Last success: {success_runs[0].get('created_at', 'Never')[:10] if success_runs else 'Never'}
+- Last failure: {failed_runs[0].get('created_at', 'Never')[:10] if failed_runs else 'Never'}
 
-PIPELINE HEALTH:
-- Total runs logged: {len(health.get('runs', []))}
-- Auto-fixes applied: {len(health.get('fixes_applied', []))}
-- YT improvements: {len(health.get('yt_improvements', []))}
+LAST 5 RUNS (most recent first):"""
+
+        # Add last 5 runs detail
+        for r in pipeline_runs[:5]:
+            status = "✅" if r.get("conclusion") == "success" else "❌" if r.get("conclusion") == "failure" else "⏳"
+            name = r.get('name', 'Unknown')[:30]
+            date = r.get('created_at', '')[:10]
+            prompt += f"\n  {status} {name} - {date}"
+
+        prompt += f"""
 
 MEMORY:
 - Last heartbeat: {memory.get('last_heartbeat', 'Never')}
@@ -102,6 +129,8 @@ MEMORY:
 
 QUESTION FROM USER:
 {question}
+
+IMPORTANT: Base your answer ONLY on the data above from GitHub Actions API. Do not make up runs or statistics. If today's run exists in the data above, mention it.
 
 Respond in Spanish. Be concise but insightful. If the pipeline has issues, suggest specific fixes."""
 
