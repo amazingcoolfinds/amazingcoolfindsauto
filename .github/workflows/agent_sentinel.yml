@@ -94,16 +94,11 @@ jobs:
         run: |
           DRY_FLAG=""
           [ "${{ github.event.inputs.dry_run }}" == "true" ] && DRY_FLAG="--dry-run"
-          
-          QUESTION_FLAG=""
-          if [ -n "${{ github.event.inputs.question }}" ]; then
-            QUESTION_FLAG="--question '${{ github.event.inputs.question }}'"
-          fi
 
           python Agent_Sentinel/sentinel_github.py \
-            --mode ${{ steps.ctx.outputs.MODE }} \
+            --mode "${{ steps.ctx.outputs.MODE }}" \
+            --question "${{ github.event.inputs.question }}" \
             --conclusion "${{ steps.ctx.outputs.CONCLUSION }}" \
-            $QUESTION_FLAG \
             $DRY_FLAG
 
       - name: Update Sentinel Memory
