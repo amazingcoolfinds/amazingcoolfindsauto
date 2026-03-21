@@ -18,6 +18,10 @@ on:
         description: 'No commits, no dispatches'
         required: false
         default: 'false'
+      question:
+        description: 'Question for Sentinel (via Telegram)'
+        required: false
+        default: ''
 
 concurrency:
   group: sentinel-${{ github.ref }}
@@ -58,6 +62,11 @@ jobs:
           else
             echo "MODE=${{ github.event.inputs.mode || 'full' }}" >> $GITHUB_OUTPUT
             echo "CONCLUSION=" >> $GITHUB_OUTPUT
+          fi
+          
+          # Save question to file if provided
+          if [ -n "${{ github.event.inputs.question }}" ]; then
+            echo "${{ github.event.inputs.question }}" > data/telegram_question.txt
           fi
 
       - name: Initialize Sentinel Memory
