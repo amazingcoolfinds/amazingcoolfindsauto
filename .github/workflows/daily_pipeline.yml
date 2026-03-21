@@ -43,7 +43,7 @@ jobs:
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ hashFiles('**/requirements.txt') }}
+          key: playwright-${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
 
       - name: Install Playwright & Dependencies
         if: steps.playwright-cache.outputs.cache-hit != 'true'
@@ -52,10 +52,12 @@ jobs:
       - name: Install FFmpeg
         run: |
           sudo apt-get update
-          sudo apt-get install -y ffmpeg
+          sudo apt-get install -y --no-install-recommends ffmpeg
 
       - name: Install Dependencies
-        run: pip install -r requirements.txt
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Run Enhanced Pipeline
         env:
