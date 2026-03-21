@@ -175,7 +175,7 @@ def mode_full(dry_run=False, question=None, mode="full"):
     log.info(f"Response: {response}")
     print(response)
     
-    if not dry_run:
+    if not dry_run and question:
         send_telegram(response)
     
     return response
