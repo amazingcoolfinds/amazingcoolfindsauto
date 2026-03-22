@@ -144,10 +144,31 @@ class AdvancedScraper:
                 final_images = []
                 for img in images:
                     if img not in seen and len(img) > 20:
-                        # Filter out images with PRIME badge overlay
-                        if 'prime' not in img.lower() and 'primes' not in img.lower():
-                            final_images.append(img)
+                        img_lower = img.lower()
+                        # Skip known bad patterns
+                        if any(bad in img_lower for bad in ['prime', 'primes', 'sprite', 'sprite2', 'mp4', 'vid']):
+                            continue
+                        # Skip small thumbnail patterns (SS40, SS50, US40, US50, SR38,50, etc)
+                        if re.search(r'\._(SS|AC_US|US|SR)\d+[,\d]*_\.', img):
+                            continue
+                        # Skip very short URLs (likely invalid)
+                        if len(img) < 50:
+                            continue
+                        final_images.append(img)
                         seen.add(img)
+                
+                # Sort by resolution preference: SL1500 > SX1500 > SX679 > SX522 > SX466 > others
+                def img_quality_key(url):
+                    if '_SL1500_' in url or '_SX1500_' in url: return 100
+                    if '_SX1000_' in url: return 95
+                    if '_SX800_' in url: return 90
+                    if '_SX679_' in url: return 85
+                    if '_SX522_' in url: return 80
+                    if '_SX466_' in url: return 75
+                    if '_SX' in url: return 70
+                    return 50  # Unknown format, lower priority
+                
+                final_images.sort(key=img_quality_key, reverse=True)
                 
                 images = final_images[:12]
                 
