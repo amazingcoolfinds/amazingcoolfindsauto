@@ -30,7 +30,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
-          token: ${{ secrets.GH_PAT }}
+          token: ${{ github.token }}
+
+      - name: Configure git with PAT
+        run: |
+          git config --global user.email "bot@pipeline.local"
+          git config --global user.name "Pipeline Bot"
+          git config --global url."https://x-access-token:${{ github.token }}@github.com/".insteadOf "https://github.com/"
 
       - name: Set up Python
         uses: actions/setup-python@v5
