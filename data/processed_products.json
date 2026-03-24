@@ -1,55 +1,5 @@
 [
   {
-    "asin": "B0C52MMQ49",
-    "title": "Magnetic Levitation Bluetooth Speaker,Playing Music and Floating in The air,with 5W Louder Sound,Bluetooth 5.1,Cool Tech Gadgets for Men,Unique Gifts for Home Office Decor",
-    "processed_at": "2026-02-23T05:22:30.721494",
-    "category": "Life & Style",
-    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0C52MMQ49&MarketPlace=US&ID=AsinImage&WS=1",
-    "images": [
-      "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0C52MMQ49&MarketPlace=US&ID=AsinImage&WS=1"
-    ]
-  },
-  {
-    "asin": "B0FWBSC7LW",
-    "title": "AI Voice Recorder, Note Pro Voice Recorder Transcribe & Summarize, AI Noise Cancellation Technology, Supports 152 Languages, 64GB Memory APP Control Audio Recorder for Lectures, Meetings, Calls",
-    "processed_at": "2026-02-23T05:22:42.408486",
-    "category": "Life & Style",
-    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0FWBSC7LW&MarketPlace=US&ID=AsinImage&WS=1",
-    "images": [
-      "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0FWBSC7LW&MarketPlace=US&ID=AsinImage&WS=1"
-    ]
-  },
-  {
-    "asin": "B0CXVKSG19",
-    "title": "Home Assistant Green | Smart Home hub with Advanced Automation | Official Home Assistant Hardware",
-    "processed_at": "2026-02-23T08:07:47.815709",
-    "category": "Life & Style",
-    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0CXVKSG19&MarketPlace=US&ID=AsinImage&WS=1",
-    "images": [
-      "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0CXVKSG19&MarketPlace=US&ID=AsinImage&WS=1"
-    ]
-  },
-  {
-    "asin": "B0C33T3S2N",
-    "title": "Tuya Smart Home 8-inch Multifunctional Intelligent Control Touch Screen Background Music Host ZigBee Gateway System in-Wall Central Control Panel for Tuya Devices",
-    "processed_at": "2026-02-23T08:07:58.441719",
-    "category": "Life & Style",
-    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0C33T3S2N&MarketPlace=US&ID=AsinImage&WS=1",
-    "images": [
-      "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0C33T3S2N&MarketPlace=US&ID=AsinImage&WS=1"
-    ]
-  },
-  {
-    "asin": "B0BYRLX5DK",
-    "title": "Smart Home Control Panel,7'' Dimmer and Background Music Player,Smart Life Tuya App Control Timer Switch For Smart Appliances,Support Video Doorbell Two-Way Intercom",
-    "processed_at": "2026-02-23T08:08:10.436398",
-    "category": "Life & Style",
-    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0BYRLX5DK&MarketPlace=US&ID=AsinImage&WS=1",
-    "images": [
-      "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0BYRLX5DK&MarketPlace=US&ID=AsinImage&WS=1"
-    ]
-  },
-  {
     "asin": "B016UG6PWE",
     "title": "NOCO Boost GB70: 2000A UltraSafe Jump Starter \u2013 12V Lithium Battery Booster Pack, Portable Jump Box, Power Bank & Jumper Cables - for 8.0L Gas and 6.0L Diesel Engines",
     "processed_at": "2026-02-27T20:28:31.721890",
@@ -1561,5 +1511,238 @@
     },
     "youtube_video_id": "fCVBvO2jeIU",
     "youtube_url": "https://youtube.com/watch?v=fCVBvO2jeIU"
+  },
+  {
+    "asin": "B0BBGB594W",
+    "title": "GRECELL 999Wh Solar Generator 1000W, Portable Power Station with 60W USB-C PD Output, 110V Pure Sine Wave AC Outlet Backup Lithium Battery for Outdoors Camping Travel Hunting Home (Peak 2000W)",
+    "price": "$319.97",
+    "rating": "4.4",
+    "reviews_count": "2937",
+    "category": "Home & Auto",
+    "images": [
+      "https://m.media-amazon.com/images/I/61H+OeYA6bL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61pvBYjLPAL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61B6Cgcei0L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61DZN3PujWL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61pvBYjLPAL._AC_SX679_.jpg"
+    ],
+    "image_url": "https://m.media-amazon.com/images/I/61H+OeYA6bL._AC_SL1500_.jpg",
+    "bullets": [
+      "MASSIVE CAPACITY, LIGHTWEIGHT PRESENTATION - GRECELL 1000W power station produces a 1000W (2000W surge) pure sine wave output to power a variety of equipment and tools. Ideal for any situation where more power is needed for more equipment, such as travel, camping or group outdoor activities.",
+      "SUPPORTS UP TO TEN ELECTRONICS AT ONCE - This outdoor solar generator is equipped with 2*AC socket, 3*USB QC port, 1*USB-C PD port, 2*DC 12V port, 1*12V cigarette lighter port, 1*Wireless charging port, 1*LCD display, 1*LED light, 1*Flashlight with SOS mode, power your laptops, tablets, phones, lights, CPAP medical devices, TV, mini-refrigerator anytime.",
+      "UPGRADED BATTERY MANAGEMENT SYSTEM - Not only will the power station automatically stop charging any device when it's full, it will also offer short-circuit and power-surge protection for electronics that constantly need electricity.The same battery management system comes into play when charging the generator with solar power, ensuring none of the circuits get fried. What's more, it's designed to keep itself from overheating with its silent built-in dual cooling fans.",
+      "3 WAYS TO RECHARGE, BUILT-IN MPPT CONTROLLER - GRECELL power station, can be charged via an AC outlet, a solar panel, or a car outlet. Built-in MPPT (Maximum Power Point Tracking Control) so it can extract the maximum power from the solar panel, optimizing the utilization of variable power sources like a solar generator.",
+      "WHAT YOU GET - 1* GRECELL 999Wh portable power station, three types of charging cable (1* AC Charging Cable, 1* Car Charging Cable, 1*7909 Solar Charging Cable), 1*User Manual, Cable Storage Bag."
+    ],
+    "affiliate_url": "https://www.amazon.com/dp/B0BBGB594W?tag=amazingcoolfinds-20",
+    "processed_at": "2026-03-24T13:01:18.321607",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0BBGB594W",
+      "scroll_target": "product-B0BBGB594W",
+      "full_url": "https://amazing-cool-finds.com/#product-B0BBGB594W"
+    },
+    "script": {
+      "title": "Unlock Unlimited Power Anywhere!",
+      "narration": "Does running out of power on your adventures drive you crazy? Meet the GRECELL 999Wh Solar Generator! With a massive 1000W output, you can power up to ten devices at once. Perfect for camping or home backup. Link is in the first comment!",
+      "hashtags": [
+        "#PortablePower",
+        "#CampingEssentials",
+        "#GRECELL",
+        "#SolarGenerator",
+        "#OutdoorAdventures"
+      ]
+    },
+    "youtube_video_id": "wbZXbZmwYWs",
+    "youtube_url": "https://youtube.com/watch?v=wbZXbZmwYWs"
+  },
+  {
+    "asin": "B0D7PPG25F",
+    "title": "Jackery Explorer 1000 v2 Portable Power Station,1070Wh LiFePO4 Battery,1500W AC/100W USB-C Output, 1 Hr Fast Charge, Solar Generator for Camping,Emergency, RV, Off-Grid Living(Solar Panel Optional)",
+    "price": "$429.00",
+    "rating": "4.7",
+    "reviews_count": "3113",
+    "category": "Tech",
+    "images": [
+      "https://m.media-amazon.com/images/I/61X66DgUSiL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81adV15KhIL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71KrCdthSQL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71xYoRpfK6L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61VqfYDoVvL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/613cu3+5JkL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61JVKysP1nL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81DzcXuTNIL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61VpzsPtSCL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61X0hPmwxxL._AC_SL1500_.jpg"
+    ],
+    "image_url": "https://m.media-amazon.com/images/I/61X66DgUSiL._AC_SL1500_.jpg",
+    "bullets": [
+      "Powerful yet Compact: Boasting a 1,500W AC output and a 3,000W surge peak, the Solar Generator 1000 V2 can power multiple appliances, including AC units, fridges, and electric pots. With a 1,070Wh capacity and a lightweight build of only 23.8 lbs, along with a foldable handle, it makes an excellent companion for outdoor camping, road trips, or emergencies.",
+      "One Hour Fast Charging: Charge your Explorer 1000 v2 Portable Power Station from 0% to 100% battery level in just one hour with emergency charging activated via the Jackery App. It defaults to 1.7 hours for a full charge to optimize battery health. Engineered with advanced ChargeShield 2.0 technology, this power station charges safer, faster, and smarter.",
+      "10 Year Lifespan: The Explorer 1000 v2 portable power station is equipped with a durable LFP battery, maintaining over 70% of its original capacity even after 4,000 charge cycles, offering longevity exceeding 10 years.",
+      "Tailored for Versatility: Featuring two USB-C ports, one USB-A port, one DC car port, and three pure sine wave AC ports, along with LED lights, the Solar Generator 1000 V2 is capable of charging multiple devices simultaneously, meeting power needs in various scenarios. PD 100W fast USB-C charging ensures a rapid charging speed, even without power adapters.",
+      "Smart App Control: Effortlessly switch between different charging modes with Jackery\u2019s App\u2014including one hour emergency charging from 0 to 100%, 30 dB quiet overnight charging mode, and energy efficiency mode. Maximize the freedom to adjust the power station to meet your needs."
+    ],
+    "affiliate_url": "https://www.amazon.com/dp/B0D7PPG25F?tag=amazingcoolfinds-20",
+    "processed_at": "2026-03-24T13:01:33.386353",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0D7PPG25F",
+      "scroll_target": "product-B0D7PPG25F",
+      "full_url": "https://amazing-cool-finds.com/#product-B0D7PPG25F"
+    },
+    "script": {
+      "title": "Power Up Your Adventures!",
+      "narration": "Does your camping trip turn into a power struggle? Meet the Jackery Explorer 1000 v2! It charges in just one hour, powers your fridge, and lasts over ten years! Say goodbye to dead batteries and hello to endless adventures. Link is in the first comment!",
+      "hashtags": [
+        "#JackeryExplorer",
+        "#PortablePower",
+        "#CampingEssentials",
+        "#TechGadgets",
+        "#OffGridLiving"
+      ]
+    },
+    "youtube_video_id": "W4oelW1tiZo",
+    "youtube_url": "https://youtube.com/watch?v=W4oelW1tiZo"
+  },
+  {
+    "asin": "B0B9XB57XM",
+    "title": "EF ECOFLOW Portable Power Station DELTA 2, 1024Wh LiFePO4 (LFP) Battery, 1800W AC/100W USB-C Output, Solar Generator(Solar Panel Optional) for Home Backup Power, Camping & RVs",
+    "price": "$429.00",
+    "rating": "4.7",
+    "reviews_count": "4751",
+    "category": "Home & Auto",
+    "images": [
+      "https://m.media-amazon.com/images/I/61rkZqYss-L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61L0wYC5QaL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/6154YNex+2L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61khjp5qG0L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/617pDw317vL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61OTWEJPx-L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61iaV79e+4L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61rzaLgQbwL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61sxGB5iUqL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61OTWEJPx-L._SX522_.jpg"
+    ],
+    "image_url": "https://m.media-amazon.com/images/I/61rkZqYss-L._SL1500_.jpg",
+    "bullets": [
+      "7 X Faster Charging. 0-80% in just 50 mins and 0-100% in 80 mins with AC input. That's ideal when you need home backup power and a quick charge using your wall outlet.",
+      "Expandable Capacity from 1-3kWh. With the standalone portable power station sporting 1kWh, you can add on extra batteries to reach up to 3kWh. Ideal for camping, RVs or off-grid living.and a quick charge using your wall outlet.",
+      "Power Almost Anything. Portable batteries have come a long way. Power all your appliances with 1800W output, that's on par with outdoor generators without the fumes or noise. With 15 outlets and its huge output, you can power 90% of your appliances.",
+      "Clean, Green Charging. With up to 500W of solar panel input, DELTA 2 is a solar generator that can be charged while camping, on an RV trip or off-grid.",
+      "Built to Last 6x Longer. Its LFP(LiFePO4) battery chemistry makes for a portable power station with a 3000+ cycle life. Enough for years on end of use. With a sophisticated BMS, you can go easy knowing its auto-regulating to keep you safe."
+    ],
+    "affiliate_url": "https://www.amazon.com/dp/B0B9XB57XM?tag=amazingcoolfinds-20",
+    "processed_at": "2026-03-24T13:01:48.797039",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0B9XB57XM",
+      "scroll_target": "product-B0B9XB57XM",
+      "full_url": "https://amazing-cool-finds.com/#product-B0B9XB57XM"
+    },
+    "script": {
+      "title": "The Game-Changer for Power on the Go!",
+      "narration": "Does losing power in the middle of camping drive you crazy? Meet the DELTA 2! With 1800W output and 7X faster charging, you'll never worry again. It\u2019s perfect for your off-grid adventures or home backup. Link is in the first comment!",
+      "hashtags": [
+        "#PortablePower",
+        "#CampingHacks",
+        "#EcoFriendly",
+        "#OffGridLiving",
+        "#PowerStation"
+      ]
+    },
+    "youtube_video_id": "a-a1frMwDng",
+    "youtube_url": "https://youtube.com/watch?v=a-a1frMwDng"
+  },
+  {
+    "asin": "B0FN7MSY4L",
+    "title": "Anker SOLIX C1000 Gen 2 Portable Power Station, 2,000W (Peak 3,000W) Solar Generator, Full Charge in 49 Min, 1,024Wh LiFePO4 Battery for Home Backup, Power Outages, and Camping (Optional Solar Panel)",
+    "price": "$559.99",
+    "rating": "4.6",
+    "reviews_count": "1035",
+    "category": "Home & Auto",
+    "images": [
+      "https://m.media-amazon.com/images/I/71-JPegUysL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71dCA+6FI9L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71MTJMuNQQL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71LweZxIH+L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71zutb1sUPL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/610ZJz+QEIL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61lVbz3YllL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71MTJMuNQQL._AC_SX679_.jpg"
+    ],
+    "image_url": "https://m.media-amazon.com/images/I/71-JPegUysL._AC_SL1500_.jpg",
+    "bullets": [
+      "49 Min UltraFast Recharging: With upgraded HyperFlash tech, fully recharge at 1,600W\u2014for outage prepping, camping trips, or tailgating events. Enable it in the Anker app.",
+      "2,000W Output via 10 Ports: Delivers 2,000W (3,000W peak) and 1,024Wh capacity. Power up to 10 devices\u2014ideal for emergency backup, remote work setups, tiny homes, and off\u2011grid living.",
+      "Compact and Portable: Easily carry, store, and move from room to room, your RV, or even on beach and park outings. C1000 Gen 2 is 14% smaller and 11% lighter than similar models.",
+      "10 Years of InfiniPower: Built to last through years of daily backup and RV and van life. After 4,000 cycles, the battery still has at least 80% capacity.",
+      "1.8 Hr Solar Recharging: Go fully off\u2011grid with sustainable power for tiny homes, camping RV off\u2011grid setups, and remote locations. Plug in 600W (60V max) of solar and recharge in just 1.8 hours."
+    ],
+    "affiliate_url": "https://www.amazon.com/dp/B0FN7MSY4L?tag=amazingcoolfinds-20",
+    "processed_at": "2026-03-24T13:02:00.212321",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0FN7MSY4L",
+      "scroll_target": "product-B0FN7MSY4L",
+      "full_url": "https://amazing-cool-finds.com/#product-B0FN7MSY4L"
+    },
+    "script": {
+      "title": "The Ultimate Power Solution You Didn't Know You Needed!",
+      "narration": "Does your power go out at the worst times? Meet the Anker SOLIX C1000 Gen 2! With 49-minute recharging and 2,000W output, it's perfect for camping or emergencies. Compact, powerful, and built to last\u2014experience freedom like never before! Link is in the first comment!",
+      "hashtags": [
+        "#PortablePower",
+        "#AnkerSOLIX",
+        "#CampingEssentials",
+        "#HomeBackup",
+        "#PowerOutages"
+      ]
+    },
+    "youtube_video_id": "EbQPjGSwXJc",
+    "youtube_url": "https://youtube.com/watch?v=EbQPjGSwXJc"
+  },
+  {
+    "asin": "B0F42CSQWG",
+    "title": "BLUETTI Elite 100 V2 Portable Power Station, 1024Wh LFP Battery Backup w/ 4 1800W AC Ports (3600W Surge), 35% Smaller, Fast Charge and UPS Solar Generator for Camping, Road Trip, Outages, Home Backup",
+    "price": "$399.00",
+    "rating": "4.6",
+    "reviews_count": "338",
+    "category": "Home & Auto",
+    "images": [
+      "https://m.media-amazon.com/images/I/81KqqCpaDJL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/91SV5JMglcL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71lDX7lNuXL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71DliexKTfL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71swk2qUfdL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81x13Y4SbIL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/719PNMfMgSL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81bSug-KY-L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71t2GNcQZ1L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/717C7d3ifWL._AC_SL1500_.jpg"
+    ],
+    "image_url": "https://m.media-amazon.com/images/I/81KqqCpaDJL._AC_SL1500_.jpg",
+    "bullets": [
+      "[Power 11 Devices] - With a 1024Wh capacity, Elite 100 V2 portable power station delivers 1800W AC output (2700W Lifting Power) and 11 ports, ideal for outdoor camping, RV, and remote work.",
+      "[35% Smaller, 30% Lighter] - Elite 100 V2 weighs 25 lbs and is compact at 17L. Grab it one-handed by the hidden handle for easy transport, from home office to campsite and off-grid cabin.",
+      "[Fast 70-min Full Charge] - Top up the power station in only 70 minutes via 1000W solar or 1200W TurboBoost AC charging. Charging from vehicle can be 6X faster with the optional Charger 1.",
+      "[Reliable Emergency Backup] - Elite 100 V2 instantly switches over during a power outage, protecting the WiFi router and PC from shutdown. It also runs silently at library-level 30dB.",
+      "[What You Get] - BLUETTI Elite 100 V2 portable power station, AC charging cable, solar charging cable, grounding screw, user manual."
+    ],
+    "affiliate_url": "https://www.amazon.com/dp/B0F42CSQWG?tag=amazingcoolfinds-20",
+    "processed_at": "2026-03-24T13:02:13.337007",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0F42CSQWG",
+      "scroll_target": "product-B0F42CSQWG",
+      "full_url": "https://amazing-cool-finds.com/#product-B0F42CSQWG"
+    },
+    "script": {
+      "title": "The Ultimate Power Solution for Every Adventure!",
+      "narration": "Does your camping trip turn into a tech nightmare? Meet the BLUETTI Elite 100 V2! This 25 lb powerhouse charges in just 70 minutes and powers 11 devices while staying whisper-quiet. It\u2019s your perfect backup for home or off-grid adventures! Link is in the first comment!",
+      "hashtags": [
+        "#PortablePower",
+        "#BLUETTI",
+        "#CampingEssentials",
+        "#TechLife",
+        "#PowerOnTheGo"
+      ]
+    },
+    "youtube_video_id": "xS-4Jbz1XF4",
+    "youtube_url": "https://youtube.com/watch?v=xS-4Jbz1XF4"
   }
 ]
