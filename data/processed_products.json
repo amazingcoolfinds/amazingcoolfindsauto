@@ -1,15 +1,5 @@
 [
   {
-    "asin": "B0DP1WXVK8",
-    "title": "Espresso Machine with Milk Frother, 20 Bar Pressure Espresso Maker, with 44OZ Removable Tank, Compact Stainless Steel Coffee Machine for Home, Office, Latte, Cappuccino, Gift for Women or Men",
-    "processed_at": "2026-02-28T19:00:23.938343",
-    "category": "Life & Style",
-    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0DP1WXVK8&MarketPlace=US&ID=AsinImage&WS=1",
-    "images": [
-      "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0DP1WXVK8&MarketPlace=US&ID=AsinImage&WS=1"
-    ]
-  },
-  {
     "asin": "B0B1JPPG2L",
     "title": "Breville Bambino Espresso Machine BES450BSS, Brushed Stainless Steel",
     "processed_at": "2026-02-28T19:00:35.455846",
@@ -1881,5 +1871,50 @@
     },
     "youtube_video_id": "Tfh9Lqbg3n8",
     "youtube_url": "https://youtube.com/watch?v=Tfh9Lqbg3n8"
+  },
+  {
+    "asin": "B0D4RKYZJ5",
+    "title": "SteelSeries Apex Pro Gen 3 OmniPoint 3.0 HyperMagnetic Switches \u2014 Adjustable Actuation \u2014 Rapid Trigger \u2014 Game-Ready Presets \u2014 Protection Mode \u2014 Rapid Tap/SOCD \u2014 OLED \u2014 RGB \u2014 PBT Keycaps \u2014 USB-C",
+    "price": "$214.99",
+    "rating": "4.4",
+    "reviews_count": "199",
+    "category": "Tech",
+    "images": [
+      "https://m.media-amazon.com/images/I/71vg6iuhKOL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71Wdt9uQBXL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61Q3AgxXpEL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71NFUiC1XaL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61aNMxBfK6L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/713vLZcw3FL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71vg6iuhKOL._AC_SX679_.jpg"
+    ],
+    "image_url": "https://m.media-amazon.com/images/I/71vg6iuhKOL._AC_SL1500_.jpg",
+    "bullets": [
+      "THE WORLD'S FASTEST KEYBOARD \u2014 Push the boundaries with cutting-edge OmniPoint 3.0 switches and Rapid Trigger, Protection Mode, Rapid Tap, and more",
+      "OMNIPOINT 3.0 \u2014 More than just fast, newly redesigned Hall Effect Switch have 20x faster actuation and 11x quicker response time, with 40 levels of adjustable actuation",
+      "GAME-READY PRESETS \u2014 Gain a competitive edge in your favorite game with just a few clicks using GG QuickSet's game-ready keyboard settings",
+      "REDUCED LATENCY \u2014 Rapid Trigger and Rapid Tap register keypresses faster for more responsive gameplay and improved aim",
+      "PROTECTION MODE \u2014 A SteelSeries exclusive feature \u2014 protect your keypresses by reducing the sensitivity of surrounding keys when the intended key is pressed, preventing accidental inputs"
+    ],
+    "affiliate_url": "https://www.amazon.com/dp/B0D4RKYZJ5?tag=amazingcoolfinds-20",
+    "processed_at": "2026-03-26T01:54:23.529526",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0D4RKYZJ5",
+      "scroll_target": "product-B0D4RKYZJ5",
+      "full_url": "https://amazing-cool-finds.com/#product-B0D4RKYZJ5"
+    },
+    "script": {
+      "title": "Unlock Your Gaming Potential!",
+      "narration": "POV: You just discovered the SteelSeries Apex Pro Gen 3, featuring mind-blowing OmniPoint 3.0 switches. Experience 20x faster actuation for silky-smooth gameplay, and tap into game-ready presets for that competitive edge. This isn\u2019t just a keyboard; it\u2019s your new gaming superpower! Link is in the first comment!",
+      "hashtags": [
+        "#GamingGear",
+        "#SteelSeries",
+        "#TechInnovation",
+        "#KeyboardGoals",
+        "#GameChanger"
+      ]
+    },
+    "youtube_video_id": "nI_kRil2WY8",
+    "youtube_url": "https://youtube.com/watch?v=nI_kRil2WY8"
   }
 ]
