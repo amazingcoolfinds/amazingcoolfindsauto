@@ -2079,5 +2079,69 @@
     "youtube_uploaded": true,
     "youtube_video_id": "jRzopc1sETc",
     "youtube_url": "https://youtube.com/watch?v=jRzopc1sETc"
+  },
+  {
+    "asin": "B0GJRHL473",
+    "title": "Hybrid Active Noise Cancelling Bluetooth 6.0 Headphones 120H Playtime 6 ENC Clear Call Mic, Over Ear Headphones Wireless with Hi-Res Audio Comfort Earcup Low Latency ANC Headphone for Workout Travel",
+    "price": "$69.96",
+    "rating": "4.5",
+    "reviews_count": "45",
+    "is_prime": true,
+    "image_url": "https://m.media-amazon.com/images/I/61ws7v2ztvL._AC_SL1500_.jpg",
+    "affiliate_url": "https://www.amazon.com/dp/B0GJRHL473?tag=amazingcoolfinds-20",
+    "category": "Tech",
+    "commission": 0.04,
+    "selection_score": 75,
+    "selection_reasoning": "This product is priced at $69.96, which is above the $60 threshold. However, it currently has no rating or reviews, which impacts its conversion potential. Despite this, the price and commission rate make it a viable candidate.",
+    "bsr": [
+      {
+        "rank": "311",
+        "category": "Electronics"
+      },
+      {
+        "rank": "21",
+        "category": "Over"
+      }
+    ],
+    "images": [
+      "https://m.media-amazon.com/images/I/61ws7v2ztvL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/7119OIKPGDL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41SumBhSGbL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41prypP1YSL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41YT6ipwkXL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41FKPFC6I6L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/414OreHmxHL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51dMrBUL4pL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/7119OIKPGDL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71ErBJ8DE9L._SL1500_.jpg"
+    ],
+    "bullets": [
+      "40mm Powerful Sound & 45dB Hybrid Active Noise Cancelling: Powered by advanced hybrid active noise cancelling with dual-feed technology, TAGRY A18 over ear headphones reduce noise by up to 45dB, effectively minimizing distractions like traffic, engine noise, and background chatter. Equipped with large 40mm dynamic drivers, A18 Noise Cancelling Wireless Headphones deliver bold bass, clear mids, and crisp highs for a rich, immersive listening experience anywhere",
+      "Crystal Clear Calls with Advanced 6 Mic ENC: Featuring a six-microphone array with smart Environmental Noise Cancellation (ENC), TAGRY A18 bluetooth headphones accurately capture your voice while minimizing background noise such as wind, traffic, and crowd sounds. Enjoy clear, stable conversations for work calls, online classes, virtual meetings and everyday chats\u2014even in noisy environments",
+      "Bluetooth 6.0 with Fast, Stable Pairing: With advanced Bluetooth 6.0, TAGRY A18 ANC bluetooth headphones wireless offer fast pairing, ultra-low latency, and a reliable connection with smartphones, tablets, and computers. Experience smooth audio streaming and responsive performance for gaming, video watching, and daily use",
+      "120H Playtime & Wired Mode Backup: Powered by a high-capacity 570mAh battery, A18 over ear wireless headphones deliver up to 120 hours of listening time on a single full charge, eliminating the need for frequent recharging. Whether you're working long hours, traveling across multiple days, or enjoying daily entertainment, one charge keeps you powered for days. When the battery runs low, simply switch to wired mode using the included 3.5mm AUX cable and continue listening without interruption",
+      "All-Day Comfort & Foldable Over-Ear Design: Designed with soft, cushioned over-ear ear cups and an adjustable, foldable headband, the A18 ENC headphones provide a secure, pressure-free fit for all-day comfort. The collapsible design makes them easy to store and carry for commuting, travel, or everyday use. Plus, Transparency Mode lets you stay aware of your surroundings without removing the headphones, keeping you safe and connected while enjoying your audio anywhere"
+    ],
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0GJRHL473",
+      "scroll_target": "product-B0GJRHL473",
+      "full_url": "https://amazing-cool-finds.com/#product-B0GJRHL473"
+    },
+    "processed_at": "2026-03-28T01:46:50.184297",
+    "script": {
+      "title": "Unlock Your Sound Experience!",
+      "narration": "Does constant noise drown out your favorite tunes? With TAGRY A18 headphones, you\u2019ll dive into 120 hours of rich sound, boosted by 45dB noise canceling! Crystal-clear calls, ultra-fast pairing, and game-changing comfort await. Ready to elevate your audio game? Link is in the first comment!",
+      "hashtags": [
+        "#NoiseCancelling",
+        "#AudioExperience",
+        "#TAGRY",
+        "#Headphones",
+        "#TechGadgets"
+      ]
+    },
+    "voice_path": "assets/B0GJRHL473_voice.wav",
+    "youtube_uploaded": true,
+    "youtube_video_id": "j1BhmhU9nH8",
+    "youtube_url": "https://youtube.com/watch?v=j1BhmhU9nH8"
   }
 ]
