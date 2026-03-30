@@ -1,15 +1,5 @@
 [
   {
-    "asin": "B07H3QVZQ2",
-    "title": "REOLINK Smart 5MP 8CH Home Security Camera System, 4pcs Wired PoE IP Cameras Outdoor with Person/Pet/Vehicle Detection, 4K 8CH NVR with 2TB HDD for 24-7 Recording, RLK8-520D4-5MP",
-    "processed_at": "2026-03-02T08:02:30.807180",
-    "category": "Life & Style",
-    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B07H3QVZQ2&MarketPlace=US&ID=AsinImage&WS=1",
-    "images": [
-      "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B07H3QVZQ2&MarketPlace=US&ID=AsinImage&WS=1"
-    ]
-  },
-  {
     "asin": "B0D9XDD74B",
     "title": "Hiseeu 4K Wired Security Camera System with Audio,Smart Color Night Vision,3TB Hard Drive,AI Human/Vehicle Detection,8PCS 8MP IP67 Weatherproof Home CCTV Cameras,Indoor/Outdoor Surveillance DVR Kit",
     "processed_at": "2026-03-02T08:02:47.265202",
@@ -2488,5 +2478,53 @@
     },
     "youtube_video_id": "WNWqA8dIjwI",
     "youtube_url": "https://youtube.com/watch?v=WNWqA8dIjwI"
+  },
+  {
+    "asin": "B00NGV4506",
+    "title": "Ninja Professional Blender, Smoothie Blender, Drink Mixer, Grinder, Ice Crusher, Frozen Fruit Blending | Professional 1000 W Power, Total Crushing \u2122 Technology, XL 72-oz. Pitcher Black, Grey, BL610",
+    "price": "$89.99",
+    "rating": "4.6",
+    "reviews_count": "56653",
+    "category": "Home & Auto",
+    "images": [
+      "https://m.media-amazon.com/images/I/71nav64rg1L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61DvtaqAWML._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61DvtaqAWML._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/813wN4jqPdL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81pTBdGd6uL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81bZaq+aj6L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/815yYMny9RL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71jMb2QBl-L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/31jWCOWssAL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51YL-nyoA7L._SL1500_.jpg"
+    ],
+    "image_url": "https://m.media-amazon.com/images/I/71nav64rg1L._AC_SL1500_.jpg",
+    "bullets": [
+      "PROFESSIONAL POWER: 1000 watts of professional power can crush ice and breakdown any tough ingredient.Power source : Corded Electric.Amperage : 12.5 amps",
+      "XL CAPACITY: The 72 oz professional blender pitcher is excellent for making frozen drinks and creamy smoothies for the entire family. 64 oz. max liquid capacity",
+      "INTELLIGENT TECHNOLOGY: Total Crushing Technology delivers unbeatable power with blades that pulverize and crush through ice, whole fruits and vegetables in seconds.",
+      "ICE CRUSHING: Blast ice into snow in seconds and blend your favorite ingredients into delicious resort-style frozen drinks",
+      "RECIPE INSPIRATION: The included recipe guide provides drink and dish making inspiration."
+    ],
+    "affiliate_url": "https://www.amazon.com/dp/B00NGV4506?tag=amazingcoolfinds-20",
+    "processed_at": "2026-03-30T02:00:37.150886",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B00NGV4506",
+      "scroll_target": "product-B00NGV4506",
+      "full_url": "https://amazing-cool-finds.com/#product-B00NGV4506"
+    },
+    "script": {
+      "title": "Unlock the Secret to Perfect Smoothies!",
+      "narration": "Does your blender struggle with ice? Meet the Ninja Professional Blender! With 1000 watts of power and Total Crushing Technology, it transforms whole fruits and ice into silky smooth drinks in seconds. Perfect for family-sized batches! Link is in the first comment!",
+      "hashtags": [
+        "SmoothieGoals",
+        "NinjaBlender",
+        "KitchenHacks",
+        "HealthyLiving",
+        "BlenderLife"
+      ]
+    },
+    "youtube_video_id": "cBaF6mjokZM",
+    "youtube_url": "https://youtube.com/watch?v=cBaF6mjokZM"
   }
 ]
