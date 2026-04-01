@@ -1,25 +1,5 @@
 [
   {
-    "asin": "B08QZWDLP4",
-    "title": "Ninja BN301 Nutri-Blender Plus Compact Personal Blender, 900-Peak-Watt Motor, Frozen Drinks, Smoothies, Sauces & More, (3) 20 oz. To-Go Cups, (2) Spout-Lids (1) Storage-Lid, Dishwasher Safe, Silver",
-    "processed_at": "2026-03-06T04:20:18.983788",
-    "category": "Life & Style",
-    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B08QZWDLP4&MarketPlace=US&ID=AsinImage&WS=1",
-    "images": [
-      "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B08QZWDLP4&MarketPlace=US&ID=AsinImage&WS=1"
-    ]
-  },
-  {
-    "asin": "B0CD1JTBSC",
-    "title": "Meta Quest 3 512GB | VR Headset \u2014 Thirty Percent Sharper Resolution \u2014 2X Graphical Processing Power \u2014 Virtual Reality Without Wires \u2014 Access to 40+ Games with a 3-Month Trial of Meta Horizon+ Included",
-    "processed_at": "2026-03-06T12:42:39.793704",
-    "category": "Life & Style",
-    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0CD1JTBSC&MarketPlace=US&ID=AsinImage&WS=1",
-    "images": [
-      "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0CD1JTBSC&MarketPlace=US&ID=AsinImage&WS=1"
-    ]
-  },
-  {
     "asin": "B0DVS5QGSN",
     "title": "Meta Quest 2 \u2014 Advanced All-In-One Virtual Reality Headset \u2014 256 GB (Renewed)",
     "processed_at": "2026-03-06T12:42:53.620568",
@@ -2862,5 +2842,98 @@
     },
     "youtube_video_id": "9LMlf-G4_UM",
     "youtube_url": "https://youtube.com/watch?v=9LMlf-G4_UM"
+  },
+  {
+    "asin": "B0DT468CJC",
+    "title": "[PKY] Pyunkang Yul Calming Skincare Gift Set with Premium Gift Wrapping, Vegan, Korean Skincare (3-item set)",
+    "price": "$49.99",
+    "rating": "4.5",
+    "reviews_count": "1863",
+    "category": "Life & Style",
+    "images": [
+      "https://m.media-amazon.com/images/I/61Tx3-7eN3L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61W6s7X59wL._SX679_.jpg",
+      "https://m.media-amazon.com/images/I/61DbmqiDXTL._SL1000_.jpg",
+      "https://m.media-amazon.com/images/I/51YkgtMrLvL._SL1000_.jpg",
+      "https://m.media-amazon.com/images/I/61NZaTmcZ8L._SL1000_.jpg",
+      "https://m.media-amazon.com/images/I/61W6s7X59wL._SL1000_.jpg",
+      "https://m.media-amazon.com/images/I/71yHDkjFzdL._SL1000_.jpg"
+    ],
+    "image_url": "https://m.media-amazon.com/images/I/61Tx3-7eN3L._SL1500_.jpg",
+    "bullets": [
+      "[Ultimate Hydration Trio] Includes a calming barrier cream, hydrating serum, and reinforcing toner for comprehensive skincare.",
+      "[Clinically Proven Effects] Tested rigorous for safety, our formula ensures zero irritation, making it safe and effective for all skin types, especially sensitive skin.",
+      "[Specializing in Sensitive Skin Types] Enriched with Tea Tree and Lonicera Japonica, this cream soothes and controls sebum, ideal for sensitive skin types. All ingredients are EWG green rated.",
+      "[Key Ingredients] Contains Tea Tree Extract, Hyaluronic Acid, Panthenol, and Centella Asiatica for deep hydration and soothing.",
+      "[50-Year Philosophy] Skincare that focuses on fundamental causes rather than temporary effects, providing comfortable skin relaxation with minimal ingredients."
+    ],
+    "affiliate_url": "https://www.amazon.com/dp/B0DT468CJC?tag=amazingcoolfinds-20",
+    "processed_at": "2026-04-01T13:09:43.697665",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0DT468CJC",
+      "scroll_target": "product-B0DT468CJC",
+      "full_url": "https://amazing-cool-finds.com/#product-B0DT468CJC"
+    },
+    "script": {
+      "title": "Unlock the Secret to Calming Skincare!",
+      "narration": "Does your sensitive skin drive you crazy? Meet the PKY Calming Skincare Gift Set! This trio of hydrating serum, soothing cream, and refreshing toner delivers ultimate hydration for a silky-smooth complexion. Vegan and EWG green rated\u2014it's time to love your skin again! Link is in the first comment!",
+      "hashtags": [
+        "#KoreanSkincare",
+        "#SensitiveSkin",
+        "#SkincareRoutine",
+        "#VeganBeauty",
+        "#Hydration"
+      ]
+    },
+    "youtube_video_id": "rE4XC-CcYYE",
+    "youtube_url": "https://youtube.com/watch?v=rE4XC-CcYYE"
+  },
+  {
+    "asin": "B0F384Y1KR",
+    "title": "Anua 3-Step Glass Skin Beginner Set, Oil Cleanser and Face Wash with Facial Serum, Double Cleansing Daily Routine with Niacinamide, Korean Skin Care Set",
+    "price": "$45.00",
+    "rating": "4.5",
+    "reviews_count": "2491",
+    "category": "Life & Style",
+    "images": [
+      "https://m.media-amazon.com/images/I/31O6K0Qp4sL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41S5JJJBXaL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41-IAq2oEuL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41nJRSnO6RL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41OtOJM2M3L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51PveA9HefL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61-Kak5yCQL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71-ri1+N52L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71BdMbIvrfL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71lXF78l+kL._SL1500_.jpg"
+    ],
+    "image_url": "https://m.media-amazon.com/images/I/31O6K0Qp4sL._SL1500_.jpg",
+    "bullets": [
+      "[3-Step Glass Skin Routine ] Achieve visibly radiant, smooth glass skin with this beginner-friendly set",
+      "[Step 1: Deep Cleansing Oil] Non-Comedogenic, effective in removing makeup residue and sebum.",
+      "[Step 2: Gentle Cleanser] Daily gentle hydrating foam cleanser with heartleaf extract for comfortable double cleansing",
+      "[Step 3: Viral TXA Serum] Dark spot care daily serum with TXA and niacinamide, lightweight and fast absorbing",
+      "[Suitable for daily use] Patch test recommended and avoid the eye area"
+    ],
+    "affiliate_url": "https://www.amazon.com/dp/B0F384Y1KR?tag=amazingcoolfinds-20",
+    "processed_at": "2026-04-01T13:09:53.606400",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0F384Y1KR",
+      "scroll_target": "product-B0F384Y1KR",
+      "full_url": "https://amazing-cool-finds.com/#product-B0F384Y1KR"
+    },
+    "script": {
+      "title": "Unlock Your Glass Skin Dream!",
+      "narration": "Does your skin crave that radiant glow? Meet Anua's 3-Step Glass Skin Beginner Set! Deep cleanse, hydrate, and transform with niacinamide for effortlessly silky skin. It's a game-changer for your daily routine! Link is in the first comment!",
+      "hashtags": [
+        "#GlassSkinGoals",
+        "#KBeauty",
+        "#SkincareRoutine",
+        "#Anua",
+        "#GlowUp"
+      ]
+    },
+    "youtube_video_id": "RK9iiCN1vIQ",
+    "youtube_url": "https://youtube.com/watch?v=RK9iiCN1vIQ"
   }
 ]
