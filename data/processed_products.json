@@ -1,15 +1,5 @@
 [
   {
-    "asin": "B082KGF6FX",
-    "title": "REOLINK 4K Security Camera System, RLK16-800B8 8pcs H.265 PoE Wired with Person Vehicle Detection, 8MP/4K 16CH NVR with 4TB HDD for 24-7 Recording",
-    "processed_at": "2026-03-07T16:23:54.082401",
-    "category": "Tech",
-    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B082KGF6FX&MarketPlace=US&ID=AsinImage&WS=1",
-    "images": [
-      "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B082KGF6FX&MarketPlace=US&ID=AsinImage&WS=1"
-    ]
-  },
-  {
     "asin": "B0F1GF1KFC",
     "title": "Dell 27 Plus 4K Monitor - S2725QS - 27-inch 4K (3840 x 2160) 120Hz 16:9 Display, IPS Panel, AMD FreeSync Premium, sRGB 99%, Integrated Speakers, 1500:1 Contrast Ratio, Comfortview - Ash White",
     "processed_at": "2026-03-08T01:44:42.597808",
@@ -3492,5 +3482,53 @@
     },
     "youtube_video_id": "Xlaag3vZ7vg",
     "youtube_url": "https://youtube.com/watch?v=Xlaag3vZ7vg"
+  },
+  {
+    "asin": "B0D53126XJ",
+    "title": "CASABREWS Ultra Espresso Machine with LCD Display, Espresso Maker with Powerful Milk Frother, Customizable Brewing Temperature, Provides Barista-Level Lattes and Cappuccinos, Gift for Men & Women",
+    "price": "$209.99",
+    "rating": "4.5",
+    "reviews_count": "667",
+    "category": "Home & Auto",
+    "images": [
+      "https://m.media-amazon.com/images/I/71nqCsovh7L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81+Yhcj-GLL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/616COrMJTIL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71bFHCDSnSL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71tSM+UZ1pL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71qVpbxZsDL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/718eJtUq8xL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61C4qKHd0OL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61JAEasfHKL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71nqCsovh7L._AC_SX679_.jpg"
+    ],
+    "image_url": "https://m.media-amazon.com/images/I/71nqCsovh7L._AC_SL1500_.jpg",
+    "bullets": [
+      "Brew Cafe-Quality Espresso at Home: Elevate your coffee experience with our sleek coffee machine featuring an LCD display and built-in milk frother. Make your favorite lattes, cappuccinos, and macchiatos effortlessly. Perfect for home, office, or as a thoughtful gift for any occasion",
+      "Customizable Brewing Temperature: Adjust the brewing temperature with four settings to suit your taste or your family\u2019s preferences. Whether it's a cold morning or a craving for perfect espresso, enjoy your coffee at the ideal temperature. Note: Adjustment only applies to espresso brewing",
+      "Professional 20-Bar Pressure System: Featuring a 20-bar Italian pump and 1350W powerful boiler, this semi-automatic espresso machine delivers perfect pressure to extract rich flavors and oils. Enjoy consistent espresso, cappuccinos, lattes, and more with barista-quality results at home or office",
+      "Powerful Milk Frothing System: Create barista-level microfoam with Ultra's advanced steam wand. Texture rich, creamy microfoam for stunning latte art and enhanced coffee flavor. Unleash your inner barista and craft unique designs at home with this top-tier frother",
+      "Sleek & Easy-to-Use Design: This 20-bar espresso machine features a user-friendly control panel for steam, hot water, and pre-programmed shots. The clear LCD display guides you through each step, while the removable 73 oz water tank makes refilling easy. Its brushed stainless steel finish fits any kitchen decor"
+    ],
+    "affiliate_url": "https://www.amazon.com/dp/B0D53126XJ?tag=amazingcoolfinds-20",
+    "processed_at": "2026-04-04T01:47:15.874850",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0D53126XJ",
+      "scroll_target": "product-B0D53126XJ",
+      "full_url": "https://amazing-cool-finds.com/#product-B0D53126XJ"
+    },
+    "script": {
+      "title": "Unlock Barista Magic at Home!",
+      "narration": "POV: You just found the missing piece for your coffee setup. With CASABREWS Ultra Espresso Machine, brew silky smooth lattes and froth like a pro! Customizable temps and 20-bar pressure bring caf\u00e9 vibes home. Elevate your mornings\u2014link is in the first comment!",
+      "hashtags": [
+        "#EspressoLove",
+        "#CoffeeGoals",
+        "#HomeBarista",
+        "#LatteArt",
+        "#CASABREWS"
+      ]
+    },
+    "youtube_video_id": "t3mtBC1izZ4",
+    "youtube_url": "https://youtube.com/watch?v=t3mtBC1izZ4"
   }
 ]
