@@ -1,15 +1,5 @@
 [
   {
-    "asin": "B09W5SFK6L",
-    "title": "Powrun P-ONE Jump Starter, 2000A Portable Jump Box - Car Jump Starter Battery Pack for up to 8.0L Gas and 6.5L Diesel Engines, 12V Battery Jump Starter with Carry Case (Orange)",
-    "processed_at": "2026-03-09T12:52:51.716310",
-    "category": "Home & Auto",
-    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B09W5SFK6L&MarketPlace=US&ID=AsinImage&WS=1",
-    "images": [
-      "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B09W5SFK6L&MarketPlace=US&ID=AsinImage&WS=1"
-    ]
-  },
-  {
     "asin": "B07CTBHQZK",
     "title": "nutribullet Personal Blender, Shakes, Smoothies, Food Prep, and Frozen Blending, 24 Ounces, 600 Watt, Gray, NBR-0601WM",
     "processed_at": "2026-03-09T12:53:09.468703",
@@ -3785,5 +3775,48 @@
     },
     "youtube_video_id": "_ytvrDoi4i8",
     "youtube_url": "https://youtube.com/watch?v=_ytvrDoi4i8"
+  },
+  {
+    "asin": "B0CT9XTKKM",
+    "title": "JBL Tune 770NC - Adaptive Noise Cancelling with Smart Ambient Wireless Over-Ear Headphones, Bluetooth 5.3, Up to 70H Battery Life with Speed Charge, Lightweight, Comfortable & Foldable Design (Black)",
+    "price": "$99.95",
+    "rating": "4.5",
+    "reviews_count": "4702",
+    "category": "Tech",
+    "images": [
+      "https://m.media-amazon.com/images/I/51U5Qm-7rpL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61turRGN1cL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61NudoNt44L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51V1bf76cML._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51V1bf76cML._AC_SX679_.jpg"
+    ],
+    "image_url": "https://m.media-amazon.com/images/I/51U5Qm-7rpL._AC_SL1500_.jpg",
+    "bullets": [
+      "Adaptive Noise Cancelling with Smart Ambient: Adaptive Noise Cancelling means zero distractions whether you\u2019re studying or getting lost in the music. If you want to hear the world around you, activate Ambient Aware and TalkThru in the JBL Headphones app.",
+      "Bluetooth 5.3 with LE Audio: Wirelessly stream high-quality JBL Pure Bass Sound. In the JBL Headphones app select Audio mode for the best sound quality or Video Mode to ensure the sound and visuals of your movie/game are in sync. Available via OTA update",
+      "JBL Pure Bass Sound: JBL Tune 770NC headphones feature renowned JBL Pure Bass sound\u2014the same that powers the most famous music venues all around the world.",
+      "Customize your listening experience: Download the free JBL Headphones App to tailor the sound to your taste by choosing one of the pre-set EQ modes or adjusting the EQ curve according to your content, your style, your taste.",
+      "Hands-free calls with VoiceAware: Easily control your sound and manage your calls from your headphones with the convenient buttons on the ear-cup. Hear your voice while you're talking, with the help of VoiceAware."
+    ],
+    "affiliate_url": "https://www.amazon.com/dp/B0CT9XTKKM?tag=amazingcoolfinds-20",
+    "processed_at": "2026-04-06T12:59:23.846437",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0CT9XTKKM",
+      "scroll_target": "product-B0CT9XTKKM",
+      "full_url": "https://amazing-cool-finds.com/#product-B0CT9XTKKM"
+    },
+    "script": {
+      "title": "Unlock Your Sound Experience!",
+      "narration": "POV: You just discovered the JBL Tune 770NC headphones! With adaptive noise cancelling, you can drown out distractions or let in the world. Experience JBL Pure Bass sound like never before. Comfort, battery life, and customization\u2014this is your ultimate listening hack! Link is in the first comment!",
+      "hashtags": [
+        "#JBLHeadphones",
+        "#TechLovers",
+        "#MusicVibes",
+        "#NoiseCancelling",
+        "#SoundExperience"
+      ]
+    },
+    "youtube_video_id": "mtS5cAsITUo",
+    "youtube_url": "https://youtube.com/watch?v=mtS5cAsITUo"
   }
 ]
