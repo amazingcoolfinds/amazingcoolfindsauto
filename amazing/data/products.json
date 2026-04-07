@@ -4826,5 +4826,69 @@
     "youtube_uploaded": true,
     "youtube_video_id": "mtS5cAsITUo",
     "youtube_url": "https://youtube.com/watch?v=mtS5cAsITUo"
+  },
+  {
+    "asin": "B0CTSC3VS4",
+    "title": "msi MPG 321URX QD-OLED, 32\" 4K UHD Quantum Dot OLED Gaming Monitor, 3840 x 2160, 0.03ms, 240Hz, True Black HDR 400, 90W USB Type C, HDMI, DP Port",
+    "price": "$799.99",
+    "rating": "4.6",
+    "reviews_count": "367",
+    "is_prime": false,
+    "image_url": "https://m.media-amazon.com/images/I/81N4K4vxmaL._AC_SL1500_.jpg",
+    "affiliate_url": "https://www.amazon.com/dp/B0CTSC3VS4?tag=amazingcoolfinds-20",
+    "category": "Tech",
+    "commission": 0.04,
+    "selection_score": 75,
+    "selection_reasoning": "This product is priced at $799.99, which provides a high profit potential. Although it has no rating yet, it has a significant number of reviews (367), indicating potential popularity. The commission rate is 4%, leading to a high absolute commission potential.",
+    "bsr": [
+      {
+        "rank": "3726",
+        "category": "Electronics"
+      },
+      {
+        "rank": "136",
+        "category": "Computer Monitors ASIN B"
+      }
+    ],
+    "images": [
+      "https://m.media-amazon.com/images/I/81N4K4vxmaL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81h0w75BgqL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81t1vlRQ68L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/510CBXK1xIL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41arijUW+3L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41UZIGLP7nL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41aP4SvbE2L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61FcausyqOL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51zHiXCfGBL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41k90zwZjNL._SL1500_.jpg"
+    ],
+    "bullets": [
+      "31.5\" UHD (3840 x 2160) QD-OLED panel",
+      "High 240Hz refresh rate, ultra-low 0.03ms GtG response time",
+      "1.07 billion colours (10-bit) with incredible gamut (DCI-P3 99%) & accuracy (\u0394E \u22642)",
+      "VESA DisplayHDR True Black 400 certified",
+      "OLED Care 2.0 & MSI Gaming Intelligence AI"
+    ],
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0CTSC3VS4",
+      "scroll_target": "product-B0CTSC3VS4",
+      "full_url": "https://amazing-cool-finds.com/#product-B0CTSC3VS4"
+    },
+    "processed_at": "2026-04-07T01:56:12.764576",
+    "script": {
+      "title": "The Ultimate Gaming Monitor You Didn't Know You Needed!",
+      "narration": "POV: You just found the missing piece for your ultimate gaming setup. The MSI MPG 321URX QD-OLED delivers jaw-dropping 4K visuals and silky smooth 240Hz action. Say goodbye to lag and hello to true immersive gaming magic. Link is in the first comment!",
+      "hashtags": [
+        "#GamingMonitor",
+        "#MSI",
+        "#QuantumDotOLED",
+        "#TechGadgets",
+        "#4KGaming"
+      ]
+    },
+    "voice_path": "assets/B0CTSC3VS4_voice.wav",
+    "youtube_uploaded": true,
+    "youtube_video_id": "h-NE6sXEF3s",
+    "youtube_url": "https://youtube.com/watch?v=h-NE6sXEF3s"
   }
 ]
