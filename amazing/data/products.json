@@ -8773,5 +8773,64 @@
     "youtube_uploaded": true,
     "youtube_video_id": "THA7VDsWo5w",
     "youtube_url": "https://youtube.com/watch?v=THA7VDsWo5w"
+  },
+  {
+    "asin": "B0G4SCX27Q",
+    "title": "Meta Quest 3S 256GB | VR Headset \u2014 Thirty-Three Percent More Memory \u2014 2X Graphical Processing Power \u2014 Virtual Reality Without Wires \u2014 Access to 40+ Games with a 3-Month Trial of Meta Horizon+ Included",
+    "price": "$449.99",
+    "rating": "4.6",
+    "reviews_count": "32",
+    "is_prime": false,
+    "image_url": "https://m.media-amazon.com/images/I/81dkwRED6UL._SL1500_.jpg",
+    "affiliate_url": "https://www.amazon.com/dp/B0G4SCX27Q?tag=amazingcoolfinds-20",
+    "category": "Tech",
+    "commission": 0.04,
+    "selection_score": 75,
+    "selection_reasoning": "This product is priced at $449.99, which provides a high profit potential. Although it has no rating yet, the price suggests it could be a high-value item. However, it is not Prime eligible.",
+    "bsr": [
+      {
+        "rank": "24",
+        "category": "Video Games"
+      },
+      {
+        "rank": "4",
+        "category": "Cell Phone Virtual Reality"
+      }
+    ],
+    "images": [
+      "https://m.media-amazon.com/images/I/81dkwRED6UL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61-SGpdmgRL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61-SGpdmgRL._SX522_.jpg",
+      "https://m.media-amazon.com/images/I/31L7ehmO3gL.jpg",
+      "https://m.media-amazon.com/images/I/4110l+2xywL._SL1001_.jpg"
+    ],
+    "bullets": [
+      "NO WIRES, MORE FUN \u2014 Break free from cords. Game, play, exercise and explore immersive worlds \u2014 untethered and without limits.",
+      "2X GRAPHICAL PROCESSING POWER \u2014 Enjoy lightning-fast load times and next-gen graphics for smooth gaming powered by the SnapdragonTM XR2 Gen 2 processor.",
+      "EXPERIENCE VIRTUAL REALITY \u2014 Take gaming to a new level and blend virtual objects with your physical space to experience two worlds at once.",
+      "2+ HOURS OF BATTERY LIFE \u2014 Charge less, play longer and stay in the action with an improved battery that keeps up.",
+      "33% MORE MEMORY \u2014 Elevate your play with 8GB of RAM. Upgraded memory delivers a next-level experience fueled by sharper graphics and more responsive performance."
+    ],
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0G4SCX27Q",
+      "scroll_target": "product-B0G4SCX27Q",
+      "full_url": "https://amazing-cool-finds.com/#product-B0G4SCX27Q"
+    },
+    "processed_at": "2026-04-21T13:13:44.056467",
+    "script": {
+      "title": "Unlock Your Imagination with Meta Quest 3S!",
+      "narration": "POV: You just leveled up your gaming experience! With zero wires and 2X the graphical power, the Meta Quest 3S immerses you in worlds you never knew existed. Play, explore, and blend reality like never before. Link is in the first comment!",
+      "hashtags": [
+        "#MetaQuest3S",
+        "#VirtualReality",
+        "#GamingUpgrade",
+        "#TechLovers",
+        "#ImmersiveExperience"
+      ]
+    },
+    "voice_path": "assets/B0G4SCX27Q_voice.wav",
+    "youtube_uploaded": true,
+    "youtube_video_id": "CBbrBny1NGM",
+    "youtube_url": "https://youtube.com/watch?v=CBbrBny1NGM"
   }
 ]
