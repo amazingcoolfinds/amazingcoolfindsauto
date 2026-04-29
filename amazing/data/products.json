@@ -10483,5 +10483,62 @@
     "youtube_uploaded": true,
     "youtube_video_id": "qYPQfn8SGlQ",
     "youtube_url": "https://youtube.com/watch?v=qYPQfn8SGlQ"
+  },
+  {
+    "asin": "B0D62GMQ3F",
+    "title": "Anker Portable Power Station SOLIX C300, 288Wh LiFePO4 Battery, 300W (600W Surge) Solar Generator, 140W Two-Way Fast Charging, for Outdoor Camping, Traveling, and Emergencies (Solar Panel Optional)",
+    "price": "$229.99",
+    "rating": "4.6",
+    "reviews_count": "1639",
+    "is_prime": false,
+    "image_url": "https://m.media-amazon.com/images/I/71haWV5yyPL._AC_SL1500_.jpg",
+    "affiliate_url": "https://www.amazon.com/dp/B0D62GMQ3F?tag=amazingcoolfinds-20",
+    "category": "Tech",
+    "commission": 0.04,
+    "bsr": [
+      {
+        "rank": "3670",
+        "category": "Patio"
+      },
+      {
+        "rank": "7",
+        "category": "Outdoor Generators ASIN B"
+      }
+    ],
+    "images": [
+      "https://m.media-amazon.com/images/I/71haWV5yyPL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71ZuqfXZZgL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81KYoX1JWbL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71PnC2BppSL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71ZuqfXZZgL._AC_SX679_.jpg"
+    ],
+    "bullets": [
+      "Compact with Massive Power: It's portable power that moves as freely as you. Give your devices 300W (600W Surge) and 288Wh. Fast charge with 140W two-way USB-C ports.",
+      "8 Versatile Charging Ports: Keep your essential devices powered (e.g., laptops, phones, cameras, drones) with 3x AC outlets (300W total), 1x car socket (120W), 2x USB-C (140W each), 1x USB-C (15W), and 1x USB-A (12W).",
+      "Travel-Friendly Design: Attach the strap(sold separately) or simply carry this power station. It's 15% smaller than similar designs and perfect for spontaneous adventures.",
+      "Solar-Powered Escapes: When your journey needs endless charging, do so seamlessly and sustainably with a 100W solar panel. We recommend 100W or 60W Anker Solar Panel. This power station is not compatible with Anker SOLIX PS30 (or other 5V~3A USB-C panels), PS200, PS400.",
+      "Your Choice of Recharging: Recharge to 80% in just 50 minutes with a wall outlet, or use solar panels, your car, or the PD 3.1 USB-C port. Stay charged, no matter where you are."
+    ],
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0D62GMQ3F",
+      "scroll_target": "product-B0D62GMQ3F",
+      "full_url": "https://amazing-cool-finds.com/#product-B0D62GMQ3F"
+    },
+    "processed_at": "2026-04-29T02:29:10.422785",
+    "script": {
+      "title": "Unlock Endless Adventure with Anker!",
+      "narration": "POV: You just found the missing piece for your outdoor setup. The Anker SOLIX C300 packs a punch with 300W of power and 288Wh of battery life. Compact, travel-friendly, and perfect for camping or emergencies! Link is in the first comment!",
+      "hashtags": [
+        "#AnkerPower",
+        "#OutdoorAdventures",
+        "#TechEssentials",
+        "#PortablePower",
+        "#CampingGear"
+      ]
+    },
+    "voice_path": "assets/B0D62GMQ3F_voice.wav",
+    "youtube_uploaded": true,
+    "youtube_video_id": "3Z81WKrzIrk",
+    "youtube_url": "https://youtube.com/watch?v=3Z81WKrzIrk"
   }
 ]
