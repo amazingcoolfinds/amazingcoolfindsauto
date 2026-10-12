@@ -44,17 +44,6 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
-      - name: Cache Playwright Browsers
-        uses: actions/cache@v4
-        id: playwright-cache
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
-
-      - name: Install Playwright & Dependencies
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium
-
       - name: Install FFmpeg
         run: |
           sudo apt-get update
@@ -64,6 +53,20 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
+
+      - name: Cache Playwright Browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
+
+      - name: Install Playwright & Dependencies
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: pip install playwright && playwright install --with-deps chromium
+
+      - name: Ensure Playwright is fully ready
+        run: playwright install chromium
 
       - name: Run Enhanced Pipeline
         env:
