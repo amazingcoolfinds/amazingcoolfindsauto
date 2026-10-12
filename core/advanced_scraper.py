@@ -1,10 +1,10 @@
 import logging
 import time
 import re
+import random
+import json
 from pathlib import Path
 from playwright.sync_api import sync_playwright
-# Removed unused selectorlib import
-
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -26,14 +26,13 @@ class AdvancedScraper:
         """
         Scrapes Amazon product page using Playwright (Headless Browser) + BeautifulSoup.
         """
+        asin = asin.strip().upper()
         url = f"https://www.amazon.com/dp/{asin}"
         log.info(f"🕸️  [Playwright] Navigating to {asin}...")
         
         with sync_playwright() as p:
             # Launch browser (Headless)
             browser = p.chromium.launch(headless=True)
-            
-            import random
             
             # Random delay before starting
             time.sleep(random.uniform(2, 5))
@@ -56,13 +55,14 @@ class AdvancedScraper:
             page = context.new_page()
             
             try:
-                # Go to page with longer timeout and wait_until='networkidle'
+                # Go to page with longer timeout and wait_until='load'
                 page.goto(url, timeout=60000, wait_until='load')
                 
                 # Check for "dog" page (404) or Captcha
                 content = page.content()
                 if "To discuss automated access" in content or "robot check" in content.lower():
                     log.warning("⚠️  Amazon blocked the request (Captcha/Bot Detection)")
+                    browser.close()
                     return None
                 
                 # Extract content
@@ -73,7 +73,6 @@ class AdvancedScraper:
                 
                 # Parse with BeautifulSoup
                 from bs4 import BeautifulSoup
-                import json
                 soup = BeautifulSoup(html, 'html.parser')
                 
                 # 1. Title
@@ -85,7 +84,8 @@ class AdvancedScraper:
                         title = el.get_text(strip=True)
                         break
                 
-                if not title: return None
+                if not title: 
+                    return None
 
                 # 2. Price
                 price = "$29.99"
@@ -104,12 +104,11 @@ class AdvancedScraper:
                 if landing_img and landing_img.get('data-a-dynamic-image'):
                     try:
                         dyn_data = json.loads(landing_img.get('data-a-dynamic-image'))
-                        # Sort by resolution (key is resolution string or width/height depending on layout)
-                        # Usually keys are URLs, values are [width, height]
                         sorted_urls = sorted(dyn_data.items(), key=lambda x: x[1][0] * x[1][1], reverse=True)
                         if sorted_urls:
                             images.append(sorted_urls[0][0])
-                    except: pass
+                    except: 
+                        pass
 
                 # B. Gallery JSON (colorImages)
                 json_match = re.search(r'colorImages":\s*({.+?}),\s*"', html)
@@ -122,10 +121,11 @@ class AdvancedScraper:
                         for color in img_data.values():
                             for entry in color:
                                 # Prioritize hiRes, then large
-                                url = entry.get('hiRes') or entry.get('large') or entry.get('main', {}).get('url')
-                                if url and 'https' in url and 'sprite' not in url:
-                                    images.append(url)
-                    except: pass
+                                img_url = entry.get('hiRes') or entry.get('large') or entry.get('main', {}).get('url')
+                                if img_url and 'https' in img_url and 'sprite' not in img_url:
+                                    images.append(img_url)
+                    except: 
+                        pass
                 
                 # C. Manual Scrape + Universal High-Res Transformer
                 if len(images) < 5:
@@ -133,9 +133,6 @@ class AdvancedScraper:
                     for img in img_els:
                         src = img.get('src') or img.get('data-old-hires') or img.get('data-a-dynamic-image')
                         if src and 'https' in src and 'sprite' not in src:
-                            # Universal Transformer: 
-                            # Convert thumbnails (e.g. ._SS40_.jpg, ._AC_US40_.jpg, ._SR38,50_.jpg) to high-res (_SL1500_)
-                            # This regex matches the common patterns between the last dot and the extension
                             hi_res_src = re.sub(r'\._[A-Z0-9,._]+_\.(jpg|jpeg|png|gif)', r'._SL1500_.\1', src)
                             images.append(hi_res_src)
                         
@@ -170,209 +167,22 @@ class AdvancedScraper:
                 
                 final_images.sort(key=img_quality_key, reverse=True)
                 
-                images = final_images[:12]
+                # 4. Canonical Affiliate URL Builder (Fixes the tracking and format issues)
+                affiliate_url = f"https://www.amazon.com/dp/{asin}?tag={self.associate_tag}"
                 
-                if len(images) < 4:
-                    log.warning(f"⚠️ Not enough valid images for {asin} (found {len(images)}, need 4+). Skipping.")
-                    return None
-                
-                # 4. Rating & Reviews
-                rating = "4.5"
-                reviews_count = "0"
-                rating_el = soup.select_one('span[data-hook="rating-out-of-text"]') or soup.select_one('.a-icon-alt')
-                if rating_el:
-                    rating_text = rating_el.get_text(strip=True)
-                    r_match = re.search(r'(\d[,.]\d)', rating_text)
-                    if r_match:
-                        rating = r_match.group(1).replace(',', '.')
-                
-                reviews_el = soup.select_one('#acrCustomerReviewText')
-                if reviews_el:
-                    rev_text = reviews_el.get_text(strip=True)
-                    rev_match = re.search(r'([\d,.]+)', rev_text)
-                    if rev_match:
-                        reviews_count = rev_match.group(1).replace(',', '').replace('.', '')
-
-                # 5. Prime Status
-                is_prime = bool(soup.select_one('#prime_feature_div, .a-icon-prime, #upsell_prime_feature_div'))
-
-                # 6. BSR (Best Sellers Rank)
-                bsr_data = []
-                # BSR is often in a specific table or bullet point
-                # Searching in 'Product details' section
-                details_text = soup.get_text(" ", strip=True)
-                # Common patterns: "#1 in ...", "Best Sellers Rank: #1,234 in ..."
-                bsr_matches = re.findall(r'#([\d,]+)\s+in\s+([A-Za-z\s&]+)', details_text)
-                for rank, category in bsr_matches:
-                    bsr_data.append({"rank": rank.replace(',', ''), "category": category.strip()})
-                
-                # 7. Bullets
-                bullets = []
-                bullet_els = soup.select('#feature-bullets li span.a-list-item')
-                for b in bullet_els:
-                    text = b.get_text(strip=True)
-                    if text and len(text) > 10:
-                        bullets.append(text)
-                
+                # Return the complete cleaned data structure
                 return {
                     "asin": asin,
                     "title": title,
                     "price": price,
-                    "rating": rating,
-                    "reviews_count": reviews_count,
-                    "is_prime": is_prime,
-                    "bsr": bsr_data[:2], # Top 2 ranks
-                    "image_url": images[0],
-                    "images": images[:10],
-                    "bullets": bullets[:5],
-                    "affiliate_url": f"https://www.amazon.com/dp/{asin}?tag={self.associate_tag}"
+                    "images": final_images[:6],  # Max 6 high-res images for the video pipeline
+                    "url": affiliate_url
                 }
-                
+
             except Exception as e:
-                import traceback
-                log.error(f"Playwright/Soup Error: {e}\n{traceback.format_exc()}")
-                if 'browser' in locals(): browser.close()
-                return None
-                
-        return None
-
-    def _process_data(self, data, asin):
-         # Deprecated, logic moved to get_details
-         pass
-
-    def search(self, keywords, max_results=3):
-        """
-        Search Amazon for products using Playwright to bypass bot detection.
-        """
-        from urllib.parse import quote_plus
-        url = f"https://www.amazon.com/s?k={quote_plus(keywords)}"
-        products = []
-        
-        log.info(f"🔍 [Playwright] Searching for '{keywords}'...")
-        
-        with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
-            
-            import random
-            
-            # Select random UA
-            ua = random.choice(self.user_agents)
-            
-            # Create context with stealthy headers (Unified with get_details)
-            context = browser.new_context(
-                user_agent=ua,
-                viewport={'width': 1920, 'height': 1080},
-                locale='en-US',
-                timezone_id='America/New_York',
-                extra_http_headers={
-                    'Referer': 'https://www.amazon.com/',
-                    'Accept-Language': 'en-US,en;q=0.9',
-                }
-            )
-            page = context.new_page()
-            
-            try:
-                page.goto(url, timeout=30000, wait_until='domcontentloaded')
-                
-                # Increase timeout and add random wait to mimic human behavior
-                time.sleep(random.uniform(2, 5))
-                
+                log.error(f"❌ Error scraping {asin}: {str(e)}")
                 try:
-                    # Increased timeout to 20s for GitHub Actions / slower networks
-                    page.wait_for_selector('div[data-component-type="s-search-result"], .s-result-item', timeout=20000)
-                except:
-                    # Check for bot detection specifically
-                    content = page.content()
-                    if "To discuss automated access" in content or "captcha" in content.lower():
-                        log.error("❌ Amazon blocked search (Captcha/Bot Detection)")
-                    else:
-                        log.warning("⚠️  Search results selector not found (Timeout or Page Structure Change)")
-                    
-                    # Log snippet of body for debugging
-                    log.debug(f"Page Content Snippet: {content[:500]}")
-                    
-                    # Save error page for manual inspection if needed
-                    debug_file = self.base_dir / "logs" / f"search_error_{int(time.time())}.html"
-                    debug_file.parent.mkdir(exist_ok=True)
-                    with open(debug_file, "w") as f:
-                        f.write(content)
-                    log.error(f"Saved failed search HTML to {debug_file}")
-                    
                     browser.close()
-                    return []
-                
-                # Extract ASINs - using multiple possible selectors
-                items = page.query_selector_all('div[data-component-type="s-search-result"]')
-                if not items:
-                    items = page.query_selector_all('.s-result-item[data-asin]')
-                
-                for item in items[:max_results]:
-                    asin = item.get_attribute('data-asin')
-                    if not asin: continue
-                    
-                    try:
-                        # Extract basic info from search result
-                        title_el = item.query_selector('h2 span')
-                        title = title_el.inner_text() if title_el else f"Product {asin}"
-                        
-                        # Extract Price
-                        price = "$0.00"
-                        price_el = item.query_selector('.a-price .a-offscreen')
-                        if price_el:
-                            price = price_el.inner_text()
-                        
-                        # Extract Rating
-                        rating = "0.0"
-                        rating_el = item.query_selector('i.a-icon-star-small span, i.a-icon-star span')
-                        if rating_el:
-                            rating_text = rating_el.inner_text()
-                            r_match = re.search(r'(\d[,.]\d)', rating_text)
-                            if r_match:
-                                rating = r_match.group(1).replace(',', '.')
-                        
-                        # Extract Reviews
-                        reviews = "0"
-                        reviews_el = item.query_selector('span[aria-label*="reviews"], .a-size-small .a-link-normal')
-                        if reviews_el:
-                            rev_text = reviews_el.get_attribute('aria-label') or reviews_el.inner_text()
-                            rev_match = re.search(r'([\d,.]+)', rev_text)
-                            if rev_match:
-                                reviews = rev_match.group(1).replace(',', '').replace('.', '')
-
-                        # Extract Prime
-                        is_prime = bool(item.query_selector('.a-icon-prime'))
-
-                        products.append({
-                            'asin': asin,
-                            'title': title,
-                            'price': price,
-                            'rating': rating,
-                            'reviews_count': reviews,
-                            'is_prime': is_prime,
-                            'image_url': f"https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN={asin}&MarketPlace=US&ID=AsinImage",
-                            'affiliate_url': f"https://www.amazon.com/dp/{asin}?tag={self.associate_tag}"
-                        })
-                    except Exception as e:
-                        log.warning(f"Failed to parse item {asin}: {e}")
-                        
-                log.info(f"✓ Found {len(products)} products with basic info via Playwright")
-                
-            except Exception as e:
-                log.error(f"Search failed: {e}")
-            finally:
-                browser.close()
-                
-        return products
-
-if __name__ == "__main__":
-    scraper = AdvancedScraper()
-    # Test Search
-    print("Testing Search...")
-    results = scraper.search("gaming mouse", max_results=2)
-    print(results)
-    
-    # Test Details
-    if results:
-        print("\nTesting Details for first result...")
-        details = scraper.get_details(results[0]['asin'])
-        print(details)
+                except:
+                    pass
+                return None
