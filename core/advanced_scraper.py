@@ -186,3 +186,80 @@ class AdvancedScraper:
                 except:
                     pass
                 return None
+
+    def search(self, keywords: str, max_results: int = 3):
+        """Return basic Amazon search-result data for the discovery pipeline.
+
+        ``enhanced_pipeline.py`` deliberately obtains full product details only
+        after selecting candidates.  This method supplies the light-weight
+        search data used for that selection.
+        """
+        from urllib.parse import quote_plus
+
+        url = f"https://www.amazon.com/s?k={quote_plus(keywords)}"
+        products = []
+        log.info("🔍 [Playwright] Searching for '%s'...", keywords)
+
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            try:
+                context = browser.new_context(
+                    user_agent=random.choice(self.user_agents),
+                    viewport={"width": 1920, "height": 1080},
+                    locale="en-US",
+                    timezone_id="America/New_York",
+                    extra_http_headers={
+                        "Referer": "https://www.amazon.com/",
+                        "Accept-Language": "en-US,en;q=0.9",
+                    },
+                )
+                page = context.new_page()
+                page.goto(url, timeout=30000, wait_until="domcontentloaded")
+                time.sleep(random.uniform(2, 5))
+                page.wait_for_selector(
+                    'div[data-component-type="s-search-result"], .s-result-item',
+                    timeout=20000,
+                )
+
+                items = page.query_selector_all('div[data-component-type="s-search-result"]')
+                if not items:
+                    items = page.query_selector_all('.s-result-item[data-asin]')
+
+                for item in items[:max_results]:
+                    asin = item.get_attribute("data-asin")
+                    if not asin:
+                        continue
+                    try:
+                        title_el = item.query_selector("h2 span")
+                        price_el = item.query_selector(".a-price .a-offscreen")
+                        rating_el = item.query_selector("i.a-icon-star-small span, i.a-icon-star span")
+                        reviews_el = item.query_selector('span[aria-label*="reviews"], .a-size-small .a-link-normal')
+
+                        rating_text = rating_el.inner_text() if rating_el else "0.0"
+                        rating_match = re.search(r"(\d[,.]\d)", rating_text)
+                        reviews_text = (
+                            (reviews_el.get_attribute("aria-label") or reviews_el.inner_text())
+                            if reviews_el else "0"
+                        )
+                        reviews_match = re.search(r"([\d,.]+)", reviews_text)
+
+                        products.append({
+                            "asin": asin,
+                            "title": title_el.inner_text() if title_el else f"Product {asin}",
+                            "price": price_el.inner_text() if price_el else "$0.00",
+                            "rating": rating_match.group(1).replace(",", ".") if rating_match else "0.0",
+                            "reviews_count": reviews_match.group(1).replace(",", "").replace(".", "") if reviews_match else "0",
+                            "is_prime": bool(item.query_selector(".a-icon-prime")),
+                            "image_url": f"https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN={asin}&MarketPlace=US&ID=AsinImage",
+                            "affiliate_url": f"https://www.amazon.com/dp/{asin}?tag={self.associate_tag}",
+                        })
+                    except Exception as exc:
+                        log.warning("Failed to parse search result %s: %s", asin, exc)
+            except Exception as exc:
+                log.error("Search failed for '%s': %s", keywords, exc)
+                return []
+            finally:
+                browser.close()
+
+        log.info("✓ Found %d products with basic info via Playwright", len(products))
+        return products

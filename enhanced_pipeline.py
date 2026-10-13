@@ -103,14 +103,16 @@ AFFILIATE_TAG = os.getenv("AMAZON_ASSOCIATE_TAG", "amazingcool-20")
 
 # ─── CONFIGURATION ───────────────────────────────────────────────
 PRODUCT_TARGETS = [
-    {"category": "Beauty & Glow", "keywords": "luxury skincare set", "commission": "10%"},
-    {"category": "Beauty & Glow", "keywords": "luxury perfume fragrance high end", "commission": "10%"},
-    {"category": "Elite Tech", "keywords": "premium tech gadgets 2026", "commission": "4%"},
-    {"category": "Elite Tech", "keywords": "premium mechanical keyboard OLED", "commission": "4%"},
-    {"category": "Quiet Luxury", "keywords": "luxury fashion men premium jacket", "commission": "4%"},
-    {"category": "Quiet Luxury", "keywords": "luxury fashion women premium dress", "commission": "4%"},
-    {"category": "Smart Home", "keywords": "smart air purifier HEPA", "commission": "3%"},
-    {"category": "Smart Home", "keywords": "robot vacuum mop combo", "commission": "3%"},
+    {"category": "Beauty & Glow", "keywords": "luxury skincare premium anti-aging", "commission": "10%"},
+    {"category": "Beauty & Glow", "keywords": "luxury perfume fragrance niche", "commission": "10%"},
+    {"category": "Elite Tech", "keywords": "viral gadgets 2025 trending tech", "commission": "4%"},
+    {"category": "Elite Tech", "keywords": "gaming setup accessories premium", "commission": "4%"},
+    {"category": "Elite Tech", "keywords": "luxury smartwatch premium 2025", "commission": "4%"},
+    {"category": "Elite Tech", "keywords": "premium laptop high end 2025", "commission": "3%"},
+    {"category": "Quiet Luxury", "keywords": "luxury fashion men minimal premium", "commission": "4%"},
+    {"category": "Quiet Luxury", "keywords": "luxury fashion women elegant premium", "commission": "4%"},
+    {"category": "Smart Home", "keywords": "premium home decor luxury modern", "commission": "3%"},
+    {"category": "Smart Home", "keywords": "smart home gadgets automation premium", "commission": "3%"},
 ]
 
 CATEGORY_ALIASES = {
