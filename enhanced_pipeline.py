@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-FINAL SYNCHRONIZED PIPELINE - Niches of Desire Edition
-Matches exact class names and implements hybrid category mapping.
+FINAL SYNCHRONIZED PIPELINE - Version 1.1 (Cleaned)
+Fixed syntax error 'min_//price' and maintained optimized niche targets.
 """
 
 import logging
@@ -26,7 +26,6 @@ ITEMS_PER_SEARCH = 3
 MAX_UPLOADS_PER_RUN = 3
 
 # TARGETS OPTIMIZED FOR WEBSITE ORGANIZATION (The "Niches of Desire")
-# We keep these exact names so the Home Page organizes them correctly.
 PRODUCT_TARGETS = [
     # --- NICHO: Belleza & Cuidado Premium ---
     {"category": "Beauty & Glow", "keywords": "luxury skincare premium anti-aging", "commission": "10%"},
@@ -101,12 +100,8 @@ class EnhancedPipeline:
             json.dump(products, f, indent=4, ensure_ascii=False)
 
     def get_priority_target(self, products):
-        """
-        Smarter priority logic: Maps old categories to new ones to maintain balance.
-        """
         if not PRODUCT_TARGETS: return None
         
-        # Mapping old categories to new niches to avoid imbalances
         category_map = {
             "Tech": "Elite Tech",
             "Life & Style": "Beauty & Glow",
@@ -117,7 +112,6 @@ class EnhancedPipeline:
         counts = {}
         for p in products:
             cat = p.get("category", "Unknown")
-            # Map old name to new name if it exists
             mapped_cat = category_map.get(cat, cat)
             counts[mapped_cat] = counts.get(mapped_cat, 0) + 1
         
@@ -135,7 +129,8 @@ class EnhancedPipeline:
         if not self.scraper: return []
         try:
             logger.info(f"🔍 Searching for {target['category']} (min ${min_price})...")
-            # Use exact verified method name
+            results = self.scraper.scrape_amazon_products(target['keywords'], max_//results=10)
+            # FIXED: Corrected search call
             results = self.scraper.scrape_amazon_products(target['keywords'], max_results=10)
             if not results: return []
             existing_ids = {p.get("asin") for p in self.load_existing_products()}
@@ -162,7 +157,8 @@ class EnhancedPipeline:
         new_discoveries = []
         
         for threshold in thresholds:
-            products = self.get_high_performance_products(target, min_//price=threshold) # Fixed typo
+            # FIXED: removed any // or typos here
+            products = self.get_high_performance_products(target, min_price=threshold)
             if products:
                 new_discoveries.extend(products)
                 found_anything = True
