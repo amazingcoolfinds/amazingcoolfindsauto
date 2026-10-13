@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-UPDATED PIPELINE - Independent Stability Version
-Bypasses external strategy modules to ensure execution.
+UPDATED PIPELINE - Final Hardcoded Stability Version
+Integrated optimized niches for website organization.
 """
 
 import logging
@@ -14,27 +14,37 @@ import os
 from pathlib import Path
 from datetime import datetime
 
-# ─── ROBUST CONFIG LOADING ──────────────────────────────────
-try:
-    import config
-except ImportError:
-    sys.path.append(str(Path(__file__).parent))
-    try:
-        import config
-    except ImportError:
-        print("❌ CRITICAL ERROR: Could not find config.py")
-        sys.exit(1)
+# ─── HARDCODED CONFIG (Bypassing config.py for absolute stability) ──────────────────
+AMAZON_ACCESS_KEY = os.getenv("AMAZON_ACCESS_KEY", "")
+AMAZON_SECRET_KEY = os.getenv("AMAZON_SECRET_KEY", "")
+AMAZON_ASSOCIATE_TAG = os.getenv("AMAZON_ASSOCIATE_TAG", "amazingcoolfinds-20")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+DATA_DIR = Path("data")
+PRODUCTS_JSON = DATA_DIR / "products.json"
+PIPELINE_LOG = Path("logs/pipeline.log")
+ITEMS_PER_SEARCH = 3
+MAX_UPLOADS_PER_RUN = 3
 
-AMAZON_ACCESS_KEY = getattr(config, "AMAZON_ACCESS_KEY", "")
-AMAZON_SECRET_KEY = getattr(config, "AMAZON_SECRET_KEY", "")
-AMAZON_ASSOCIATE_TAG = getattr(config, "AMAZON_ASSOCIATE_TAG", "")
-GEMINI_API_KEY = getattr(config, "GEMINI_API_KEY", "")
-DATA_DIR = getattr(config, "DATA_DIR", Path("data"))
-PRODUCTS_JSON = getattr(config, "PRODUCTS_JSON", Path("data/products.json"))
-PIPELINE_LOG = getattr(config, "PIPELINE_LOG", Path("logs/pipeline.log"))
-PRODUCT_TARGETS = getattr(config, "PRODUCT_TARGETS", [])
-ITEMS_PER_SEARCH = getattr(config, "ITEMS_PER_SEARCH", 3)
-MAX_UPLOADS_PER_RUN = getattr(config, "MAX_UPLOADS_PER_RUN", 3)
+# TARGETS OPTIMIZED FOR WEBSITE ORGANIZATION (The "Niches of Desire")
+PRODUCT_TARGETS = [
+    # --- NICHO: Belleza & Cuidado Premium ---
+    {"category": "Beauty & Glow", "keywords": "luxury skincare premium anti-aging", "commission": "10%"},
+    {"category": "Beauty & Glow", "keywords": "luxury perfume fragrance niche", "commission": "10%"},
+
+    # --- NICHO: Tecnología Elite & Setup ---
+    {"category": "Elite Tech", "keywords": "viral gadgets 2025 trending tech", "commission": "4%"},
+    {"category": "Elite Tech", "keywords": "gaming setup accessories premium", "commission": "4%"},
+    {"category": "Elite Tech", "keywords": "luxury smartwatch premium 2025", "commission": "4%"},
+    {"category": "Elite Tech", "keywords": "premium laptop high end 2025", "commission": "3%"},
+
+    # --- NICHO: Moda Minimalista / Lujo Silencioso ---
+    {"category": "Quiet Luxury", "keywords": "luxury fashion men minimal premium", "commission": "4%"},
+    {"category": "Quiet Luxury", "keywords": "luxury fashion women elegant premium", "commission": "4%"},
+
+    # --- NICHO: Hogar Inteligente & Moderno ---
+    {"category": "Smart Home", "keywords": "premium home decor luxury modern", "commission": "3%"},
+    {"category": "Smart Home", "keywords": "smart home gadgets automation premium", "commission": "3%"},
+]
 
 # ─── INFRASTRUCTURE FIX ──────────────────────────────────────
 for p in [DATA_DIR, PIPELINE_LOG.parent]:
@@ -61,36 +71,29 @@ class EnhancedPipeline:
             logger.error(f"Scraper unavailable: {e}")
             self.scraper = None
 
-        # Load AI Generator (Extreme Tolerance)
+        # AI Generator - Forcing import from the file directly
         try:
-            from core import gemini_generators
-            # Try every possible name for the generator class
-            gen_class = None
+            import core.gemini_generators as gg
+            self.generator = None
             for name in ["GeminiGenerator", "GeminiProductGenerator", "Generator"]:
-                if hasattr(gemini_generators, name):
-                    gen_class = getattr(gemini_generators, name)
+                if hasattr(gg, name):
+                    self.generator = getattr(gg, name)()
                     break
-            
-            if gen_class:
-                self.generator = gen_class()
-            else:
-                logger.error("Could not find any Generator class in gemini_generators.py")
-                self.generator = None
+            if not self.generator:
+                logger.error("No valid Generator class found in core.gemini_generators")
         except Exception as e:
             logger.error(f"GeminiGenerator error: {e}")
             self.generator = None
 
-        # Uploaders
+        # Uploaders (Tolerant)
         try:
             from core.youtube_uploader import YouTubeUploader
             self.yt_uploader = YouTubeUploader()
         except: self.yt_uploader = None
-
         try:
             from core.tiktok_uploader import TikTokUploader
             self.tt_uploader = TikTokUploader()
         except: self.tt_uploader = None
-
         try:
             from core.meta_uploader import MetaUploader
             self.meta_uploader = MetaUploader()
@@ -109,77 +112,59 @@ class EnhancedPipeline:
             json.dump(products, f, indent=4, ensure_ascii=False)
 
     def get_priority_target_internal(self, products):
-        """ Internal logic to replace the failing StrategyMonitor """
-        if not PRODUCT_TARGETS:
-            return None
-        
-        # Count products per category
+        if not PRODUCT_TARGETS: return None
         counts = {}
         for p in products:
             cat = p.get("category", "Unknown")
             counts[cat] = counts.get(cat, 0) + 1
-        
-        # Find category with fewest products among our targets
         min_count = float('inf')
         priority = None
-        
         for target in PRODUCT_TARGETS:
             cat = target['category']
             count = counts.get(cat, 0)
             if count < min_count:
                 min_count = count
                 priority = target
-        
         return priority or random.choice(PRODUCT_TARGETS)
 
     def get_high_performance_products(self, target, min_price=50):
-        if not self.scraper:
-            logger.error("Scraper not available.")
-            return []
+        if not self.scraper: return []
         try:
             logger.info(f"🔍 Searching for {target['category']} products (min ${min_price})...")
-            # Use the confirmed function name from the scraper
             search_results = self.scraper.fetch_amazon_products(target['keywords'], max_results=10)
-            if not search_results:
-                return []
+            if not search_results: return []
             existing_ids = {p.get("asin") for p in self.load_existing_products()}
-            valid_products = [
-                p for p in search_results 
-                if p.get("asin") not in existing_ids 
-                and float(re.sub(r'[^\d.]', '', p.get("price", "0"))) >= min_price
-            ]
-            return valid_products
+            return [p for p in search_results if p.get("asin") not in existing_ids and float(re.sub(r'[^\d.]', '', p.get("price", "0"))) >= min_price]
         except Exception as e:
             logger.error(f"Error in search: {e}")
             return []
 
     def run_production_cycle(self):
-        logger.info("🚀 STARTING INDEPENDENT AUTOMATED PIPELINE...")
+        logger.info("🚀 STARTING ORGANIZED STABILITY PIPELINE...")
         logger.info("============================================================")
         
         existing_products = self.load_existing_products()
-        
-        # USE INTERNAL PRIORITY LOGIC (Bypassing StrategyMonitor)
         priority_target = self.get_priority_target_internal(existing_products)
+        
         if not priority_target:
-            logger.error("No targets defined in config.py. Aborting.")
+            logger.error("No targets found. Aborting.")
             sys.exit(1)
 
-        logger.info(f"🎯 Priority Target determined internally: {priority_target['category']}")
+        logger.info(f"🎯 Target Nicho: {priority_target['category']}")
 
         thresholds = [50, 35, 20]
         found_anything = False
         new_discoveries = []
         
         for threshold in thresholds:
-            products = self.get_high_performance_products(priority_//target, min_price=threshold) # Fixed variable
+            products = self.get_high_performance_products(priority_target, min_price=threshold)
             if products:
                 new_discoveries.extend(products)
                 found_anything = True
                 break
         
         if not found_anything:
-            logger.error("❌ No strategic products found today.")
+            logger.error("❌ No strategic products found.")
             sys.exit(1)
 
         if not self.generator:
@@ -192,14 +177,13 @@ class EnhancedPipeline:
                 if self.yt_uploader: self.yt_uploader.upload(enriched_data)
                 if self.tt_uploader: self.tt_uploader.upload(enriched_data)
                 if self.meta_uploader: self.meta_uploader.upload(enriched_data)
-                
                 existing_products.append(prod)
                 self.save_products(existing_products)
-                logger.info(f"✅ Successfully processed: {prod.get('title')}")
+                logger.info(f"✅ Processed: {prod.get('title')}")
             except Exception as e:
                 logger.error(f"Failed to process product {prod.get('asin')}: {e}")
 
-        logger.info("🏁 Pipeline cycle completed successfully.")
+        logger.info("🏁 Pipeline completed successfully.")
 
 if __name__ == "__main__":
     pipeline = EnhancedPipeline()
