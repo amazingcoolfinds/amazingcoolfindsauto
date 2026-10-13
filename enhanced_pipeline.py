@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-UPDATED PIPELINE - Enhanced website links with unique identifiers
-and integrated strategic product discovery.
+UPDATED PIPELINE - Robust version with direct config loading
+to prevent ImportError in GitHub Actions.
 """
 
 import logging
@@ -9,15 +9,37 @@ import time
 import re
 import random
 import json
+import sys
 from pathlib import Path
 from datetime import datetime
 
+# ─── ROBUST CONFIG LOADING ──────────────────────────────────
+# Instead of 'from config import...', we load the config module dynamically
+# to avoid 'ImportError: cannot import name' in some environments.
+try:
+    import config
+except ImportError:
+    # If it fails, we try to add the current directory to the path
+    sys.path.append(str(Path(__file__).parent))
+    try:
+        import config
+    except ImportError:
+        print("❌ CRITICAL ERROR: Could not find config.py in the project root.")
+        sys.exit(1)
+
+# Map variables from the config module
+AMAZON_ACCESS_KEY = getattr(config, "AMAZON_ACCESS_KEY", "")
+AMAZON_SECRET_KEY = getattr(config, "AMAZON_SECRET_KEY", "")
+AMAZON_ASSOCIATE_TAG = getattr(config, "AMAZON_ASSOCIATE_TAG", "")
+GEMINI_API_KEY = getattr(config, "GEMINI_API_KEY", "")
+DATA_DIR = getattr(config, "DATA_DIR", Path("data"))
+PRODUCTS_JSON = getattr(config, "PRODUCTS_JSON", Path("data/products.json"))
+PIPELINE_LOG = getattr(config, "PIPELINE_LOG", Path("logs/pipeline.log"))
+PRODUCT_TARGETS = getattr(config, "PRODUCT_TARGETS", [])
+ITEMS_PER_SEARCH = getattr(config, "ITEMS_PER_SEARCH", 3)
+MAX_UPLOADS_PER_RUN = getattr(config, "MAX_UPLOADS_PER_RUN", 3)
+
 # Internal Module Imports
-from config import (
-    AMAZON_ACCESS_KEY, AMAZON_SECRET_KEY, AMAZON_ASSOCIATE_TAG,
-    GEMINI_API_KEY, DATA_DIR, PRODUCTS_JSON, PIPELINE_LOG,
-    PRODUCT_TARGETS, ITEMS_PER_SEARCH, MAX_UPLOADS_PER_RUN
-)
 from core.advanced_scraper import AdvancedScraper
 from core.gemini_generators import GeminiProductGenerator
 from core.meta_uploader import MetaUploader
@@ -65,7 +87,7 @@ class EnhancedPipeline:
         try:
             logger.info(f"🔍 Searching for {target['category']} products (min ${min_price})...")
             
-            # FIXED: Changed scraper.search to scraper.fetch_amazon_products
+            # FIXED: Correct function name from AdvancedScraper
             search_results = self.scraper.fetch_amazon_products(
                 target['keywords'], 
                 max_results=10
@@ -116,21 +138,16 @@ class EnhancedPipeline:
         
         if not found_anything:
             logger.error("❌ No strategic products found today after all attempts.")
-            # We exit with 1 to signal failure in GitHub Actions
-            exit(1)
+            sys.exit(1)
 
         # Process discoveries through AI and uploaders
         for prod in new_discoveries[:MAX_UPLOADS_PER_RUN]:
             try:
-                # AI Generation
                 enriched_data = self.generator.generate_marketing_assets(prod)
-                
-                # Uploads
                 self.yt_uploader.upload(enriched_data)
                 self.tt_uploader.upload(enriched_data)
                 self.meta_uploader.upload(enriched_data)
                 
-                # Save to local database
                 existing_products.append(prod)
                 self.save_products(existing_products)
                 
