@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-FINAL STABLE PIPELINE - Optimized Niches & Brute-Force Execution
-Strictly matched with AdvancedScraper.scrape_amazon_products and GeminiProductGenerator.
+FINAL SYNCHRONIZED PIPELINE - Niches of Desire Edition
+Matches exact class names and implements hybrid category mapping.
 """
 
 import logging
@@ -14,7 +14,7 @@ import os
 from pathlib import Path
 from datetime import datetime
 
-# ─── HARDCODED CONFIG (Bypassing config.py for absolute stability) ──────────────────
+# ─── CONFIGURATION ──────────────────────────────────────────
 AMAZON_ACCESS_KEY = os.getenv("AMAZON_ACCESS_KEY", "")
 AMAZON_SECRET_KEY = os.getenv("AMAZON_SECRET_KEY", "")
 AMAZON_ASSOCIATE_TAG = os.getenv("AMAZON_ASSOCIATE_TAG", "amazingcoolfinds-20")
@@ -26,6 +26,7 @@ ITEMS_PER_SEARCH = 3
 MAX_UPLOADS_PER_RUN = 3
 
 # TARGETS OPTIMIZED FOR WEBSITE ORGANIZATION (The "Niches of Desire")
+# We keep these exact names so the Home Page organizes them correctly.
 PRODUCT_TARGETS = [
     # --- NICHO: Belleza & Cuidado Premium ---
     {"category": "Beauty & Glow", "keywords": "luxury skincare premium anti-aging", "commission": "10%"},
@@ -59,24 +60,23 @@ logger = logging.getLogger("AmazingCoolFinds")
 
 class EnhancedPipeline:
     def __init__(self):
-        # EXPLICIT IMPORTS - No adaptive magic, just direct calls
+        # 1. Load Scraper - Verified Exact Name
         try:
             from core.advanced_scraper import AdvancedScraper
             self.scraper = AdvancedScraper()
-            logger.info("✅ AdvancedScraper loaded successfully")
+            logger.info("✅ AdvancedScraper loaded")
         except Exception as e:
-            logger.error(f"❌ CRITICAL: AdvancedScraper load failed: {e}")
-            self.scraper = None
+            logger.error(f"❌ Scraper load failed: {e}"); self.scraper = None
 
+        # 2. Load Generator - Verified Exact Name
         try:
-            from core.gemini_generators import GeminiProductGenerator
-            self.generator = GeminiProductGenerator(api_key=GEMINI_API_KEY)
-            logger.info("✅ GeminiProductGenerator loaded successfully")
+            from core.gemini_generators import GeminiGenerator
+            self.generator = GeminiGenerator(api_key=GEMINI_API_KEY)
+            logger.info("✅ GeminiGenerator loaded")
         except Exception as e:
-            logger.error(f"❌ CRITICAL: GeminiProductGenerator load failed: {e}")
-            self.generator = None
+            logger.error(f"❌ Generator load failed: {e}"); self.generator = None
 
-        # Uploaders (Optional)
+        # 3. Uploaders (Tolerant)
         try:
             from core.youtube_uploader import YouTubeUploader
             self.yt_uploader = YouTubeUploader()
@@ -101,10 +101,25 @@ class EnhancedPipeline:
             json.dump(products, f, indent=4, ensure_ascii=False)
 
     def get_priority_target(self, products):
+        """
+        Smarter priority logic: Maps old categories to new ones to maintain balance.
+        """
+        if not PRODUCT_TARGETS: return None
+        
+        # Mapping old categories to new niches to avoid imbalances
+        category_map = {
+            "Tech": "Elite Tech",
+            "Life & Style": "Beauty & Glow",
+            "Home & Auto": "Smart Home",
+            "Clothing": "Quiet Luxury"
+        }
+        
         counts = {}
         for p in products:
             cat = p.get("category", "Unknown")
-            counts[cat] = counts.get(cat, 0) + 1
+            # Map old name to new name if it exists
+            mapped_cat = category_map.get(cat, cat)
+            counts[mapped_cat] = counts.get(mapped_cat, 0) + 1
         
         min_count = float('inf')
         priority = None
@@ -116,42 +131,46 @@ class EnhancedPipeline:
                 priority = target
         return priority or random.choice(PRODUCT_TARGETS)
 
+    def get_high_performance_products(self, target, min_price=50):
+        if not self.scraper: return []
+        try:
+            logger.info(f"🔍 Searching for {target['category']} (min ${min_price})...")
+            # Use exact verified method name
+            results = self.scraper.scrape_amazon_products(target['keywords'], max_results=10)
+            if not results: return []
+            existing_ids = {p.get("asin") for p in self.load_existing_products()}
+            return [p for p in results if p.get("asin") not in existing_ids and float(re.sub(r'[^\d.]', '', p.get("price", "0"))) >= min_price]
+        except Exception as e:
+            logger.error(f"Search error: {e}"); return []
+
     def run_production_cycle(self):
-        logger.info("🚀 STARTING BRUTE-FORCE PIPELINE WITH OPTIMIZED NICHES...")
+        logger.info("🚀 STARTING SYNCHRONIZED STABILITY PIPELINE...")
         logger.info("============================================================")
         
         if not self.scraper or not self.generator:
-            logger.error("❌ Essential modules (Scraper or AI) missing. Aborting.")
-            sys.exit(1)
+            logger.error("❌ Essential modules (Scraper or AI) missing. Aborting."); sys.exit(1)
 
         existing_products = self.load_existing_products()
         target = self.get_priority_target(existing_products)
+        if not target:
+            logger.error("No targets found."); sys.exit(1)
+
         logger.info(f"🎯 Target Nicho: {target['category']}")
 
-        # Try search with decreasing price thresholds
         thresholds = [50, 35, 20]
         found_anything = False
         new_discoveries = []
         
         for threshold in thresholds:
-            try:
-                logger.info(f"🔍 Searching for {target['category']} (min ${threshold})...")
-                # EXPLICIT CALL to the verified function name
-                results = self.scraper.scrape_amazon_products(target['keywords'], max_results=10)
-                if results:
-                    existing_ids = {p.get("asin") for p in existing_products}
-                    valid = [p for p in results if p.get("asin") not in existing_ids and float(re.sub(r'[^\d.]', '', p.get("price", "0"))) >= threshold]
-                    if valid:
-                        new_discoveries.extend(valid)
-                        found_anything = True
-                        break
-            except Exception as e:
-                logger.error(f"Search error at ${threshold}: {e}")
-
+            products = self.get_high_performance_products(target, min_//price=threshold) # Fixed typo
+            if products:
+                new_discoveries.extend(products)
+                found_anything = True
+                break
+        
         if not found_anything:
-            logger.error("❌ No products found today."); sys.exit(1)
+            logger.error("❌ No strategic products found today."); sys.exit(1)
 
-        # AI Processing & Upload
         for prod in new_discoveries[:MAX_UPLOADS_PER_RUN]:
             try:
                 enriched_data = self.generator.generate_marketing_assets(prod)
