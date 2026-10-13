@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-UPDATED PIPELINE - Emergency Stability Version
-Uses dynamic imports to bypass persistent ImportError issues in GitHub Actions.
+UPDATED PIPELINE - Infrastructure Stability Version
+Ensures all necessary directories exist before logging and execution.
 """
 
 import logging
@@ -10,6 +10,7 @@ import re
 import random
 import json
 import sys
+import os
 from pathlib import Path
 from datetime import datetime
 
@@ -35,6 +36,12 @@ PRODUCT_TARGETS = getattr(config, "PRODUCT_TARGETS", [])
 ITEMS_PER_SEARCH = getattr(config, "ITEMS_PER_SEARCH", 3)
 MAX_UPLOADS_PER_RUN = getattr(config, "MAX_UPLOADS_PER_RUN", 3)
 
+# ─── INFRASTRUCTURE FIX ──────────────────────────────────────
+# Ensure directories exist BEFORE initializing logging to prevent FileNotFoundError
+for p in [DATA_DIR, PIPELINE_LOG.parent]:
+    if p and not p.exists():
+        p.mkdir(parents=True, exist_ok=True)
+
 # Logging Configuration
 logging.basicConfig(
     level=logging.INFO,
@@ -48,7 +55,6 @@ logger = logging.getLogger("AmazingCoolFinds")
 
 class EnhancedPipeline:
     def __init__(self):
-        # Dynamic Imports: We load the classes ONLY when needed to avoid startup crashes
         try:
             from core.advanced_scraper import AdvancedScraper
             self.scraper = AdvancedScraper()
