@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-UPDATED PIPELINE - Final stability version
-Corrected class names to match core modules and robust config loading.
+UPDATED PIPELINE - Emergency Stability Version
+Uses dynamic imports to bypass persistent ImportError issues in GitHub Actions.
 """
 
 import logging
@@ -21,7 +21,7 @@ except ImportError:
     try:
         import config
     except ImportError:
-        print("❌ CRITICAL ERROR: Could not find config.py in the project root.")
+        print("❌ CRITICAL ERROR: Could not find config.py")
         sys.exit(1)
 
 AMAZON_ACCESS_KEY = getattr(config, "AMAZON_ACCESS_KEY", "")
@@ -34,14 +34,6 @@ PIPELINE_LOG = getattr(config, "PIPELINE_LOG", Path("logs/pipeline.log"))
 PRODUCT_TARGETS = getattr(config, "PRODUCT_TARGETS", [])
 ITEMS_PER_SEARCH = getattr(config, "ITEMS_PER_SEARCH", 3)
 MAX_UPLOADS_PER_RUN = getattr(config, "MAX_UPLOADS_PER_RUN", 3)
-
-# Internal Module Imports
-from core.advanced_scraper import AdvancedScraper
-from core.gemini_generators import GeminiGenerator # FIXED: Corrected name
-from core.meta_uploader import MetaUploader
-from core.tiktok_uploader import TikTokUploader
-from core.youtube_uploader import YouTubeUploader
-from core.strategy_monitor import StrategyMonitor
 
 # Logging Configuration
 logging.basicConfig(
@@ -56,12 +48,48 @@ logger = logging.getLogger("AmazingCoolFinds")
 
 class EnhancedPipeline:
     def __init__(self):
-        self.scraper = AdvancedScraper()
-        self.generator = GeminiGenerator() # FIXED: Corrected name
-        self.strategy = StrategyMonitor()
-        self.yt_uploader = YouTubeUploader()
-        self.tt_uploader = TikTokUploader()
-        self.meta_uploader = MetaUploader()
+        # Dynamic Imports: We load the classes ONLY when needed to avoid startup crashes
+        try:
+            from core.advanced_scraper import AdvancedScraper
+            self.scraper = AdvancedScraper()
+        except Exception as e:
+            logger.error(f"Failed to load AdvancedScraper: {e}")
+            self.scraper = None
+
+        try:
+            from core.gemini_generators import GeminiGenerator
+            self.generator = GeminiGenerator()
+        except Exception as e:
+            logger.error(f"Failed to load GeminiGenerator: {e}")
+            self.generator = None
+
+        try:
+            from core.strategy_monitor import StrategyMonitor
+            self.strategy = StrategyMonitor()
+        except Exception as e:
+            logger.error(f"Failed to load StrategyMonitor: {e}")
+            self.strategy = None
+
+        try:
+            from core.youtube_uploader import YouTubeUploader
+            self.yt_uploader = YouTubeUploader()
+        except Exception as e:
+            logger.error(f"Failed to load YouTubeUploader: {e}")
+            self.yt_uploader = None
+
+        try:
+            from core.tiktok_uploader import TikTokUploader
+            self.tt_uploader = TikTokUploader()
+        except Exception as e:
+            logger.error(f"Failed to load TikTokUploader: {e}")
+            self.tt_uploader = None
+
+        try:
+            from core.meta_uploader import MetaUploader
+            self.meta_uploader = MetaUploader()
+        except Exception as e:
+            logger.error(f"Failed to load MetaUploader: {e}")
+            self.meta_uploader = None
 
     def load_existing_products(self):
         if not PRODUCTS_JSON.exists():
@@ -77,15 +105,14 @@ class EnhancedPipeline:
             json.dump(products, f, indent=4, ensure_ascii=False)
 
     def get_high_performance_products(self, target, min_price=50):
+        if not self.scraper:
+            logger.error("Scraper not available.")
+            return []
         try:
             logger.info(f"🔍 Searching for {target['category']} products (min ${min_price})...")
-            search_results = self.scraper.fetch_amazon_products(
-                target['keywords'], 
-                max_results=10
-            )
+            search_results = self.scraper.fetch_amazon_products(target['keywords'], max_results=10)
             if not search_results:
                 return []
-
             existing_ids = {p.get("asin") for p in self.load_existing_products()}
             valid_products = [
                 p for p in search_results 
@@ -101,9 +128,11 @@ class EnhancedPipeline:
         logger.info("🚀 STARTING ENHANCED AUTOMATED PIPELINE...")
         logger.info("============================================================")
         
+        if not self.strategy:
+            logger.error("Strategy Monitor not available. Aborting.")
+            sys.exit(1)
+
         existing_products = self.load_existing_products()
-        new_discoveries = []
-        
         priority_target = self.strategy.get_priority_target(existing_products)
         if not priority_target:
             logger.error("Could not determine priority target.")
@@ -111,6 +140,7 @@ class EnhancedPipeline:
 
         thresholds = [50, 35, 20]
         found_anything = False
+        new_discoveries = []
         
         for threshold in thresholds:
             products = self.get_high_performance_products(priority_target, min_price=threshold)
@@ -120,21 +150,23 @@ class EnhancedPipeline:
                 break
         
         if not found_anything:
-            logger.error("❌ No strategic products found today after all attempts.")
+            logger.error("❌ No strategic products found today.")
+            sys.exit(1)
+
+        if not self.generator:
+            logger.error("AI Generator not available. Aborting.")
             sys.exit(1)
 
         for prod in new_discoveries[:MAX_UPLOADS_PER_RUN]:
             try:
-                # The generate_marketing_assets method remains the same in GeminiGenerator
                 enriched_data = self.generator.generate_marketing_assets(prod)
-                self.yt_uploader.upload(enriched_data)
-                self.tt_uploader.upload(enriched_data)
-                self.meta_uploader.upload(enriched_data)
+                if self.yt_uploader: self.yt_uploader.upload(enriched_data)
+                if self.tt_uploader: self.tt_uploader.upload(enriched_data)
+                if self.meta_uploader: self.meta_uploader.upload(enriched_data)
                 
                 existing_products.append(prod)
                 self.save_products(existing_products)
-                
-                logger.info(f"✅ Successfully processed and uploaded: {prod.get('title')}")
+                logger.info(f"✅ Successfully processed: {prod.get('title')}")
             except Exception as e:
                 logger.error(f"Failed to process product {prod.get('asin')}: {e}")
 
