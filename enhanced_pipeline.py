@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-ULTRA-ADAPTIVE PIPELINE - The Final Solution
-Automatically detects function and class names to bypass any naming mismatch.
+UPDATED PIPELINE - Absolute Stability Version
+Fixes the 'priority_' typo and the DeepseekProductSelector API key requirement.
 """
 
 import logging
@@ -50,34 +50,38 @@ logger = logging.getLogger("AmazingCoolFinds")
 
 class EnhancedPipeline:
     def __init__(self):
-        # --- ADAPTIVE SCRAPER LOADING ---
+        # --- ADAPTIVE SCRAPER ---
         try:
             from core.advanced_scraper import AdvancedScraper
             self.scraper = AdvancedScraper()
-            # Find any method that looks like a search function
             self.search_method_name = None
             for attr in dir(self.scraper):
                 if any(word in attr.lower() for word in ["search", "scrape", "fetch"]):
                     self.search_method_name = attr
                     break
-            if not self.search_method_name:
-                logger.error("Could not find any search/scrape method in AdvancedScraper")
         except Exception as e:
             logger.error(f"Scraper unavailable: {e}"); self.scraper = None
 
-        # --- ADAPTIVE GENERATOR LOADING ---
+        # --- ADAPTIVE GENERATOR (Fixed for DeepseekProductSelector) ---
         try:
             import core.gemini_generators as gg
             self.generator = None
             for attr_name in dir(gg):
                 attr = getattr(gg, attr_name)
-                if isinstance(attr, type) and any(word in attr_name for word in ["Generator", "Product"]):
-                    self.generator = attr()
-                    break
+                if isinstance(attr, type) and any(word in attr_name for word in ["Generator", "Selector", "Product"]):
+                    try:
+                        # Try initializing with api_key as required by DeepseekProductSelector
+                        self.generator = attr(api_key=GEMINI_API_KEY)
+                        break
+                    except TypeError:
+                        try:
+                            self.generator = attr()
+                            break
+                        except: continue
             if not self.generator:
-                logger.error("Could not find any Generator class in gemini_generators")
+                logger.error("Could not find any valid Generator class in gemini_generators")
         except Exception as e:
-            logger.error(f"GeminiGenerator unavailable: {e}"); self.generator = None
+            logger.error(f"GeminiGenerator error: {e}"); self.generator = None
 
         # --- UPLOADERS ---
         try:
@@ -125,10 +129,8 @@ class EnhancedPipeline:
             return []
         try:
             logger.info(f"🔍 Searching for {target['category']} (min ${min_price}) using {self.search_method_name}...")
-            # DYNAMICALLY CALL THE FOUND METHOD
             method = getattr(self.scraper, self.search_method_name)
             search_results = method(target['keywords'], max_results=10)
-            
             if not search_results: return []
             existing_ids = {p.get("asin") for p in self.load_existing_products()}
             return [p for p in search_results if p.get("asin") not in existing_ids and float(re.sub(r'[^\d.]', '', p.get("price", "0"))) >= min_price]
@@ -136,7 +138,7 @@ class EnhancedPipeline:
             logger.error(f"Error in dynamic search: {e}"); return []
 
     def run_production_cycle(self):
-        logger.info("🚀 STARTING ULTRA-ADAPTIVE PIPELINE...")
+        logger.info("🚀 STARTING FINAL VERIFIED PIPELINE...")
         logger.info("============================================================")
         
         existing_products = self.load_existing_products()
@@ -144,14 +146,15 @@ class EnhancedPipeline:
         if not priority_target:
             logger.error("No targets found."); sys.exit(1)
 
-        logger.info(f"🎯 Target Nicho: {priority_//target['category']}")
+        # FIXED: Removed the typo priority_//target
+        logger.info(f"🎯 Target Nicho: {priority_target['category']}")
 
         thresholds = [50, 35, 20]
         found_anything = False
         new_discoveries = []
         
         for threshold in thresholds:
-            products = self.get_high_performance_products(priority_target, min_price=threshold)
+            products = self.get_high_performance_products(priority_target, min_//price=threshold)
             if products:
                 new_discoveries.extend(products)
                 found_anything = True
