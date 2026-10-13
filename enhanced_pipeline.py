@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-UPDATED PIPELINE - Final Hardcoded Stability Version
-Integrated optimized niches for website organization.
+UPDATED PIPELINE - Final Verified Version
+Class and function names strictly matched with core/advanced_scraper.py 
+and core/gemini_generators.py.
 """
 
 import logging
@@ -14,7 +15,7 @@ import os
 from pathlib import Path
 from datetime import datetime
 
-# ─── HARDCODED CONFIG (Bypassing config.py for absolute stability) ──────────────────
+# ─── CONFIGURATION ──────────────────────────────────────────
 AMAZON_ACCESS_KEY = os.getenv("AMAZON_ACCESS_KEY", "")
 AMAZON_SECRET_KEY = os.getenv("AMAZON_SECRET_KEY", "")
 AMAZON_ASSOCIATE_TAG = os.getenv("AMAZON_ASSOCIATE_TAG", "amazingcoolfinds-20")
@@ -25,28 +26,20 @@ PIPELINE_LOG = Path("logs/pipeline.log")
 ITEMS_PER_SEARCH = 3
 MAX_UPLOADS_PER_RUN = 3
 
-# TARGETS OPTIMIZED FOR WEBSITE ORGANIZATION (The "Niches of Desire")
 PRODUCT_TARGETS = [
-    # --- NICHO: Belleza & Cuidado Premium ---
     {"category": "Beauty & Glow", "keywords": "luxury skincare premium anti-aging", "commission": "10%"},
     {"category": "Beauty & Glow", "keywords": "luxury perfume fragrance niche", "commission": "10%"},
-
-    # --- NICHO: Tecnología Elite & Setup ---
     {"category": "Elite Tech", "keywords": "viral gadgets 2025 trending tech", "commission": "4%"},
     {"category": "Elite Tech", "keywords": "gaming setup accessories premium", "commission": "4%"},
     {"category": "Elite Tech", "keywords": "luxury smartwatch premium 2025", "commission": "4%"},
     {"category": "Elite Tech", "keywords": "premium laptop high end 2025", "commission": "3%"},
-
-    # --- NICHO: Moda Minimalista / Lujo Silencioso ---
     {"category": "Quiet Luxury", "keywords": "luxury fashion men minimal premium", "commission": "4%"},
     {"category": "Quiet Luxury", "keywords": "luxury fashion women elegant premium", "commission": "4%"},
-
-    # --- NICHO: Hogar Inteligente & Moderno ---
     {"category": "Smart Home", "keywords": "premium home decor luxury modern", "commission": "3%"},
     {"category": "Smart Home", "keywords": "smart home gadgets automation premium", "commission": "3%"},
 ]
 
-# ─── INFRASTRUCTURE FIX ──────────────────────────────────────
+# Ensure directories exist
 for p in [DATA_DIR, PIPELINE_LOG.parent]:
     if p and not p.exists():
         p.mkdir(parents=True, exist_ok=True)
@@ -54,10 +47,7 @@ for p in [DATA_DIR, PIPELINE_LOG.parent]:
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s:%(name)s:%(levelname)s:%(message)s',
-    handlers=[
-        logging.FileHandler(PIPELINE_LOG),
-        logging.StreamHandler()
-    ]
+    handlers=[logging.FileHandler(PIPELINE_LOG), logging.StreamHandler()]
 )
 logger = logging.getLogger("AmazingCoolFinds")
 
@@ -68,24 +58,16 @@ class EnhancedPipeline:
             from core.advanced_scraper import AdvancedScraper
             self.scraper = AdvancedScraper()
         except Exception as e:
-            logger.error(f"Scraper unavailable: {e}")
-            self.scraper = None
+            logger.error(f"Scraper unavailable: {e}"); self.scraper = None
 
-        # AI Generator - Forcing import from the file directly
+        # Load Generator - FIXED NAME: GeminiProductGenerator
         try:
-            import core.gemini_generators as gg
-            self.generator = None
-            for name in ["GeminiGenerator", "GeminiProductGenerator", "Generator"]:
-                if hasattr(gg, name):
-                    self.generator = getattr(gg, name)()
-                    break
-            if not self.generator:
-                logger.error("No valid Generator class found in core.gemini_generators")
+            from core.gemini_generators import GeminiProductGenerator
+            self.generator = GeminiProductGenerator()
         except Exception as e:
-            logger.error(f"GeminiGenerator error: {e}")
-            self.generator = None
+            logger.error(f"GeminiGenerator unavailable: {e}"); self.generator = None
 
-        # Uploaders (Tolerant)
+        # Uploaders
         try:
             from core.youtube_uploader import YouTubeUploader
             self.yt_uploader = YouTubeUploader()
@@ -100,11 +82,9 @@ class EnhancedPipeline:
         except: self.meta_uploader = None
 
     def load_existing_products(self):
-        if not PRODUCTS_JSON.exists():
-            return []
+        if not PRODUCTS_JSON.exists(): return []
         try:
-            with open(PRODUCTS_JSON, "r", encoding="utf-8") as f:
-                return json.load(f)
+            with open(PRODUCTS_JSON, "r", encoding="utf-8") as f: return json.load(f)
         except: return []
 
     def save_products(self, products):
@@ -130,25 +110,23 @@ class EnhancedPipeline:
     def get_high_performance_products(self, target, min_price=50):
         if not self.scraper: return []
         try:
-            logger.info(f"🔍 Searching for {target['category']} products (min ${min_price})...")
-            search_results = self.scraper.fetch_amazon_products(target['keywords'], max_results=10)
+            logger.info(f"🔍 Searching for {target['category']} (min ${min_price})...")
+            # FIXED: Correct function name is scrape_amazon_products
+            search_results = self.scraper.scrape_amazon_products(target['keywords'], max_results=10)
             if not search_results: return []
             existing_ids = {p.get("asin") for p in self.load_existing_products()}
             return [p for p in search_results if p.get("asin") not in existing_ids and float(re.sub(r'[^\d.]', '', p.get("price", "0"))) >= min_price]
         except Exception as e:
-            logger.error(f"Error in search: {e}")
-            return []
+            logger.error(f"Error in search: {e}"); return []
 
     def run_production_cycle(self):
-        logger.info("🚀 STARTING ORGANIZED STABILITY PIPELINE...")
+        logger.info("🚀 STARTING VERIFIED AUTOMATED PIPELINE...")
         logger.info("============================================================")
         
         existing_products = self.load_existing_products()
         priority_target = self.get_priority_target_internal(existing_products)
-        
         if not priority_target:
-            logger.error("No targets found. Aborting.")
-            sys.exit(1)
+            logger.error("No targets found."); sys.exit(1)
 
         logger.info(f"🎯 Target Nicho: {priority_target['category']}")
 
@@ -164,12 +142,10 @@ class EnhancedPipeline:
                 break
         
         if not found_anything:
-            logger.error("❌ No strategic products found.")
-            sys.exit(1)
+            logger.error("❌ No strategic products found today."); sys.exit(1)
 
         if not self.generator:
-            logger.error("AI Generator not available. Aborting.")
-            sys.exit(1)
+            logger.error("AI Generator unavailable."); sys.exit(1)
 
         for prod in new_discoveries[:MAX_UPLOADS_PER_RUN]:
             try:
@@ -181,7 +157,7 @@ class EnhancedPipeline:
                 self.save_products(existing_products)
                 logger.info(f"✅ Processed: {prod.get('title')}")
             except Exception as e:
-                logger.error(f"Failed to process product {prod.get('asin')}: {e}")
+                logger.error(f"Failed product {prod.get('asin')}: {e}")
 
         logger.info("🏁 Pipeline completed successfully.")
 
