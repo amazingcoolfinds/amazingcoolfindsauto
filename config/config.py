@@ -46,14 +46,16 @@ VIDEO_DURATION_SECS = 15
 
 # ─── PRODUCT TARGETS ────────────────────────────────────────
 PRODUCT_TARGETS = [
-    {"category": "Beauty", "keywords": "luxury beauty skincare premium", "commission": "10%"},
-    {"category": "Beauty", "keywords": "luxury perfume fragrance high end", "commission": "10%"},
-    {"category": "Electronics", "keywords": "premium tech gadgets 2025", "commission": "4%"},
-    {"category": "Clothing", "keywords": "luxury fashion men premium jacket", "commission": "4%"},
-    {"category": "Clothing", "keywords": "luxury fashion women premium dress", "commission": "4%"},
-    {"category": "Home", "keywords": "premium home decor luxury modern", "commission": "3%"},
-    {"category": "Electronics", "keywords": "premium laptop high end 2025", "commission": "3%"},
-    {"category": "Electronics", "keywords": "luxury smartwatch premium 2025", "commission": "4%"},
+    {"category": "Beauty & Glow", "keywords": "luxury skincare set", "commission": "10%"},
+    {"category": "Beauty & Glow", "keywords": "luxury perfume fragrance high end", "commission": "10%"},
+    {"category": "Elite Tech", "keywords": "premium tech gadgets 2026", "commission": "4%"},
+    {"category": "Elite Tech", "keywords": "premium mechanical keyboard OLED", "commission": "4%"},
+    {"category": "Elite Tech", "keywords": "smart noise cancelling headphones", "commission": "4%"},
+    {"category": "Quiet Luxury", "keywords": "luxury fashion men premium jacket", "commission": "4%"},
+    {"category": "Quiet Luxury", "keywords": "luxury fashion women premium dress", "commission": "4%"},
+    {"category": "Smart Home", "keywords": "smart air purifier HEPA", "commission": "3%"},
+    {"category": "Smart Home", "keywords": "robot vacuum mop combo", "commission": "3%"},
+    {"category": "Smart Home", "keywords": "premium home decor luxury modern", "commission": "3%"},
 ]
 
 # ─── FILE PATHS ─────────────────────────────────────────────

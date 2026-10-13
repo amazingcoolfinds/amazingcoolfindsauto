@@ -103,10 +103,30 @@ AFFILIATE_TAG = os.getenv("AMAZON_ASSOCIATE_TAG", "amazingcool-20")
 
 # ─── CONFIGURATION ───────────────────────────────────────────────
 PRODUCT_TARGETS = [
-    {"category": "Tech", "keywords": "premium tech gadgets 2026", "commission": "4%"},
-    {"category": "Life & Style", "keywords": "luxury skincare beauty essentials", "commission": "10%"},
-    {"category": "Home & Auto", "keywords": "modern home decor luxury office equipment", "commission": "4%"},
+    {"category": "Beauty & Glow", "keywords": "luxury skincare set", "commission": "10%"},
+    {"category": "Beauty & Glow", "keywords": "luxury perfume fragrance high end", "commission": "10%"},
+    {"category": "Elite Tech", "keywords": "premium tech gadgets 2026", "commission": "4%"},
+    {"category": "Elite Tech", "keywords": "premium mechanical keyboard OLED", "commission": "4%"},
+    {"category": "Quiet Luxury", "keywords": "luxury fashion men premium jacket", "commission": "4%"},
+    {"category": "Quiet Luxury", "keywords": "luxury fashion women premium dress", "commission": "4%"},
+    {"category": "Smart Home", "keywords": "smart air purifier HEPA", "commission": "3%"},
+    {"category": "Smart Home", "keywords": "robot vacuum mop combo", "commission": "3%"},
 ]
+
+CATEGORY_ALIASES = {
+    "Beauty": "Beauty & Glow",
+    "Life & Style": "Beauty & Glow",
+    "Clothing": "Quiet Luxury",
+    "Electronics": "Elite Tech",
+    "Tech": "Elite Tech",
+    "Home": "Smart Home",
+    "Home & Auto": "Smart Home",
+}
+
+
+def normalize_category(category):
+    """Return one of the four site navigation categories."""
+    return CATEGORY_ALIASES.get(category, category or "Beauty & Glow")
 
 # ─── ENHANCED FUNCTIONS ─────────────────────────────────────
 def get_enhanced_website_link(product):
@@ -270,7 +290,7 @@ def get_high_performance_products(count_candidates=15, select_top=3, min_price=6
                 # AI Re-categorization (Robust alignment)
                 try:
                     log.info(f"🧠 AI Re-categorizing {p['asin']}...")
-                    p['category'] = selector.classify_product(p)
+                    p['category'] = normalize_category(selector.classify_product(p))
                     log.info(f"📌 Final Category: {p['category']}")
                 except Exception as e:
                     log.warning(f"⚠️ AI re-categorization failed: {e}. Keeping original: {p['category']}")
@@ -357,11 +377,11 @@ def save_processed_product(product):
         if not product_category or product_category == 'unknown':
             title = clean_product.get('title', '').lower()
             if any(w in title for w in ['laptop', 'phone', 'tablet', 'headphone', 'camera', 'gaming', 'monitor', 'keyboard', 'mouse', 'smart', 'tech', 'electronic']):
-                product_category = 'Tech'
+                product_category = 'Elite Tech'
             elif any(w in title for w in ['dash', 'car', 'auto', 'vehicle']):
-                product_category = 'Home & Auto'
+                product_category = 'Smart Home'
             else:
-                product_category = 'Life & Style'
+                product_category = 'Beauty & Glow'
             log.info(f"🔄 Derived category for {clean_product.get('asin')}: {product_category}")
         
         asin = clean_product.get('asin', '')
@@ -797,11 +817,11 @@ def update_website_data(new_products):
             if not p.get('category') or p.get('category') == 'unknown':
                 title = p.get('title', '').lower()
                 if any(w in title for w in ['laptop', 'phone', 'tablet', 'headphone', 'camera', 'gaming', 'monitor', 'keyboard', 'mouse', 'smart', 'tech', 'electronic']):
-                    p['category'] = 'Tech'
+                    p['category'] = 'Elite Tech'
                 elif any(w in title for w in ['dash', 'car', 'auto', 'vehicle']):
-                    p['category'] = 'Home & Auto'
+                    p['category'] = 'Smart Home'
                 else:
-                    p['category'] = 'Life & Style'
+                    p['category'] = 'Beauty & Glow'
                 no_cat_count += 1
         
         if no_cat_count > 0:
