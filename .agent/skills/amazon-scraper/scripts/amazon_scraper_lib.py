@@ -240,9 +240,25 @@ class AmazonScraper:
                 product_html = match.group(0)
                 
                 # Extract title
-                title_match = re.search(r'<span class="a-size-(?:base-plus|medium|base).*?">([^<]+)</span>', product_html)
+                # Updated regex to prioritize actual titles over badges
+                title_match = re.search(r'<(?:h2|span)[^>]*class="[^"]*a-size-(?:base-plus|medium|base)[^"]*a-color-base a-text-normal"[^>]*>([^<]+)</span>', product_html)
+                if not title_match:
+                    title_match = re.search(r'<span class="a-size-(?:base-plus|medium|base).*?">([^<]+)</span>', product_html)
+
                 title = title_match.group(1).strip() if title_match else f"Product {asin}"
-                
+
+                # Filter out garbage titles (discounts like "-19%", "Save 20%", short strings, etc.)
+                if title.startswith("-") or "%" in title or len(title) < 5:
+                     # Try searching for an h2 with a span inside
+                     h2_match = re.search(r'<h2[^>]*>.*?<span[^>]*>([^<]{10,})</span>', product_html, re.DOTALL)
+                     if h2_match:
+                         title = h2_match.group(1).strip()
+                     else:
+                         # Last resort: find any text longer than 20 chars in the block that doesn't have tags
+                         long_texts = re.findall(r'>([^<]{20,})<', product_html)
+                         if long_texts:
+                             title = long_texts[0].strip()
+
                 # Extract price
                 price_match = re.search(r'<span class="a-price-whole">(\d+)</span>.*?<span class="a-price-fraction">(\d+)</span>', product_html)
                 if price_match:

@@ -22,7 +22,7 @@ class GroqScriptGenerator:
             http_client=httpx.Client(trust_env=False, http2=True, timeout=60.0),
             max_retries=5
         )
-        self.model = "llama-3.3-70b-versatile"
+        self.model = "qwen/qwen3.8-27b"
 
     def generate_script(self, product: dict) -> dict:
         """
@@ -230,7 +230,7 @@ class GroqProductSelector:
             http_client=httpx.Client(trust_env=False, http2=True, timeout=60.0),
             max_retries=5
         )
-        self.model = "llama-3.3-70b-versatile"
+        self.model = "qwen/qwen3.8-27b"
 
     def analyze_candidates(self, category: str, products: list) -> list:
         """
