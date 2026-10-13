@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-UPDATED PIPELINE - Infrastructure Stability Version
-Ensures all necessary directories exist before logging and execution.
+UPDATED PIPELINE - Final Stability & Compatibility Version
+Fixes StrategyMonitor arguments and adds extreme tolerance to module imports.
 """
 
 import logging
@@ -37,12 +37,10 @@ ITEMS_PER_SEARCH = getattr(config, "ITEMS_PER_SEARCH", 3)
 MAX_UPLOADS_PER_RUN = getattr(config, "MAX_UPLOADS_PER_RUN", 3)
 
 # ─── INFRASTRUCTURE FIX ──────────────────────────────────────
-# Ensure directories exist BEFORE initializing logging to prevent FileNotFoundError
 for p in [DATA_DIR, PIPELINE_LOG.parent]:
     if p and not p.exists():
         p.mkdir(parents=True, exist_ok=True)
 
-# Logging Configuration
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s:%(name)s:%(levelname)s:%(message)s',
@@ -55,6 +53,7 @@ logger = logging.getLogger("AmazingCoolFinds")
 
 class EnhancedPipeline:
     def __init__(self):
+        # 1. Advanced Scraper
         try:
             from core.advanced_scraper import AdvancedScraper
             self.scraper = AdvancedScraper()
@@ -62,39 +61,44 @@ class EnhancedPipeline:
             logger.error(f"Failed to load AdvancedScraper: {e}")
             self.scraper = None
 
+        # 2. Gemini Generator (Dynamic attempt)
         try:
-            from core.gemini_generators import GeminiGenerator
-            self.generator = GeminiGenerator()
+            from core import gemini_generators
+            # Try to find the class regardless of the name (GeminiGenerator or GeminiProductGenerator)
+            self.generator = getattr(gemini_generators, "GeminiGenerator", 
+                        getattr(gemini_generators, "GeminiProductGenerator", None))()
         except Exception as e:
             logger.error(f"Failed to load GeminiGenerator: {e}")
             self.generator = None
 
+        # 3. Strategy Monitor (FIXED: Added DATA_DIR argument)
         try:
             from core.strategy_monitor import StrategyMonitor
-            self.strategy = StrategyMonitor()
+            self.strategy = StrategyMonitor(DATA_DIR)
         except Exception as e:
             logger.error(f"Failed to load StrategyMonitor: {e}")
             self.strategy = None
 
+        # 4. Uploaders (Tolerant loading)
         try:
             from core.youtube_uploader import YouTubeUploader
             self.yt_uploader = YouTubeUploader()
         except Exception as e:
-            logger.error(f"Failed to load YouTubeUploader: {e}")
+            logger.error(f"YouTubeUploader unavailable: {e}")
             self.yt_uploader = None
 
         try:
             from core.tiktok_uploader import TikTokUploader
             self.tt_uploader = TikTokUploader()
         except Exception as e:
-            logger.error(f"Failed to load TikTokUploader: {e}")
+            logger.error(f"TikTokUploader unavailable: {e}")
             self.tt_uploader = None
 
         try:
             from core.meta_uploader import MetaUploader
             self.meta_uploader = MetaUploader()
         except Exception as e:
-            logger.error(f"Failed to load MetaUploader: {e}")
+            logger.error(f"MetaUploader unavailable: {e}")
             self.meta_uploader = None
 
     def load_existing_products(self):
