@@ -17,12 +17,10 @@ class StrategyMonitor:
         self.products_file = data_dir / "products.json"
         # Commission rates by category
         self.commissions = {
-            "Tech": 0.04,
-            "Life & Style": 0.10,
-            "Home & Auto": 0.04,
-            "Electronics": 0.04,
-            "Beauty": 0.10,
-            "Toys": 0.03
+            "Beauty & Glow": 0.10,
+            "Elite Tech": 0.04,
+            "Quiet Luxury": 0.04,
+            "Smart Home": 0.03,
         }
 
     def get_discovery_priority(self):
@@ -30,7 +28,21 @@ class StrategyMonitor:
         Analyzes the current product database and returns targets prioritized 
         by which category has fewer items to ensure balanced growth.
         """
-        counts = {"Tech": 0, "Life & Style": 0, "Home & Auto": 0}
+        counts = {
+            "Beauty & Glow": 0,
+            "Elite Tech": 0,
+            "Quiet Luxury": 0,
+            "Smart Home": 0,
+        }
+        legacy_category_map = {
+            "Beauty": "Beauty & Glow",
+            "Life & Style": "Beauty & Glow",
+            "Clothing": "Quiet Luxury",
+            "Electronics": "Elite Tech",
+            "Tech": "Elite Tech",
+            "Home": "Smart Home",
+            "Home & Auto": "Smart Home",
+        }
         
         # Load current product counts
         if self.products_file.exists():
@@ -38,22 +50,24 @@ class StrategyMonitor:
                 with open(self.products_file, 'r') as f:
                     products = json.load(f)
                     for p in products:
-                        cat = p.get('category')
+                        cat = legacy_category_map.get(p.get('category'), p.get('category'))
                         if cat in counts:
                             counts[cat] += 1
             except Exception as e:
                 log.warning(f"Error counting products for balance: {e}")
 
         # Define high-intent, targeted keywords for realistic Amazon searches
-        lifestyle_keywords = ["luxury skincare set", "designer sunglasses polarized", "aromatherapy diffuser kit", "premium yoga mat eco-friendly", "silk pillowcase set luxury"]
-        tech_keywords = ["4k gaming monitor", "premium mechanical keyboard OLED", "smart noise cancelling headphones", "VR headset advanced", "portable power station 1000w"]
-        home_auto_keywords = ["smart air purifier HEPA", "robot vacuum mop combo", "premium espresso machine maker", "high end blender smoothie", "4k dual dash cam", "portable car jump starter 2000A", "wireless apple carplay adapter"]
+        beauty_keywords = ["luxury skincare set", "luxury perfume fragrance high end", "premium anti aging skincare"]
+        tech_keywords = ["premium tech gadgets 2026", "premium mechanical keyboard OLED", "smart noise cancelling headphones", "VR headset advanced"]
+        luxury_keywords = ["luxury fashion men premium jacket", "luxury fashion women premium dress", "designer sunglasses polarized"]
+        home_keywords = ["smart air purifier HEPA", "robot vacuum mop combo", "premium espresso machine maker", "high end blender smoothie"]
 
         # Mix the targets
         targets = [
-            {"category": "Life & Style", "keywords": random.choice(lifestyle_keywords), "count": counts["Life & Style"]},
-            {"category": "Tech", "keywords": random.choice(tech_keywords), "count": counts["Tech"]},
-            {"category": "Home & Auto", "keywords": random.choice(home_auto_keywords), "count": counts["Home & Auto"]}
+            {"category": "Beauty & Glow", "keywords": random.choice(beauty_keywords), "count": counts["Beauty & Glow"]},
+            {"category": "Elite Tech", "keywords": random.choice(tech_keywords), "count": counts["Elite Tech"]},
+            {"category": "Quiet Luxury", "keywords": random.choice(luxury_keywords), "count": counts["Quiet Luxury"]},
+            {"category": "Smart Home", "keywords": random.choice(home_keywords), "count": counts["Smart Home"]},
         ]
 
         # Sort by count (ascending) to prioritize the least populated category
