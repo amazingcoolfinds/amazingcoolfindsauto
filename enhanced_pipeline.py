@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-UPDATED PIPELINE - Robust version with direct config loading
-to prevent ImportError in GitHub Actions.
+UPDATED PIPELINE - Final stability version
+Corrected class names to match core modules and robust config loading.
 """
 
 import logging
@@ -14,12 +14,9 @@ from pathlib import Path
 from datetime import datetime
 
 # ─── ROBUST CONFIG LOADING ──────────────────────────────────
-# Instead of 'from config import...', we load the config module dynamically
-# to avoid 'ImportError: cannot import name' in some environments.
 try:
     import config
 except ImportError:
-    # If it fails, we try to add the current directory to the path
     sys.path.append(str(Path(__file__).parent))
     try:
         import config
@@ -27,7 +24,6 @@ except ImportError:
         print("❌ CRITICAL ERROR: Could not find config.py in the project root.")
         sys.exit(1)
 
-# Map variables from the config module
 AMAZON_ACCESS_KEY = getattr(config, "AMAZON_ACCESS_KEY", "")
 AMAZON_SECRET_KEY = getattr(config, "AMAZON_SECRET_KEY", "")
 AMAZON_ASSOCIATE_TAG = getattr(config, "AMAZON_ASSOCIATE_TAG", "")
@@ -41,7 +37,7 @@ MAX_UPLOADS_PER_RUN = getattr(config, "MAX_UPLOADS_PER_RUN", 3)
 
 # Internal Module Imports
 from core.advanced_scraper import AdvancedScraper
-from core.gemini_generators import GeminiProductGenerator
+from core.gemini_generators import GeminiGenerator # FIXED: Corrected name
 from core.meta_uploader import MetaUploader
 from core.tiktok_uploader import TikTokUploader
 from core.youtube_uploader import YouTubeUploader
@@ -61,7 +57,7 @@ logger = logging.getLogger("AmazingCoolFinds")
 class EnhancedPipeline:
     def __init__(self):
         self.scraper = AdvancedScraper()
-        self.generator = GeminiProductGenerator()
+        self.generator = GeminiGenerator() # FIXED: Corrected name
         self.strategy = StrategyMonitor()
         self.yt_uploader = YouTubeUploader()
         self.tt_uploader = TikTokUploader()
@@ -81,51 +77,38 @@ class EnhancedPipeline:
             json.dump(products, f, indent=4, ensure_ascii=False)
 
     def get_high_performance_products(self, target, min_price=50):
-        """
-        Discovers products based on strategic targets and price thresholds.
-        """
         try:
             logger.info(f"🔍 Searching for {target['category']} products (min ${min_price})...")
-            
-            # FIXED: Correct function name from AdvancedScraper
             search_results = self.scraper.fetch_amazon_products(
                 target['keywords'], 
                 max_results=10
             )
-            
             if not search_results:
                 return []
 
-            # Filter by price and remove duplicates
             existing_ids = {p.get("asin") for p in self.load_existing_products()}
             valid_products = [
                 p for p in search_results 
                 if p.get("asin") not in existing_ids 
                 and float(re.sub(r'[^\d.]', '', p.get("price", "0"))) >= min_price
             ]
-            
             return valid_products
         except Exception as e:
             logger.error(f"Error in high-performance selection: {e}")
             return []
 
     def run_production_cycle(self):
-        """
-        Main execution loop for the enhanced pipeline.
-        """
         logger.info("🚀 STARTING ENHANCED AUTOMATED PIPELINE...")
         logger.info("============================================================")
         
         existing_products = self.load_existing_products()
         new_discoveries = []
         
-        # Determine priority based on category balance
         priority_target = self.strategy.get_priority_target(existing_products)
         if not priority_target:
             logger.error("Could not determine priority target.")
             return
 
-        # Attempt search with decreasing price thresholds
         thresholds = [50, 35, 20]
         found_anything = False
         
@@ -140,9 +123,9 @@ class EnhancedPipeline:
             logger.error("❌ No strategic products found today after all attempts.")
             sys.exit(1)
 
-        # Process discoveries through AI and uploaders
         for prod in new_discoveries[:MAX_UPLOADS_PER_RUN]:
             try:
+                # The generate_marketing_assets method remains the same in GeminiGenerator
                 enriched_data = self.generator.generate_marketing_assets(prod)
                 self.yt_uploader.upload(enriched_data)
                 self.tt_uploader.upload(enriched_data)
