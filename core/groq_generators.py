@@ -311,15 +311,16 @@ class GroqProductSelector:
         bullets = ". ".join(product.get('bullets', []))
         
         prompt = (
-            "Classify this Amazon product into EXACTLY one of these three categories:\n"
-            "1. 'Tech' (Laptops, smartphones, headphones, gaming consoles, smart home hubs, cameras)\n"
-            "2. 'Life & Style' (Skincare, makeup, fashion, jewelry, watches, yoga/fitness, fragrance, wellness)\n"
-            "3. 'Home & Auto' (Kitchen appliances, blenders, coffee makers, home furniture, car accessories, power tools, decor)\n\n"
+            "Classify this Amazon product into EXACTLY one of these four categories:\n"
+            "1. 'Elite Tech' (Laptops, smartphones, headphones, gaming, cameras, smart devices)\n"
+            "2. 'Beauty & Glow' (Skincare, makeup, fragrance, wellness, fitness)\n"
+            "3. 'Quiet Luxury' (Fashion, jewelry, watches, bags, premium accessories)\n"
+            "4. 'Smart Home' (Kitchen appliances, home automation, decor, cleaning, car accessories, power tools)\n\n"
             "EXAMPLES:\n"
-            "- 'Ninja Blender' -> 'Home & Auto'\n"
-            "- 'Face Serum' -> 'Life & Style'\n"
-            "- 'Wireless Mouse' -> 'Tech'\n"
-            "- 'Car Dash Cam' -> 'Home & Auto'\n\n"
+            "- 'Ninja Blender' -> 'Smart Home'\n"
+            "- 'Face Serum' -> 'Beauty & Glow'\n"
+            "- 'Wireless Mouse' -> 'Elite Tech'\n"
+            "- 'Designer Watch' -> 'Quiet Luxury'\n\n"
             f"PRODUCT TITLE: {product_title}\n"
             f"KEY FEATURES: {bullets}\n\n"
             "Return JSON with key 'category'."
@@ -333,6 +334,6 @@ class GroqProductSelector:
                 temperature=0.1,
             )
             res = json.loads(chat_completion.choices[0].message.content)
-            return res.get("category", "Life & Style")
+            return res.get("category", "Beauty & Glow")
         except:
-            return "Life & Style"
+            return "Beauty & Glow"
