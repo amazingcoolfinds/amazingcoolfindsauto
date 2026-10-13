@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-UPDATED PIPELINE - Absolute Stability Version
-Fixes the 'priority_' typo and the DeepseekProductSelector API key requirement.
+UPDATED PIPELINE - Absolute Final Version
+Fixed typos, Deepseek API key requirement, and restored optimized PRODUCT_TARGETS.
 """
 
 import logging
@@ -25,19 +25,28 @@ PIPELINE_LOG = Path("logs/pipeline.log")
 ITEMS_PER_SEARCH = 3
 MAX_UPLOADS_PER_RUN = 3
 
+# TARGETS OPTIMIZED FOR WEBSITE ORGANIZATION (The "Niches of Desire")
 PRODUCT_TARGETS = [
+    # --- NICHO: Belleza & Cuidado Premium ---
     {"category": "Beauty & Glow", "keywords": "luxury skincare premium anti-aging", "commission": "10%"},
     {"category": "Beauty & Glow", "keywords": "luxury perfume fragrance niche", "commission": "10%"},
+
+    # --- NICHO: Tecnología Elite & Setup ---
     {"category": "Elite Tech", "keywords": "viral gadgets 2025 trending tech", "commission": "4%"},
     {"category": "Elite Tech", "keywords": "gaming setup accessories premium", "commission": "4%"},
     {"category": "Elite Tech", "keywords": "luxury smartwatch premium 2025", "commission": "4%"},
     {"category": "Elite Tech", "keywords": "premium laptop high end 2025", "commission": "3%"},
+
+    # --- NICHO: Moda Minimalista / Lujo Silencioso ---
     {"category": "Quiet Luxury", "keywords": "luxury fashion men minimal premium", "commission": "4%"},
     {"category": "Quiet Luxury", "keywords": "luxury fashion women elegant premium", "commission": "4%"},
+
+    # --- NICHO: Hogar Inteligente & Moderno ---
     {"category": "Smart Home", "keywords": "premium home decor luxury modern", "commission": "3%"},
     {"category": "Smart Home", "keywords": "smart home gadgets automation premium", "commission": "3%"},
 ]
 
+# Ensure directories exist
 for p in [DATA_DIR, PIPELINE_LOG.parent]:
     if p and not p.exists(): p.mkdir(parents=True, exist_ok=True)
 
@@ -62,7 +71,7 @@ class EnhancedPipeline:
         except Exception as e:
             logger.error(f"Scraper unavailable: {e}"); self.scraper = None
 
-        # --- ADAPTIVE GENERATOR (Fixed for DeepseekProductSelector) ---
+        # --- ADAPTIVE GENERATOR (Fixed for DeepseekProductSelector API Key) ---
         try:
             import core.gemini_generators as gg
             self.generator = None
@@ -146,7 +155,6 @@ class EnhancedPipeline:
         if not priority_target:
             logger.error("No targets found."); sys.exit(1)
 
-        # FIXED: Removed the typo priority_//target
         logger.info(f"🎯 Target Nicho: {priority_target['category']}")
 
         thresholds = [50, 35, 20]
@@ -154,7 +162,7 @@ class EnhancedPipeline:
         new_discoveries = []
         
         for threshold in thresholds:
-            products = self.get_high_performance_products(priority_target, min_//price=threshold)
+            products = self.get_high_performance_products(priority_target, min_price=threshold)
             if products:
                 new_discoveries.extend(products)
                 found_anything = True
