@@ -7,11 +7,8 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'enhanced_pipeline.py'
-      - 'core/**'
-      - 'tools/**'
-      - '.github/workflows/daily_pipeline.yml'
+    # MODIFICADO: Ahora el pipeline se activa con CUALQUIER cambio en el repo
+    # eliminamos la restricción de 'paths' para asegurar que config.py y otros activen la corrida
 
 concurrency:
   group: pipeline-${{ github.ref }}
@@ -24,12 +21,13 @@ jobs:
   run-pipeline:
     runs-on: ubuntu-latest
     timeout-minutes: 60
-    
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          # MODIFICADO: fetch-depth: 0 descarga todo el historial, evitando errores de caché de archivos
+          fetch-depth: 0 
           token: ${{ github.token }}
 
       - name: Configure git with PAT
@@ -92,7 +90,6 @@ jobs:
 
       - name: Commit Product Data
         run: |
-          # Check if products.json has content
           if [ -f "data/products.json" ] && [ -s "data/products.json" ]; then
             git add -f data/products.json amazing/data/products.json data/processed_products.json 2>/dev/null || true
             if git diff --cached --quiet; then
