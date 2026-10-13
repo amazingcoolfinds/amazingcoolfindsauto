@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-UPDATED PIPELINE - Absolute Final Version
-Fixed typos, Deepseek API key requirement, and restored optimized PRODUCT_TARGETS.
+FINAL STABLE PIPELINE - Optimized Niches & Brute-Force Execution
+Strictly matched with AdvancedScraper.scrape_amazon_products and GeminiProductGenerator.
 """
 
 import logging
@@ -14,7 +14,7 @@ import os
 from pathlib import Path
 from datetime import datetime
 
-# ─── CONFIGURATION ──────────────────────────────────────────
+# ─── HARDCODED CONFIG (Bypassing config.py for absolute stability) ──────────────────
 AMAZON_ACCESS_KEY = os.getenv("AMAZON_ACCESS_KEY", "")
 AMAZON_SECRET_KEY = os.getenv("AMAZON_SECRET_KEY", "")
 AMAZON_ASSOCIATE_TAG = os.getenv("AMAZON_ASSOCIATE_TAG", "amazingcoolfinds-20")
@@ -59,40 +59,24 @@ logger = logging.getLogger("AmazingCoolFinds")
 
 class EnhancedPipeline:
     def __init__(self):
-        # --- ADAPTIVE SCRAPER ---
+        # EXPLICIT IMPORTS - No adaptive magic, just direct calls
         try:
             from core.advanced_scraper import AdvancedScraper
             self.scraper = AdvancedScraper()
-            self.search_method_name = None
-            for attr in dir(self.scraper):
-                if any(word in attr.lower() for word in ["search", "scrape", "fetch"]):
-                    self.search_method_name = attr
-                    break
+            logger.info("✅ AdvancedScraper loaded successfully")
         except Exception as e:
-            logger.error(f"Scraper unavailable: {e}"); self.scraper = None
+            logger.error(f"❌ CRITICAL: AdvancedScraper load failed: {e}")
+            self.scraper = None
 
-        # --- ADAPTIVE GENERATOR (Fixed for DeepseekProductSelector API Key) ---
         try:
-            import core.gemini_generators as gg
-            self.generator = None
-            for attr_name in dir(gg):
-                attr = getattr(gg, attr_name)
-                if isinstance(attr, type) and any(word in attr_name for word in ["Generator", "Selector", "Product"]):
-                    try:
-                        # Try initializing with api_key as required by DeepseekProductSelector
-                        self.generator = attr(api_key=GEMINI_API_KEY)
-                        break
-                    except TypeError:
-                        try:
-                            self.generator = attr()
-                            break
-                        except: continue
-            if not self.generator:
-                logger.error("Could not find any valid Generator class in gemini_generators")
+            from core.gemini_generators import GeminiProductGenerator
+            self.generator = GeminiProductGenerator(api_key=GEMINI_API_KEY)
+            logger.info("✅ GeminiProductGenerator loaded successfully")
         except Exception as e:
-            logger.error(f"GeminiGenerator error: {e}"); self.generator = None
+            logger.error(f"❌ CRITICAL: GeminiProductGenerator load failed: {e}")
+            self.generator = None
 
-        # --- UPLOADERS ---
+        # Uploaders (Optional)
         try:
             from core.youtube_uploader import YouTubeUploader
             self.yt_uploader = YouTubeUploader()
@@ -116,12 +100,12 @@ class EnhancedPipeline:
         with open(PRODUCTS_JSON, "w", encoding="utf-8") as f:
             json.dump(products, f, indent=4, ensure_ascii=False)
 
-    def get_priority_target_internal(self, products):
-        if not PRODUCT_TARGETS: return None
+    def get_priority_target(self, products):
         counts = {}
         for p in products:
             cat = p.get("category", "Unknown")
             counts[cat] = counts.get(cat, 0) + 1
+        
         min_count = float('inf')
         priority = None
         for target in PRODUCT_TARGETS:
@@ -132,48 +116,42 @@ class EnhancedPipeline:
                 priority = target
         return priority or random.choice(PRODUCT_TARGETS)
 
-    def get_high_performance_products(self, target, min_price=50):
-        if not self.scraper or not self.search_method_name:
-            logger.error("Scraper or search method not found.")
-            return []
-        try:
-            logger.info(f"🔍 Searching for {target['category']} (min ${min_price}) using {self.search_method_name}...")
-            method = getattr(self.scraper, self.search_method_name)
-            search_results = method(target['keywords'], max_results=10)
-            if not search_results: return []
-            existing_ids = {p.get("asin") for p in self.load_existing_products()}
-            return [p for p in search_results if p.get("asin") not in existing_ids and float(re.sub(r'[^\d.]', '', p.get("price", "0"))) >= min_price]
-        except Exception as e:
-            logger.error(f"Error in dynamic search: {e}"); return []
-
     def run_production_cycle(self):
-        logger.info("🚀 STARTING FINAL VERIFIED PIPELINE...")
+        logger.info("🚀 STARTING BRUTE-FORCE PIPELINE WITH OPTIMIZED NICHES...")
         logger.info("============================================================")
         
+        if not self.scraper or not self.generator:
+            logger.error("❌ Essential modules (Scraper or AI) missing. Aborting.")
+            sys.exit(1)
+
         existing_products = self.load_existing_products()
-        priority_target = self.get_priority_target_internal(existing_products)
-        if not priority_target:
-            logger.error("No targets found."); sys.exit(1)
+        target = self.get_priority_target(existing_products)
+        logger.info(f"🎯 Target Nicho: {target['category']}")
 
-        logger.info(f"🎯 Target Nicho: {priority_target['category']}")
-
+        # Try search with decreasing price thresholds
         thresholds = [50, 35, 20]
         found_anything = False
         new_discoveries = []
         
         for threshold in thresholds:
-            products = self.get_high_performance_products(priority_target, min_price=threshold)
-            if products:
-                new_discoveries.extend(products)
-                found_anything = True
-                break
-        
+            try:
+                logger.info(f"🔍 Searching for {target['category']} (min ${threshold})...")
+                # EXPLICIT CALL to the verified function name
+                results = self.scraper.scrape_amazon_products(target['keywords'], max_results=10)
+                if results:
+                    existing_ids = {p.get("asin") for p in existing_products}
+                    valid = [p for p in results if p.get("asin") not in existing_ids and float(re.sub(r'[^\d.]', '', p.get("price", "0"))) >= threshold]
+                    if valid:
+                        new_discoveries.extend(valid)
+                        found_anything = True
+                        break
+            except Exception as e:
+                logger.error(f"Search error at ${threshold}: {e}")
+
         if not found_anything:
-            logger.error("❌ No strategic products found today."); sys.exit(1)
+            logger.error("❌ No products found today."); sys.exit(1)
 
-        if not self.generator:
-            logger.error("AI Generator unavailable."); sys.exit(1)
-
+        # AI Processing & Upload
         for prod in new_discoveries[:MAX_UPLOADS_PER_RUN]:
             try:
                 enriched_data = self.generator.generate_marketing_assets(prod)
