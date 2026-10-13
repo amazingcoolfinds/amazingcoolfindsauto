@@ -419,6 +419,68 @@
 
 
         /* ─── PRODUCTS SECTION ─────────────────────────────── */
+
+        .curation-container {
+            padding: 0 5% 100px;
+        }
+
+        .curation-section {
+            margin-bottom: 80px;
+        }
+
+        .curation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 32px;
+            border-left: 4px solid var(--electric-yellow);
+            padding-left: 20px;
+        }
+
+        .curation-title {
+            font-family: var(--font-accent);
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+
+        .curation-subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .section-cta {
+            font-size: 0.8rem;
+            color: var(--electric-yellow);
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: opacity 0.2s;
+        }
+
+        .section-cta:hover {
+            opacity: 0.7;
+        }
+
+        .curation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 32px;
+        }
+
+        .category-block {
+            margin-bottom: 60px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
         .products {
             padding: 100px 5%;
         }
@@ -1271,20 +1333,26 @@
             document.body.prepend(notice);
         }
 
+        
         function renderProducts() {
-            const grid = document.getElementById('productGrid');
-            if (!grid) return;
-            
-            const filtered = [...allProducts];
-            
-            if (filtered.length === 0) {
-                grid.innerHTML = '<div class="empty-state">No products yet. Check back soon!</div>';
+            if (allProducts.length === 0) {
+                document.getElementById('mainCuration').innerHTML = `
+                    <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
+                        <h2 style="color: var(--white); margin-bottom: 20px;">No finds yet</h2>
+                        <p>We're currently scanning for the next big thing.</p>
+                    </div>`;
                 return;
             }
+            
+            renderTop5();
+            renderFeaturedCategories();
+            renderRecentArrivals();
+            initSlideshows();
+        }
 
-            grid.innerHTML = filtered.map(p => {
-                const images = p.images && p.images.length > 0 ? p.images : [p.image_url];
-                return `
+        function createProductCard(p) {
+            const images = p.images && p.images.length > 0 ? p.images : [p.image_url];
+            return `
             <div class="card reveal" id="${p.asin}" data-asin="${p.asin}">
                 <div class="card__img-wrap">
                     <div class="card__slideshow">
@@ -1312,14 +1380,82 @@
                         Watch on YouTube Shorts
                     </a>` : ''}
                 </div>
-            </div>
-                `;
-            }).join('');
-
-            initSlideshows();
+            </div>`;
         }
-        
-        function initSlideshows() {
+
+        function renderTop5() {
+            const top5 = [...allProducts]
+                .sort((a, b) => (b.selection_score || 0) - (a.selection_score || 0))
+                .slice(0, 5);
+
+            const container = document.getElementById('top5Section');
+            container.innerHTML = `
+                <div class="curation-header">
+                    <div>
+                        <span class="curation-subtitle">The absolute best of the moment</span>
+                        <h2 class="curation-title">Top 5 of the Week 🔥</h2>
+                    </div>
+                    <a href="tech.html" class="section-cta">Explore All →</a>
+                </div>
+                <div class="curation-grid">
+                    ${top5.map(p => createProductCard(p)).join('')}
+                </div>
+            `;
+        }
+
+        function renderFeaturedCategories() {
+            const container = document.getElementById('featuredCategories');
+            const themes = [
+                { id: 'Tech', label: 'Tech & Gaming', link: 'tech.html' },
+                { id: 'Lifestyle', label: 'Lifestyle', link: 'lifestyle.html' },
+                { id: 'Home', label: 'Home & Auto', link: 'home.html' }
+            ];
+
+            let html = '';
+            themes.forEach(theme => {
+                const products = allProducts
+                    .filter(p => categoryMap[p.category] === theme.id)
+                    .sort((a, b) => (b.selection_score || 0) - (a.selection_score || 0))
+                    .slice(0, 4);
+
+                if (products.length > 0) {
+                    html += `
+                    <div class="category-block">
+                        <div class="curation-header">
+                            <div>
+                                <span class="curation-subtitle">Curated excellence in ${theme.label}</span>
+                                <h2 class="curation-title">${theme.label} 🚀</h2>
+                            </div>
+                            <a href="${theme.link}" class="section-cta">View Category →</a>
+                        </div>
+                        <div class="category-grid">
+                            ${products.map(p => createProductCard(p)).join('')}
+                        </div>
+                    </div>`;
+                }
+            });
+            container.innerHTML = html;
+        }
+
+        function renderRecentArrivals() {
+            const recent = [...allProducts].slice(0, 8);
+            const container = document.getElementById('recentArrivalsSection');
+            container.innerHTML = `
+                <div class="curation-header">
+                    <div>
+                        <span class="curation-subtitle">Freshly picked finds</span>
+                        <h2 class="curation-title">Recién Llegados 📦</h2>
+                    </div>
+                    <a href="home.html" class="section-cta">See All Findings →</a>
+                </div>
+                <div class="curation-grid">
+                    ${recent.map(p => createProductCard(p)).join('')}
+                </div>
+            `;
+        }
+
+
+        function initSlideshows( {
             document.querySelectorAll('.card__slideshow').forEach(slideshow => {
                 const imgs = slideshow.querySelectorAll('.card__img');
                 if (imgs.length <= 1) return;

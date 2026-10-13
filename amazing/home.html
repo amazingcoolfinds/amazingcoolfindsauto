@@ -148,6 +148,67 @@
         }
 
         /* ─── PRODUCT GRID ───────────────────────────────────── */
+
+        .curation-container {
+            padding: 0 5% 100px;
+        }
+
+        .curation-section {
+            margin-bottom: 80px;
+        }
+
+        .curation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 32px;
+            border-left: 4px solid var(--yellow);
+            padding-left: 20px;
+        }
+
+        .curation-title {
+            font-family: var(--font-accent);
+            font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .curation-subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .section-cta {
+            font-size: 0.8rem;
+            color: var(--yellow);
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: opacity 0.2s;
+        }
+
+        .section-cta:hover {
+            opacity: 0.7;
+        }
+
+        .curation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 32px;
+        }
+
+        .category-block {
+            margin-bottom: 60px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
         .products { padding: 0 5% 100px; }
 
         .product-grid {
@@ -570,11 +631,17 @@
         <p class="page-subtitle">Smart home innovations, car care essentials, and organized living solutions for the modern explorer.</p>
     </header>
 
-    <section class="products">
-        <div class="product-grid" id="productGrid">
-            <p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">Loading curated home & auto gear...</p>
+    
+    <main class="curation-container" id="mainCuration">
+        <div id="top5Section" class="curation-section">
+            <p style="text-align: center; color: var(--text-muted);">Loading this week's top finds...</p>
         </div>
-    </section>
+        <div id="featuredCategories" class="curation-section"></div>
+        <div id="recentArrivalsSection" class="curation-section">
+            <p style="text-align: center; color: var(--text-muted);">Loading latest arrivals...</p>
+        </div>
+    </main>
+
 
     <section class="articles-section">
         <div class="section-header">
