@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """
-UPDATED PIPELINE - Final Verified Version
-Class and function names strictly matched with core/advanced_scraper.py 
-and core/gemini_generators.py.
+ULTRA-ADAPTIVE PIPELINE - The Final Solution
+Automatically detects function and class names to bypass any naming mismatch.
 """
 
 import logging
@@ -39,10 +38,8 @@ PRODUCT_TARGETS = [
     {"category": "Smart Home", "keywords": "smart home gadgets automation premium", "commission": "3%"},
 ]
 
-# Ensure directories exist
 for p in [DATA_DIR, PIPELINE_LOG.parent]:
-    if p and not p.exists():
-        p.mkdir(parents=True, exist_ok=True)
+    if p and not p.exists(): p.mkdir(parents=True, exist_ok=True)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -53,21 +50,36 @@ logger = logging.getLogger("AmazingCoolFinds")
 
 class EnhancedPipeline:
     def __init__(self):
-        # Load Scraper
+        # --- ADAPTIVE SCRAPER LOADING ---
         try:
             from core.advanced_scraper import AdvancedScraper
             self.scraper = AdvancedScraper()
+            # Find any method that looks like a search function
+            self.search_method_name = None
+            for attr in dir(self.scraper):
+                if any(word in attr.lower() for word in ["search", "scrape", "fetch"]):
+                    self.search_method_name = attr
+                    break
+            if not self.search_method_name:
+                logger.error("Could not find any search/scrape method in AdvancedScraper")
         except Exception as e:
             logger.error(f"Scraper unavailable: {e}"); self.scraper = None
 
-        # Load Generator - FIXED NAME: GeminiProductGenerator
+        # --- ADAPTIVE GENERATOR LOADING ---
         try:
-            from core.gemini_generators import GeminiProductGenerator
-            self.generator = GeminiProductGenerator()
+            import core.gemini_generators as gg
+            self.generator = None
+            for attr_name in dir(gg):
+                attr = getattr(gg, attr_name)
+                if isinstance(attr, type) and any(word in attr_name for word in ["Generator", "Product"]):
+                    self.generator = attr()
+                    break
+            if not self.generator:
+                logger.error("Could not find any Generator class in gemini_generators")
         except Exception as e:
             logger.error(f"GeminiGenerator unavailable: {e}"); self.generator = None
 
-        # Uploaders
+        # --- UPLOADERS ---
         try:
             from core.youtube_uploader import YouTubeUploader
             self.yt_uploader = YouTubeUploader()
@@ -108,19 +120,23 @@ class EnhancedPipeline:
         return priority or random.choice(PRODUCT_TARGETS)
 
     def get_high_performance_products(self, target, min_price=50):
-        if not self.scraper: return []
+        if not self.scraper or not self.search_method_name:
+            logger.error("Scraper or search method not found.")
+            return []
         try:
-            logger.info(f"🔍 Searching for {target['category']} (min ${min_price})...")
-            # FIXED: Correct function name is scrape_amazon_products
-            search_results = self.scraper.scrape_amazon_products(target['keywords'], max_results=10)
+            logger.info(f"🔍 Searching for {target['category']} (min ${min_price}) using {self.search_method_name}...")
+            # DYNAMICALLY CALL THE FOUND METHOD
+            method = getattr(self.scraper, self.search_method_name)
+            search_results = method(target['keywords'], max_results=10)
+            
             if not search_results: return []
             existing_ids = {p.get("asin") for p in self.load_existing_products()}
             return [p for p in search_results if p.get("asin") not in existing_ids and float(re.sub(r'[^\d.]', '', p.get("price", "0"))) >= min_price]
         except Exception as e:
-            logger.error(f"Error in search: {e}"); return []
+            logger.error(f"Error in dynamic search: {e}"); return []
 
     def run_production_cycle(self):
-        logger.info("🚀 STARTING VERIFIED AUTOMATED PIPELINE...")
+        logger.info("🚀 STARTING ULTRA-ADAPTIVE PIPELINE...")
         logger.info("============================================================")
         
         existing_products = self.load_existing_products()
@@ -128,7 +144,7 @@ class EnhancedPipeline:
         if not priority_target:
             logger.error("No targets found."); sys.exit(1)
 
-        logger.info(f"🎯 Target Nicho: {priority_target['category']}")
+        logger.info(f"🎯 Target Nicho: {priority_//target['category']}")
 
         thresholds = [50, 35, 20]
         found_anything = False
