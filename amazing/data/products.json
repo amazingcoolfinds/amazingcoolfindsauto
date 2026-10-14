@@ -11018,5 +11018,93 @@
     "youtube_uploaded": true,
     "youtube_video_id": "yv7t09IMdb4",
     "youtube_url": "https://youtube.com/watch?v=yv7t09IMdb4"
+  },
+  {
+    "asin": "B0D7QW2KKT",
+    "title": "MARC-ANTOINE BARROIS Ganymede Eau de Parfum 30 Ml, 1 Count (Pack of 1), Clear",
+    "price": "$160.00",
+    "rating": "0.0",
+    "reviews_count": "10",
+    "is_prime": false,
+    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0D7QW2KKT&MarketPlace=US&ID=AsinImage",
+    "affiliate_url": "https://www.amazon.com/dp/B0D7QW2KKT?tag=amazingcoolfinds-20",
+    "category": "Beauty & Glow",
+    "commission": 0.1,
+    "selection_score": 75,
+    "selection_reasoning": "This product is priced at $160.00, which exceeds the $60 threshold. However, it has no reviews or rating yet, and it is not Prime eligible, which affects its potential for conversion. Still, the high price provides a good profit potential.",
+    "images": [
+      "https://m.media-amazon.com/images/I/419tR41ItvL._SL1500_.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/41xqg3fgADL._SL1500_.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/51nHM25xuEL._SL1500_.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/41qV+idBLLL._SL1500_.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/61N1-TTi+wL._SL1500_.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/51PCR49vAUL._SL1500_.jpg"
+    ],
+    "url": "https://www.amazon.com/dp/B0D7QW2KKT?tag=amazingcoolfinds-20",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0D7QW2KKT",
+      "scroll_target": "product-B0D7QW2KKT",
+      "full_url": "https://amazing-cool-finds.com/#product-B0D7QW2KKT"
+    },
+    "processed_at": "2026-10-14T17:01:04.781971",
+    "script": {
+      "title": "Discover the Secret to Irresistible Fragrance!",
+      "narration": "POV: You just found the missing piece for your fragrance collection. Ganymede by Marc-Antoine Barrois is an extraordinary blend of cosmic notes that transforms every moment into an unforgettable experience. Trust me, you\u2019ll feel like you\u2019re walking on air! Link is in the first comment!",
+      "hashtags": [
+        "#FragranceLovers",
+        "#BeautyEssentials",
+        "#LuxuryPerfume",
+        "#Ganymede",
+        "#ScentOfTheDay"
+      ]
+    },
+    "voice_path": "assets/B0D7QW2KKT_voice.wav",
+    "youtube_uploaded": true,
+    "youtube_video_id": "VAGyZvNzDAI",
+    "youtube_url": "https://youtube.com/watch?v=VAGyZvNzDAI"
+  },
+  {
+    "asin": "B0D7XJVB3Z",
+    "title": "MARC-ANTOINE BARROIS Ganymede Extrait de Parfum 50 Ml, 1 Count (Pack of 1), Clear",
+    "price": "$259.00",
+    "rating": "0.0",
+    "reviews_count": "0",
+    "is_prime": false,
+    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0D7XJVB3Z&MarketPlace=US&ID=AsinImage",
+    "affiliate_url": "https://www.amazon.com/dp/B0D7XJVB3Z?tag=amazingcoolfinds-20",
+    "category": "Beauty & Glow",
+    "commission": 0.1,
+    "selection_score": 70,
+    "selection_reasoning": "This product is priced at $259.00, offering significant profit potential. However, it has no reviews, no rating, and is not Prime eligible, which limits its conversion potential. The high price makes it a candidate despite these drawbacks.",
+    "images": [
+      "https://m.media-amazon.com/images/I/31MD-+pWEIL._SL1500_.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/41xqg3fgADL._SL1500_.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/61cd93cSJXL._SL1500_.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/319BOFg+13L._SL1500_.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/61N1-TTi+wL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/31MD-+pWEIL.jpg"
+    ],
+    "url": "https://www.amazon.com/dp/B0D7XJVB3Z?tag=amazingcoolfinds-20",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0D7XJVB3Z",
+      "scroll_target": "product-B0D7XJVB3Z",
+      "full_url": "https://amazing-cool-finds.com/#product-B0D7XJVB3Z"
+    },
+    "processed_at": "2026-10-14T17:01:17.015147",
+    "script": {
+      "title": "Unlock the Secret to Irresistible Fragrance!",
+      "narration": "POV: You just discovered Marc-Antoine Barrois' Ganymede Extrait de Parfum! This ultra-luxurious scent elevates your presence with its silky smooth blend of unique notes. Imagine turning heads everywhere you go. It\u2019s pure magic in a bottle! Link is in the first comment!",
+      "hashtags": [
+        "#LuxuryFragrance",
+        "#Ganymede",
+        "#ScentOfTheDay",
+        "#PerfumeLovers",
+        "#BeautyEssentials"
+      ]
+    },
+    "voice_path": "assets/B0D7XJVB3Z_voice.wav",
+    "youtube_uploaded": true,
+    "youtube_video_id": "MPFGzq4iMEk",
+    "youtube_url": "https://youtube.com/watch?v=MPFGzq4iMEk"
   }
 ]
