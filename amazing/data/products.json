@@ -11543,5 +11543,47 @@
     "youtube_uploaded": true,
     "youtube_video_id": "ZtruNUwRI0Q",
     "youtube_url": "https://youtube.com/watch?v=ZtruNUwRI0Q"
+  },
+  {
+    "asin": "B0DD1JH29D",
+    "title": "MIND GAMES Vieri, Extrait de Parfum, 3.4 oz",
+    "price": "$395.00",
+    "rating": "0.0",
+    "reviews_count": "1",
+    "is_prime": false,
+    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0DD1JH29D&MarketPlace=US&ID=AsinImage",
+    "affiliate_url": "https://www.amazon.com/dp/B0DD1JH29D?tag=amazingcoolfinds-20",
+    "category": "Beauty & Glow",
+    "commission": 0.1,
+    "images": [
+      "https://m.media-amazon.com/images/I/61iOHYbAqLL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51kcOsQiXrL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51rnWaIIw9L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/21zWHu37bLL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41z36gJvJvL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/315N7hZ3foL._SL1500_.jpg"
+    ],
+    "url": "https://www.amazon.com/dp/B0DD1JH29D?tag=amazingcoolfinds-20",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0DD1JH29D",
+      "scroll_target": "product-B0DD1JH29D",
+      "full_url": "https://amazing-cool-finds.com/#product-B0DD1JH29D"
+    },
+    "processed_at": "2026-10-17T15:24:58.005926",
+    "script": {
+      "title": "Unlock Your Signature Scent",
+      "narration": "POV: You just discovered MIND GAMES Vieri, Extrait de Parfum. This luxurious fragrance unfolds like a masterpiece, with notes that linger and captivate. It\u2019s not just a scent; it\u2019s an experience! Elevate your glow effortlessly. Link is in the first comment!",
+      "hashtags": [
+        "#FragranceGoals",
+        "#LuxuryPerfume",
+        "#BeautyEssentials",
+        "#ScentOfTheDay",
+        "#GlowUp"
+      ]
+    },
+    "voice_path": "assets/B0DD1JH29D_voice.wav",
+    "youtube_uploaded": true,
+    "youtube_video_id": "33xgh2anylY",
+    "youtube_url": "https://youtube.com/watch?v=33xgh2anylY"
   }
 ]
