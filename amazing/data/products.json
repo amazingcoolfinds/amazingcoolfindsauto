@@ -11628,5 +11628,93 @@
     "youtube_uploaded": true,
     "youtube_video_id": "wRBXureg3A0",
     "youtube_url": "https://youtube.com/watch?v=wRBXureg3A0"
+  },
+  {
+    "asin": "B0HFJK2FP4",
+    "title": "WINTER KIT 2026 ($438 Value)",
+    "price": "$295.00",
+    "rating": "0.0",
+    "reviews_count": "0",
+    "is_prime": false,
+    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0HFJK2FP4&MarketPlace=US&ID=AsinImage",
+    "affiliate_url": "https://www.amazon.com/dp/B0HFJK2FP4?tag=amazingcoolfinds-20",
+    "category": "Quiet Luxury",
+    "commission": 0.1,
+    "selection_score": 75,
+    "selection_reasoning": "High price of $295.00 with a commission potential of $29.50. Although it has no reviews or rating, it is a high-ticket item which could attract high-value customers.",
+    "images": [
+      "https://m.media-amazon.com/images/I/41HWYrlZz4L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51Vn2XQmQHL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/514Q0bHLjWL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61ZiLUFCGbL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/819i9SEDbfL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/714C+6koK5L._SL1500_.jpg"
+    ],
+    "url": "https://www.amazon.com/dp/B0HFJK2FP4?tag=amazingcoolfinds-20",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0HFJK2FP4",
+      "scroll_target": "product-B0HFJK2FP4",
+      "full_url": "https://amazing-cool-finds.com/#product-B0HFJK2FP4"
+    },
+    "processed_at": "2026-10-18T15:46:16.049362",
+    "script": {
+      "title": "Unlock the Secret to Ultimate Winter Luxury",
+      "narration": "Does your winter wardrobe feel lackluster? The Winter Kit 2026 transforms chilly days into a luxurious experience! With obsessively designed pieces that feel silky smooth against your skin, you won\u2019t just stay warm\u2014you\u2019ll turn heads. Link is in the first comment!",
+      "hashtags": [
+        "#QuietLuxury",
+        "#WinterEssentials",
+        "#LuxuryLifestyle",
+        "#FashionGoals",
+        "#WinterVibes"
+      ]
+    },
+    "voice_path": "assets/B0HFJK2FP4_voice.wav",
+    "youtube_uploaded": true,
+    "youtube_video_id": "Sqsd4HMQ8Kg",
+    "youtube_url": "https://youtube.com/watch?v=Sqsd4HMQ8Kg"
+  },
+  {
+    "asin": "B0GY9V7VK2",
+    "title": "La Prairie Skin Caviar Lifting Discovery Set, 4-Piece Travel Size Skincare Kit, Lifting & Firming Ritual for All Skin Types",
+    "price": "$230.00",
+    "rating": "0.0",
+    "reviews_count": "4",
+    "is_prime": false,
+    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0GY9V7VK2&MarketPlace=US&ID=AsinImage",
+    "affiliate_url": "https://www.amazon.com/dp/B0GY9V7VK2?tag=amazingcoolfinds-20",
+    "category": "Beauty & Glow",
+    "commission": 0.1,
+    "selection_score": 70,
+    "selection_reasoning": "Price of $230.00 with a commission potential of $23.00. Despite the lack of reviews and rating, it is a premium product that may appeal to luxury buyers.",
+    "images": [
+      "https://m.media-amazon.com/images/I/41XdrdQ8lPL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41QTPoxUMVL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51fGvHZg79L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/518LUUumt5L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41Gyd+DkwRL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71NYQh-rmHL._SL1500_.jpg"
+    ],
+    "url": "https://www.amazon.com/dp/B0GY9V7VK2?tag=amazingcoolfinds-20",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0GY9V7VK2",
+      "scroll_target": "product-B0GY9V7VK2",
+      "full_url": "https://amazing-cool-finds.com/#product-B0GY9V7VK2"
+    },
+    "processed_at": "2026-10-18T15:46:28.484445",
+    "script": {
+      "title": "Unlock Your Skin's Potential with This Amazing Discovery Set!",
+      "narration": "Does your skin lack that youthful glow? The La Prairie Skin Caviar Lifting Discovery Set transforms your skincare ritual with its luxurious, firming formulas. Experience silky smooth results that redefine radiance. Ready to elevate your glow? Link is in the first comment!",
+      "hashtags": [
+        "#SkincareGoals",
+        "#LuxuryBeauty",
+        "#GlowUp",
+        "#LaPrairie",
+        "#BeautyEssentials"
+      ]
+    },
+    "voice_path": "assets/B0GY9V7VK2_voice.wav",
+    "youtube_uploaded": true,
+    "youtube_video_id": "XF3jRNYAcYU",
+    "youtube_url": "https://youtube.com/watch?v=XF3jRNYAcYU"
   }
 ]
