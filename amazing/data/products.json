@@ -11716,5 +11716,49 @@
     "youtube_uploaded": true,
     "youtube_video_id": "XF3jRNYAcYU",
     "youtube_url": "https://youtube.com/watch?v=XF3jRNYAcYU"
+  },
+  {
+    "asin": "B09WTHY5R2",
+    "title": "Super Anti Aging Face Cream 1.69 Fl Oz",
+    "price": "$360.00",
+    "rating": "0.0",
+    "reviews_count": "29",
+    "is_prime": false,
+    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B09WTHY5R2&MarketPlace=US&ID=AsinImage",
+    "affiliate_url": "https://www.amazon.com/dp/B09WTHY5R2?tag=amazingcoolfinds-20",
+    "category": "Beauty & Glow",
+    "commission": 0.1,
+    "selection_score": 75,
+    "selection_reasoning": "This product has a high price of $360.00, which provides significant profit potential. However, it has no rating yet, which is a concern for conversion. The commission rate is 10%, leading to a commission potential of $36.00. Despite the lack of reviews and Prime availability, the high price makes it a candidate.",
+    "images": [
+      "https://m.media-amazon.com/images/I/31D9kFn4bML._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41MD-Xxwr1L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41NGSMj3U3L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41JqwDTYjAL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41CjfHjN1cL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/411Hoh8jqcL._SL1500_.jpg"
+    ],
+    "url": "https://www.amazon.com/dp/B09WTHY5R2?tag=amazingcoolfinds-20",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B09WTHY5R2",
+      "scroll_target": "product-B09WTHY5R2",
+      "full_url": "https://amazing-cool-finds.com/#product-B09WTHY5R2"
+    },
+    "processed_at": "2026-10-19T04:22:06.878932",
+    "script": {
+      "title": "Unlock Your Glow with Super!",
+      "narration": "Does your skin feel tired and dull? This Super Anti Aging Face Cream is a game changer! Its silky smooth texture revitalizes your skin, giving you that youthful glow. Say goodbye to wrinkles and hello to radiance! Link is in the first comment!",
+      "hashtags": [
+        "#SkincareRoutine",
+        "#AntiAging",
+        "#BeautyHacks",
+        "#GlowingSkin",
+        "#SelfCare"
+      ]
+    },
+    "voice_path": "assets/B09WTHY5R2_voice.wav",
+    "youtube_uploaded": true,
+    "youtube_video_id": "q-ewawkNAXc",
+    "youtube_url": "https://youtube.com/watch?v=q-ewawkNAXc"
   }
 ]
