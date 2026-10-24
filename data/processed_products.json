@@ -1,48 +1,5 @@
 [
   {
-    "asin": "B0BWSJVTCJ",
-    "title": "Vitamix Propel Series 750 Professional-Grade Blender with Four Blending Programs for Smoothies, Soups and More, Self-Cleaning, Stainless-Steel Blades, 64 Oz Container, Black",
-    "price": "$469.00",
-    "rating": "4.6",
-    "reviews_count": "734",
-    "category": "Home & Auto",
-    "images": [
-      "https://m.media-amazon.com/images/I/71vZk6aXveL._AC_SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/71frfbzBhvL._AC_SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/71FlzQPIxtL._AC_SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/71D-wOPlLIL._AC_SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/71vZk6aXveL._AC_SX679_.jpg"
-    ],
-    "image_url": "https://m.media-amazon.com/images/I/71vZk6aXveL._AC_SL1500_.jpg",
-    "bullets": [
-      "Included: Propel Series 750 blender motor base, 64-ounce low-profile container, and low-profile tamper; this low-profile kitchen blender container allows for large-capacity blends while still fitting under kitchen cabinets",
-      "Four Blending Programs: Four automatic Blending Programs for Smoothie, Hot Soup, Frozen Dessert, and Dip & Spread, for consistent results; achieve precise textures with 10 variable speed settings and a Pulse Function for ice crushing",
-      "Self-Cleaning Program: Just add warm water, a drop of dish soap, and run the Self-Cleaning Program; the blender will clean itself in 60 seconds or less",
-      "2.2 HP Motor: Equipped with a high-performance motor, this countertop blender lets you say goodbye to chunky smoothies and hello to effortless blends",
-      "Stainless-Steel Blades: Laser-cut, stainless-steel blades can power through fibrous produce and frozen fruit, crush ice and nuts, and much more, offering consistent blends for years"
-    ],
-    "affiliate_url": "https://www.amazon.com/dp/B0BWSJVTCJ?tag=amazingcoolfinds-20",
-    "processed_at": "2026-04-15T02:01:22.702938",
-    "website_link": {
-      "link": "https://amazing-cool-finds.com/#product-B0BWSJVTCJ",
-      "scroll_target": "product-B0BWSJVTCJ",
-      "full_url": "https://amazing-cool-finds.com/#product-B0BWSJVTCJ"
-    },
-    "script": {
-      "title": "Ultimate Kitchen Game Changer!",
-      "narration": "Does your blender leave you with chunky smoothies? Meet the Vitamix Propel 750! With four blending programs, it transforms ingredients into silky perfection. Plus, it cleans itself in 60 seconds! Elevate your kitchen game effortlessly. Link is in the first comment!",
-      "hashtags": [
-        "#Vitamix",
-        "#KitchenHacks",
-        "#SmoothieGoals",
-        "#HomeCooking",
-        "#BlendLikeAPro"
-      ]
-    },
-    "youtube_video_id": "ut7mBM7qZOw",
-    "youtube_url": "https://youtube.com/watch?v=ut7mBM7qZOw"
-  },
-  {
     "asin": "B0FSD79DK9",
     "title": "COZII Professional Blenders 2000W for Kitchen with 64oz Pitcher & 21oz To-go Cup, Quiet Blender for Smoothies/Ice Crushing/Frozen Drink/Nut Milk, 7 Preset Programs & 8 Speed Control, Dishwasher Safe",
     "price": "$84.99",
@@ -4313,5 +4270,43 @@
     },
     "youtube_video_id": "AkeUNI2QRFE",
     "youtube_url": "https://youtube.com/watch?v=AkeUNI2QRFE"
+  },
+  {
+    "asin": "B0B92Y18GT",
+    "title": "Lattafa Khamrah - Vanilla, Warm Spicy, Amber, Cinnamon - Eau de Parfum Long-Lasting Fragrance for Unisex, 3.40 Ounce / 100 ml",
+    "price": "$33.90",
+    "rating": "0.0",
+    "reviews_count": "39351",
+    "category": "Beauty & Glow",
+    "images": [
+      "https://m.media-amazon.com/images/I/812VtJAFfHL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/710CwatteaL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71Cv8QlYNtL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71ZLipCchqL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81qlc1XlAiL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61+L4kHU4cL._SL1500_.jpg"
+    ],
+    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0B92Y18GT&MarketPlace=US&ID=AsinImage",
+    "bullets": [],
+    "affiliate_url": "https://www.amazon.com/dp/B0B92Y18GT?tag=amazingcoolfinds-20",
+    "processed_at": "2026-10-24T15:48:23.180364",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0B92Y18GT",
+      "scroll_target": "product-B0B92Y18GT",
+      "full_url": "https://amazing-cool-finds.com/#product-B0B92Y18GT"
+    },
+    "script": {
+      "title": "Unlock the Secret to Irresistible Fragrance!",
+      "narration": "Does your fragrance game leave you wanting more? Lattafa Khamrah\u2019s warm vanilla and spicy cinnamon blend wraps you in a luxurious aura that lasts all day! Your secret to turning heads is here. Link is in the first comment!",
+      "hashtags": [
+        "#FragranceGoals",
+        "#LattafaKhamrah",
+        "#ScentOfTheDay",
+        "#UnisexPerfume",
+        "#LuxuryFragrance"
+      ]
+    },
+    "youtube_video_id": "l1kIx4e2AsI",
+    "youtube_url": "https://youtube.com/watch?v=l1kIx4e2AsI"
   }
 ]
