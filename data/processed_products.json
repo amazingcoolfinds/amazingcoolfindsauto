@@ -1,53 +1,5 @@
 [
   {
-    "asin": "B0BS1QCFHX",
-    "title": "Sony WH-CH720N Noise Canceling Wireless Headphones Bluetooth Over The Ear Headset with Microphone and Alexa Built-in, Black New",
-    "price": "$98.00",
-    "rating": "4.4",
-    "reviews_count": "15016",
-    "category": "Tech",
-    "images": [
-      "https://m.media-amazon.com/images/I/61c3099gnFL._AC_SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/31+CMjgVyHL._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/31pqpd+p9sL._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/518bJuZRjwL._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/51I5rPANNTL._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/41i4wtorPjL._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/41syo-ZDVhL._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/51rpbVmi9XL._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/61My1sTKUWL._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/81L8FJQd5nL._SL1500_.jpg"
-    ],
-    "image_url": "https://m.media-amazon.com/images/I/61c3099gnFL._AC_SL1500_.jpg",
-    "bullets": [
-      "SONY\u2019S LIGHTEST WIRELESS NOISE CANCELING HEADBAND EVER: Weighing just 192g, our lightest overhead wireless headphones with Noise Canceling yet, for incredible comfort without compromising on technology.",
-      "DUAL NOISE SENSOR TECHNOLOGY: Take noise canceling to the next level with Sony\u2019s Integrated Processor V1, so you can fully immerse yourself in the music.",
-      "ALL DAY COMFORT: Super comfortable and lightweight design.",
-      "SMART FEATURES: Adjustable Ambient Sound mode and Adaptive Sound control features tailors sound to suit the environment around you.",
-      "LONG BATTERY LIFE: Up to 35-hour battery life with quick charging (3 min charge for up to 1 hour of playback).(USB Type-C Cable included"
-    ],
-    "affiliate_url": "https://www.amazon.com/dp/B0BS1QCFHX?tag=amazingcoolfinds-20",
-    "processed_at": "2026-04-14T02:03:35.366633",
-    "website_link": {
-      "link": "https://amazing-cool-finds.com/#product-B0BS1QCFHX",
-      "scroll_target": "product-B0BS1QCFHX",
-      "full_url": "https://amazing-cool-finds.com/#product-B0BS1QCFHX"
-    },
-    "script": {
-      "title": "The Ultimate Sound Experience Awaits!",
-      "narration": "Does your music get drowned out by the world? Meet the Sony WH-CH720N headphones! Weighing just 192g, they offer silky smooth noise canceling and adaptive sound control. Immerse yourself in your favorite tunes\u2014comfortably! Link is in the first comment!",
-      "hashtags": [
-        "#SonyHeadphones",
-        "#NoiseCancelling",
-        "#AudioLovers",
-        "#TechGadgets",
-        "#MusicExperience"
-      ]
-    },
-    "youtube_video_id": "LHEfNgBWQOE",
-    "youtube_url": "https://youtube.com/watch?v=LHEfNgBWQOE"
-  },
-  {
     "asin": "B0BWSJVTCJ",
     "title": "Vitamix Propel Series 750 Professional-Grade Blender with Four Blending Programs for Smoothies, Soups and More, Self-Cleaning, Stainless-Steel Blades, 64 Oz Container, Black",
     "price": "$469.00",
@@ -4323,5 +4275,43 @@
     },
     "youtube_video_id": "sPjk-KBSOFI",
     "youtube_url": "https://youtube.com/watch?v=sPjk-KBSOFI"
+  },
+  {
+    "asin": "B07TS81MVH",
+    "title": "Nishane Ani",
+    "price": "$176.57",
+    "rating": "0.0",
+    "reviews_count": "190",
+    "category": "Beauty & Glow",
+    "images": [
+      "https://m.media-amazon.com/images/I/51A5-y6HluL._SX679_.jpg",
+      "https://m.media-amazon.com/images/I/51A5-y6HluL._SL1000_.jpg",
+      "https://m.media-amazon.com/images/I/41JEVAClAYL._SL1000_.jpg",
+      "https://m.media-amazon.com/images/I/71kxMK7FYhL._SL1000_.jpg",
+      "https://m.media-amazon.com/images/I/616fjmOwo3L._SL1000_.jpg",
+      "https://m.media-amazon.com/images/I/61vQMumYzOL._SL1000_.jpg"
+    ],
+    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B07TS81MVH&MarketPlace=US&ID=AsinImage",
+    "bullets": [],
+    "affiliate_url": "https://www.amazon.com/dp/B07TS81MVH?tag=amazingcoolfinds-20",
+    "processed_at": "2026-10-24T04:17:04.854113",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B07TS81MVH",
+      "scroll_target": "product-B07TS81MVH",
+      "full_url": "https://amazing-cool-finds.com/#product-B07TS81MVH"
+    },
+    "script": {
+      "title": "Unlock Your Glow with Nishane Ani!",
+      "narration": "POV: You just discovered Nishane Ani\u2014an obsidian gem in the fragrance world! This silky smooth scent wraps you in a warm embrace, transforming your vibe instantly. Experience luxury like never before! Link is in the first comment!",
+      "hashtags": [
+        "#NishaneAni",
+        "#FragranceLovers",
+        "#BeautyEssentials",
+        "#GlowUp",
+        "#LuxuryPerfume"
+      ]
+    },
+    "youtube_video_id": "AkeUNI2QRFE",
+    "youtube_url": "https://youtube.com/watch?v=AkeUNI2QRFE"
   }
 ]
