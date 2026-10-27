@@ -12576,5 +12576,93 @@
     "youtube_uploaded": true,
     "youtube_video_id": "g1AxFxQKv8k",
     "youtube_url": "https://youtube.com/watch?v=g1AxFxQKv8k"
+  },
+  {
+    "asin": "B0F3HV1RXD",
+    "title": "Lepique Retinol Night Cream - No.1 Korean Premium Repair Cream, 1.69 Fl Oz",
+    "price": "$27.00",
+    "rating": "0.0",
+    "reviews_count": "1262",
+    "is_prime": false,
+    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0F3HV1RXD&MarketPlace=US&ID=AsinImage",
+    "affiliate_url": "https://www.amazon.com/dp/B0F3HV1RXD?tag=amazingcoolfinds-20",
+    "category": "Beauty & Glow",
+    "commission": 0.1,
+    "selection_score": 70,
+    "selection_reasoning": "This product is priced at $27.00, which is above the $30 threshold. It has a decent number of reviews (1262), but it lacks a rating. Although it does not meet the ideal criteria, it is the best available option in the list.",
+    "images": [
+      "https://m.media-amazon.com/images/I/71JB+s24NFL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71fkPei0P2L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71rjsWvhe9L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71lD6cMEzFL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/717myaTz-9L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71t-8xOnrdL._SL1500_.jpg"
+    ],
+    "url": "https://www.amazon.com/dp/B0F3HV1RXD?tag=amazingcoolfinds-20",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0F3HV1RXD",
+      "scroll_target": "product-B0F3HV1RXD",
+      "full_url": "https://amazing-cool-finds.com/#product-B0F3HV1RXD"
+    },
+    "processed_at": "2026-10-27T04:44:48.203458",
+    "script": {
+      "title": "Unlock Your Skin's Potential with Lepique!",
+      "narration": "Does your skin feel tired and dull? Meet Lepique Retinol Night Cream\u2014the secret to a silky smooth glow! This premium repair cream transforms your complexion overnight. Wake up radiant, confident, and obsessed! Link is in the first comment!",
+      "hashtags": [
+        "#SkincareMagic",
+        "#GlowUp",
+        "#KBeauty",
+        "#NightRoutine",
+        "#Lepique"
+      ]
+    },
+    "voice_path": "assets/B0F3HV1RXD_voice.wav",
+    "youtube_uploaded": true,
+    "youtube_video_id": "qPdCJjESfh8",
+    "youtube_url": "https://youtube.com/watch?v=qPdCJjESfh8"
+  },
+  {
+    "asin": "B0FQBL8S3K",
+    "title": "EQQUALBERRY NAD+ Peptide Boosting Firming Cream, 1.69 fl oz",
+    "price": "$22.98",
+    "rating": "0.0",
+    "reviews_count": "4933",
+    "is_prime": false,
+    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0FQBL8S3K&MarketPlace=US&ID=AsinImage",
+    "affiliate_url": "https://www.amazon.com/dp/B0FQBL8S3K?tag=amazingcoolfinds-20",
+    "category": "Beauty & Glow",
+    "commission": 0.1,
+    "selection_score": 70,
+    "selection_reasoning": "This product is priced at $22.98, which is below the preferred price point but has a higher number of reviews (4933). It also lacks a rating, but it is another option available in the list.",
+    "images": [
+      "https://m.media-amazon.com/images/I/51e2UUo3dvL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61NpbszazoL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/317tEmJH+oL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51CJIbzxHqL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/512b1phonoL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41vPgz-KNKL._SL1500_.jpg"
+    ],
+    "url": "https://www.amazon.com/dp/B0FQBL8S3K?tag=amazingcoolfinds-20",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0FQBL8S3K",
+      "scroll_target": "product-B0FQBL8S3K",
+      "full_url": "https://amazing-cool-finds.com/#product-B0FQBL8S3K"
+    },
+    "processed_at": "2026-10-27T04:45:03.155551",
+    "script": {
+      "title": "Revolutionize Your Skincare Routine!",
+      "narration": "POV: You just discovered the power of EQQUALBERRY NAD+ Peptide Boosting Firming Cream. This silky smooth cream transforms your skin, boosting firmness and glow like never before. Your skin deserves this luxury! Link is in the first comment!",
+      "hashtags": [
+        "#SkincareRoutine",
+        "#GlowUp",
+        "#BeautyEssentials",
+        "#FirmingCream",
+        "#EQQUALBERRY"
+      ]
+    },
+    "voice_path": "assets/B0FQBL8S3K_voice.wav",
+    "youtube_uploaded": true,
+    "youtube_video_id": "8-8qL5te2zo",
+    "youtube_url": "https://youtube.com/watch?v=8-8qL5te2zo"
   }
 ]
