@@ -12836,5 +12836,46 @@
     "youtube_uploaded": true,
     "youtube_video_id": "PRfseho3VvQ",
     "youtube_url": "https://youtube.com/watch?v=PRfseho3VvQ"
+  },
+  {
+    "asin": "B09VY7FK6T",
+    "title": "Face Cream 1.6 Fl Oz",
+    "price": "$192.00",
+    "rating": "0.0",
+    "reviews_count": "23",
+    "is_prime": false,
+    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B09VY7FK6T&MarketPlace=US&ID=AsinImage",
+    "affiliate_url": "https://www.amazon.com/dp/B09VY7FK6T?tag=amazingcoolfinds-20",
+    "category": "Beauty & Glow",
+    "commission": 0.1,
+    "images": [
+      "https://m.media-amazon.com/images/I/31RpzqycTmL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41N5kV0dpSL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/417fDUMGXlL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41qeChUNRsL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51qRfK8jI-L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41EEdAv4mtL._SL1500_.jpg"
+    ],
+    "url": "https://www.amazon.com/dp/B09VY7FK6T?tag=amazingcoolfinds-20",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B09VY7FK6T",
+      "scroll_target": "product-B09VY7FK6T",
+      "full_url": "https://amazing-cool-finds.com/#product-B09VY7FK6T"
+    },
+    "processed_at": "2026-10-29T18:22:51.484104",
+    "script": {
+      "title": "The Secret to Effortless Glow",
+      "narration": "Does dull skin drive you crazy? This Face cream transforms your complexion with its silky smooth formula, leaving your skin radiant and hydrated. You'll wonder how you ever lived without it. Link is in the first comment!",
+      "hashtags": [
+        "#SkincareRoutine",
+        "#GlowUp",
+        "#BeautyEssentials",
+        "#FaceCream"
+      ]
+    },
+    "voice_path": "assets/B09VY7FK6T_voice.wav",
+    "youtube_uploaded": true,
+    "youtube_video_id": "CXnepY7mNu0",
+    "youtube_url": "https://youtube.com/watch?v=CXnepY7mNu0"
   }
 ]
