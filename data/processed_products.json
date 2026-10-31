@@ -1,49 +1,5 @@
 [
   {
-    "asin": "B099VMT8VZ",
-    "title": "Meta Quest 2 \u2014 Advanced All-In-One Virtual Reality Headset \u2014 128 GB",
-    "price": "$349.99",
-    "rating": "4.7",
-    "reviews_count": "78344",
-    "category": "Tech",
-    "images": [
-      "https://m.media-amazon.com/images/I/51h6QZYt-nL._AC_SX679_.jpg",
-      "https://m.media-amazon.com/images/I/51h6QZYt-nL._AC_SL1098_.jpg",
-      "https://m.media-amazon.com/images/I/51VfuC3f12L._AC_SL1371_.jpg",
-      "https://m.media-amazon.com/images/I/51h6TLkjp7L._AC_SL1232_.jpg",
-      "https://m.media-amazon.com/images/I/61y0ovKR3kL._AC_SL1000_.jpg",
-      "https://m.media-amazon.com/images/I/61p-+a8ZxCL._AC_SL1000_.jpg"
-    ],
-    "image_url": "https://m.media-amazon.com/images/I/51h6QZYt-nL._AC_SX679_.jpg",
-    "bullets": [
-      "Experience total immersion with 3D positional audio, hand tracking and easy-to-use controllers working together to make virtual worlds feel real.",
-      "Explore an expanding universe of over 500 titles across gaming, fitness, social/multiplayer and entertainment, including exclusive releases and totally unique VR experiences.",
-      "Enjoy fast, smooth gameplay and immersive graphics as high-speed action unfolds around you with a fast processor and immersive graphics.",
-      "Travel universes in blockbuster fantasies, scare yourself witless in horror adventures or squad up with friends to save the universe.",
-      "Come together in incredible social spaces and multiplayer arenas as you take in live events with friends and family, find your new workout crew or join adventures with fellow players."
-    ],
-    "affiliate_url": "https://www.amazon.com/dp/B099VMT8VZ?tag=amazingcoolfinds-20",
-    "processed_at": "2026-04-17T02:05:01.010290",
-    "website_link": {
-      "link": "https://amazing-cool-finds.com/#product-B099VMT8VZ",
-      "scroll_target": "product-B099VMT8VZ",
-      "full_url": "https://amazing-cool-finds.com/#product-B099VMT8VZ"
-    },
-    "script": {
-      "title": "Unlock New Worlds with Meta Quest 2!",
-      "narration": "POV: You just discovered the ultimate escape! With stunning graphics and immersive 3D audio, the Meta Quest 2 transforms gaming and adventures into a reality. Dive into over 500 titles and redefine your fun! Link is in the first comment!",
-      "hashtags": [
-        "#VirtualReality",
-        "#GamingLife",
-        "#MetaQuest2",
-        "#TechInnovation",
-        "#ImmersiveExperience"
-      ]
-    },
-    "youtube_video_id": "XLgIkeGyz3w",
-    "youtube_url": "https://youtube.com/watch?v=XLgIkeGyz3w"
-  },
-  {
     "asin": "B0DVS5QGSN",
     "title": "Meta Quest 2 \u2014 Advanced All-In-One Virtual Reality Headset \u2014 256 GB (Renewed)",
     "price": "$265.00",
@@ -4197,5 +4153,43 @@
     },
     "youtube_video_id": "5zmgP2pe1RA",
     "youtube_url": "https://youtube.com/watch?v=5zmgP2pe1RA"
+  },
+  {
+    "asin": "B00E6EJ8Q8",
+    "title": "Lanc\u00f4me R\u00e9nergie Lift Multi-Action - Anti-Aging Face Cream SPF 15",
+    "price": "$135.00",
+    "rating": "0.0",
+    "reviews_count": "821",
+    "category": "Beauty & Glow",
+    "images": [
+      "https://m.media-amazon.com/images/I/71PF4nj3k0L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61Lk87Lg43L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/31ZLTEMFR5L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41JKYu9sTYL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41jzNRo-HcL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41+NvKpw3kL._SL1500_.jpg"
+    ],
+    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B00E6EJ8Q8&MarketPlace=US&ID=AsinImage",
+    "bullets": [],
+    "affiliate_url": "https://www.amazon.com/dp/B00E6EJ8Q8?tag=amazingcoolfinds-20",
+    "processed_at": "2026-10-31T05:13:08.074780",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B00E6EJ8Q8",
+      "scroll_target": "product-B00E6EJ8Q8",
+      "full_url": "https://amazing-cool-finds.com/#product-B00E6EJ8Q8"
+    },
+    "script": {
+      "title": "Unlock Timeless Beauty with Lanc\u00f4me!",
+      "narration": "Does aging skin drive you crazy? Lanc\u00f4me R\u00e9nergie Lift Multi-Action is your game-changer! This luxurious cream lifts, firms, and protects with SPF 15, transforming your skin into a silky smooth canvas. Experience brilliance that radiates confidence! Link is in the first comment!",
+      "hashtags": [
+        "#Lanc\u00f4me",
+        "#AntiAging",
+        "#BeautyRoutine",
+        "#SkincareGoals",
+        "#GlowUp"
+      ]
+    },
+    "youtube_video_id": "pdiZbVC2u-E",
+    "youtube_url": "https://youtube.com/watch?v=pdiZbVC2u-E"
   }
 ]

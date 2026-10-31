@@ -12963,5 +12963,47 @@
     "youtube_uploaded": true,
     "youtube_video_id": "5zmgP2pe1RA",
     "youtube_url": "https://youtube.com/watch?v=5zmgP2pe1RA"
+  },
+  {
+    "asin": "B00E6EJ8Q8",
+    "title": "Lanc\u00f4me R\u00e9nergie Lift Multi-Action - Anti-Aging Face Cream SPF 15",
+    "price": "$135.00",
+    "rating": "0.0",
+    "reviews_count": "821",
+    "is_prime": false,
+    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B00E6EJ8Q8&MarketPlace=US&ID=AsinImage",
+    "affiliate_url": "https://www.amazon.com/dp/B00E6EJ8Q8?tag=amazingcoolfinds-20",
+    "category": "Beauty & Glow",
+    "commission": 0.1,
+    "images": [
+      "https://m.media-amazon.com/images/I/71PF4nj3k0L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61Lk87Lg43L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/31ZLTEMFR5L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41JKYu9sTYL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41jzNRo-HcL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/41+NvKpw3kL._SL1500_.jpg"
+    ],
+    "url": "https://www.amazon.com/dp/B00E6EJ8Q8?tag=amazingcoolfinds-20",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B00E6EJ8Q8",
+      "scroll_target": "product-B00E6EJ8Q8",
+      "full_url": "https://amazing-cool-finds.com/#product-B00E6EJ8Q8"
+    },
+    "processed_at": "2026-10-31T05:13:08.074780",
+    "script": {
+      "title": "Unlock Timeless Beauty with Lanc\u00f4me!",
+      "narration": "Does aging skin drive you crazy? Lanc\u00f4me R\u00e9nergie Lift Multi-Action is your game-changer! This luxurious cream lifts, firms, and protects with SPF 15, transforming your skin into a silky smooth canvas. Experience brilliance that radiates confidence! Link is in the first comment!",
+      "hashtags": [
+        "#Lanc\u00f4me",
+        "#AntiAging",
+        "#BeautyRoutine",
+        "#SkincareGoals",
+        "#GlowUp"
+      ]
+    },
+    "voice_path": "assets/B00E6EJ8Q8_voice.wav",
+    "youtube_uploaded": true,
+    "youtube_video_id": "pdiZbVC2u-E",
+    "youtube_url": "https://youtube.com/watch?v=pdiZbVC2u-E"
   }
 ]
