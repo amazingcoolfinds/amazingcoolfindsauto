@@ -1,52 +1,5 @@
 [
   {
-    "asin": "B0DVS5QGSN",
-    "title": "Meta Quest 2 \u2014 Advanced All-In-One Virtual Reality Headset \u2014 256 GB (Renewed)",
-    "price": "$265.00",
-    "rating": "4.5",
-    "reviews_count": "62",
-    "category": "Tech",
-    "images": [
-      "https://m.media-amazon.com/images/I/318QMtqwE3L._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/51hZQ1rLmWL._SL1500_.jpg",
-      "https://images-na.ssl-images-amazon.com/images/I/51hZQ1rLmWL._SL1500_.jpg",
-      "https://images-na.ssl-images-amazon.com/images/I/61teHXr3vDL._SL1500_.jpg",
-      "https://images-na.ssl-images-amazon.com/images/I/61lXdmK5c7L._SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/51hZQ1rLmWL._AC_SX679_.jpg",
-      "https://m.media-amazon.com/images/I/11X1grO0K6L.png",
-      "https://m.media-amazon.com/images/I/11m5NyTwLVL.png",
-      "https://m.media-amazon.com/images/I/11MpO5lMksL.png",
-      "https://m.media-amazon.com/images/I/118nlf+F3RL.png"
-    ],
-    "image_url": "https://m.media-amazon.com/images/I/318QMtqwE3L._SL1500_.jpg",
-    "bullets": [
-      "256GB Storage Capacity",
-      "Top VR Experience: Oculus Quest 2 features a blazing-fast processor, top hand-tracking system, and 1832 x 1920 Pixels Per Eye high-resolution display, offering an incredibly immersive and smooth VR gaming experience.",
-      "Anti-Slip Controller Grip Covers: grip covers are made of nice silicone material that effectively prevents sweat, dust, and scratches. Anti-slip bumps enhance the handgrip and feel.",
-      "Adjustable Knuckle Straps: knuckle straps make it possible to relax your hands without dropping the controllers. High-quality PU material offers extra durability and velcro design makes it easy to adjust the strap length to different needs."
-    ],
-    "affiliate_url": "https://www.amazon.com/dp/B0DVS5QGSN?tag=amazingcoolfinds-20",
-    "processed_at": "2026-04-17T02:05:16.248867",
-    "website_link": {
-      "link": "https://amazing-cool-finds.com/#product-B0DVS5QGSN",
-      "scroll_target": "product-B0DVS5QGSN",
-      "full_url": "https://amazing-cool-finds.com/#product-B0DVS5QGSN"
-    },
-    "script": {
-      "title": "Unleash Your Reality with Meta Quest 2!",
-      "narration": "POV: You just stepped into a new dimension! With 256GB of immersive VR magic, every game feels like reality. Experience silky smooth graphics and never drop your controllers again\u2014thanks to the adjustable knuckle straps. Your gaming setup just leveled up! Link is in the first comment!",
-      "hashtags": [
-        "#MetaQuest2",
-        "#VirtualReality",
-        "#GamingSetup",
-        "#TechInnovation",
-        "#VRExperience"
-      ]
-    },
-    "youtube_video_id": "NX7wLz4QdAk",
-    "youtube_url": "https://youtube.com/watch?v=NX7wLz4QdAk"
-  },
-  {
     "asin": "B0DLP26373",
     "title": "HIBREW H10B - Professional Espresso Machine - Cappuccino Maker with Milk Frother, Adjustable Temperature & Cup Volume, with Display, Pressure Gauge & Stainless Steel Body",
     "price": "$169.99",
@@ -4191,5 +4144,42 @@
     },
     "youtube_video_id": "pdiZbVC2u-E",
     "youtube_url": "https://youtube.com/watch?v=pdiZbVC2u-E"
+  },
+  {
+    "asin": "B0G1TMC8V1",
+    "title": "Luxury Niche Perfume Discovery Set \u2013 10 x 2ml Eau de Parfum Samples \u2013 Unisex \u2013 Find Your Signature Scent \u2013 Les S\u0153urs de No\u00e9 \u2013 Gift Set",
+    "price": "$60.00",
+    "rating": "0.0",
+    "reviews_count": "0",
+    "category": "Beauty & Glow",
+    "images": [
+      "https://m.media-amazon.com/images/I/61TifuZbx7L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61boduVTruL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61JBRARt00L._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51goPCzetjL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61TifuZbx7L._SX679_.jpg"
+    ],
+    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0G1TMC8V1&MarketPlace=US&ID=AsinImage",
+    "bullets": [],
+    "affiliate_url": "https://www.amazon.com/dp/B0G1TMC8V1?tag=amazingcoolfinds-20",
+    "processed_at": "2026-11-01T05:43:05.841326",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0G1TMC8V1",
+      "scroll_target": "product-B0G1TMC8V1",
+      "full_url": "https://amazing-cool-finds.com/#product-B0G1TMC8V1"
+    },
+    "script": {
+      "title": "Unlock Your Signature Scent!",
+      "narration": "POV: You just discovered a treasure trove of scents! This Luxury Niche Perfume Discovery Set transforms your fragrance game with 10 exquisite, unisex samples. Perfect for finding your signature scent. Elevate your vibe and turn heads everywhere! Link is in the first comment!",
+      "hashtags": [
+        "#LuxuryPerfume",
+        "#FragranceDiscovery",
+        "#UnisexScents",
+        "#ScentJourney",
+        "#GiftIdeas"
+      ]
+    },
+    "youtube_video_id": "aWaXtcZke38",
+    "youtube_url": "https://youtube.com/watch?v=aWaXtcZke38"
   }
 ]
