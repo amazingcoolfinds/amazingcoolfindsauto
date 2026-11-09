@@ -14484,5 +14484,49 @@
     "youtube_uploaded": true,
     "youtube_video_id": "Xwq7J6EL4Hk",
     "youtube_url": "https://youtube.com/watch?v=Xwq7J6EL4Hk"
+  },
+  {
+    "asin": "B00XPW67ZM",
+    "title": "Lutron Caseta Smart Hub Compatible with Alexa, Apple, Google Home, & More",
+    "price": "$89.95",
+    "rating": "0.0",
+    "reviews_count": "1967",
+    "is_prime": false,
+    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B00XPW67ZM&MarketPlace=US&ID=AsinImage",
+    "affiliate_url": "https://www.amazon.com/dp/B00XPW67ZM?tag=amazingcoolfinds-20",
+    "category": "Smart Home",
+    "commission": 0.03,
+    "selection_score": 75,
+    "selection_reasoning": "This product has a price of $89.95, which is above the $60 threshold, and it is compatible with multiple smart home systems. However, it has a rating of 0.0, indicating it may not have enough reviews yet.",
+    "images": [
+      "https://m.media-amazon.com/images/I/41aNCvXBZRL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/21nDAea0HgL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/219ohOPyyjL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51J083705sL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/51GFgFwu8mL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/519JIAdEyFL._SL1500_.jpg"
+    ],
+    "url": "https://www.amazon.com/dp/B00XPW67ZM?tag=amazingcoolfinds-20",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B00XPW67ZM",
+      "scroll_target": "product-B00XPW67ZM",
+      "full_url": "https://amazing-cool-finds.com/#product-B00XPW67ZM"
+    },
+    "processed_at": "2026-11-09T05:53:27.248996",
+    "script": {
+      "title": "Transform Your Home with One Simple Device!",
+      "narration": "Does your home feel chaotic? Enter the Lutron Caseta Smart Hub! Seamlessly control your lights with just your voice. Imagine silky smooth mornings where your lights greet you! At this level of quality, it\u2019s a game changer! Link is in the first comment!",
+      "hashtags": [
+        "#SmartHome",
+        "#HomeAutomation",
+        "#LutronCaseta",
+        "#VoiceControl",
+        "#TechSavvy"
+      ]
+    },
+    "voice_path": "assets/B00XPW67ZM_voice.wav",
+    "youtube_uploaded": true,
+    "youtube_video_id": "5NdUSFNoVoE",
+    "youtube_url": "https://youtube.com/watch?v=5NdUSFNoVoE"
   }
 ]
