@@ -57,10 +57,24 @@ class StrategyMonitor:
                 log.warning(f"Error counting products for balance: {e}")
 
         # Define high-intent, targeted keywords for realistic Amazon searches
-        beauty_keywords = ["luxury skincare set", "luxury perfume fragrance high end", "premium anti aging skincare"]
-        tech_keywords = ["premium tech gadgets 2026", "premium mechanical keyboard OLED", "smart noise cancelling headphones", "VR headset advanced"]
-        luxury_keywords = ["luxury fashion men premium jacket", "luxury fashion women premium dress", "designer sunglasses polarized"]
-        home_keywords = ["smart air purifier HEPA", "robot vacuum mop combo", "premium espresso machine maker", "high end blender smoothie"]
+        beauty_keywords = [
+            "luxury skincare premium anti-aging",
+            "luxury perfume fragrance niche",
+        ]
+        tech_keywords = [
+            "viral gadgets 2025 trending tech",
+            "gaming setup accessories premium",
+            "luxury smartwatch premium 2025",
+            "premium laptop high end 2025",
+        ]
+        luxury_keywords = [
+            "luxury fashion men minimal premium",
+            "luxury fashion women elegant premium",
+        ]
+        home_keywords = [
+            "premium home decor luxury modern",
+            "smart home gadgets automation premium",
+        ]
 
         # Mix the targets
         targets = [

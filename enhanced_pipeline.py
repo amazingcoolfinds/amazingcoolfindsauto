@@ -102,16 +102,6 @@ def log_to_supabase(table_name, data):
 AFFILIATE_TAG = os.getenv("AMAZON_ASSOCIATE_TAG", "amazingcool-20")
 
 # ─── CONFIGURATION ───────────────────────────────────────────────
-PRODUCT_TARGETS = [
-    {"category": "Beauty & Glow", "keywords": "luxury skincare set", "commission": "10%"},
-    {"category": "Beauty & Glow", "keywords": "luxury perfume fragrance high end", "commission": "10%"},
-    {"category": "Elite Tech", "keywords": "premium tech gadgets 2026", "commission": "4%"},
-    {"category": "Elite Tech", "keywords": "premium mechanical keyboard OLED", "commission": "4%"},
-    {"category": "Quiet Luxury", "keywords": "luxury fashion men premium jacket", "commission": "4%"},
-    {"category": "Quiet Luxury", "keywords": "luxury fashion women premium dress", "commission": "4%"},
-    {"category": "Smart Home", "keywords": "smart air purifier HEPA", "commission": "3%"},
-    {"category": "Smart Home", "keywords": "robot vacuum mop combo", "commission": "3%"},
-]
 
 CATEGORY_ALIASES = {
     "Beauty": "Beauty & Glow",
