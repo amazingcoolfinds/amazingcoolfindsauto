@@ -14660,5 +14660,49 @@
     "youtube_uploaded": true,
     "youtube_video_id": "VstcWMGAa1o",
     "youtube_url": "https://youtube.com/watch?v=VstcWMGAa1o"
+  },
+  {
+    "asin": "B0D873SP7B",
+    "title": "Framed Modern Luxury Gold Large Wall Art for Living Room, 3 Piece 20x30 In",
+    "price": "$109.99",
+    "rating": "0.0",
+    "reviews_count": "5",
+    "is_prime": false,
+    "image_url": "https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL600_&ASIN=B0D873SP7B&MarketPlace=US&ID=AsinImage",
+    "affiliate_url": "https://www.amazon.com/dp/B0D873SP7B?tag=amazingcoolfinds-20",
+    "category": "Quiet Luxury",
+    "commission": 0.03,
+    "selection_score": 75,
+    "selection_reasoning": "This product is priced at $109.99, which meets the profit potential criteria. Although it has no reviews yet, it is a luxury wall art piece that can attract buyers looking for home decor. Its price allows for a higher commission potential.",
+    "images": [
+      "https://m.media-amazon.com/images/I/71uKEUQL1NL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/719mMxR3VJL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71-KQ97PddL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71uR3NAVHYL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71U1c2USuxL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71iQD5TKn7L._AC_SL1500_.jpg"
+    ],
+    "url": "https://www.amazon.com/dp/B0D873SP7B?tag=amazingcoolfinds-20",
+    "website_link": {
+      "link": "https://amazing-cool-finds.com/#product-B0D873SP7B",
+      "scroll_target": "product-B0D873SP7B",
+      "full_url": "https://amazing-cool-finds.com/#product-B0D873SP7B"
+    },
+    "processed_at": "2026-11-10T20:14:01.366107",
+    "script": {
+      "title": "Transform Your Space with Luxury Art!",
+      "narration": "POV: You just found the missing piece for your living room setup. This Framed Modern Luxury Gold Wall Art trio isn\u2019t just decor; it\u2019s a statement! Elevate your vibe with its stunning quality. Your walls deserve this upgrade! Link is in the first comment!",
+      "hashtags": [
+        "#HomeDecor",
+        "#WallArt",
+        "#InteriorDesign",
+        "#LuxuryLiving",
+        "#ArtLovers"
+      ]
+    },
+    "voice_path": "assets/B0D873SP7B_voice.wav",
+    "youtube_uploaded": true,
+    "youtube_video_id": "__kuJZRxu88",
+    "youtube_url": "https://youtube.com/watch?v=__kuJZRxu88"
   }
 ]
